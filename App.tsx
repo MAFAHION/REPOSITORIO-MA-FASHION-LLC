@@ -5,6 +5,17 @@ import ControlTray from './components/ControlTray';
 import { LiveStatus } from './types';
 import { ShoppingBag, Menu, X, ArrowRight, Sparkles, Mic, Globe, Database, ChevronRight, Facebook, Instagram, Twitter, Linkedin, Calendar, MapPin, Users, Star } from 'lucide-react';
 
+// --- Safe API Key Check ---
+const hasApiKey = () => {
+    try {
+        if (typeof process !== 'undefined' && process.env && process.env.API_KEY) return true;
+        // if using Vite: if (import.meta.env.VITE_API_KEY) return true;
+        return false;
+    } catch (e) {
+        return false;
+    }
+}
+
 // --- Translation Data ---
 type Language = 'en' | 'es' | 'pt' | 'jp' | 'it' | 'ar' | 'cn';
 
@@ -1145,7 +1156,7 @@ const App: React.FC = () => {
       )}
 
       {/* API Key Error Toast */}
-      {!process.env.API_KEY && (
+      {!hasApiKey() && (
           <div className="fixed bottom-4 right-4 bg-red-900/90 text-white p-4 rounded-sm border border-red-700 z-[100] font-mono text-xs">
              API Key Missing.
           </div>

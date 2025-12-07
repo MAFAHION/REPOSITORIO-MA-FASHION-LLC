@@ -3,7 +3,22 @@ import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { LiveStatus } from '../types';
 import { createPcmBlob, decodeAudioData, base64ToArrayBuffer, blobToBase64 } from '../utils/audio-utils';
 
-const API_KEY = process.env.API_KEY || '';
+// Helper to safely get API Key without crashing if process is undefined (browser environments)
+const getApiKey = () => {
+  try {
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env.API_KEY || '';
+    }
+    // If you are using Vite, you might use import.meta.env.VITE_API_KEY
+    // return import.meta.env.VITE_API_KEY || '';
+  } catch (e) {
+    console.warn("Environment variables not accessible");
+  }
+  return ''; // Return empty string if not found, don't crash
+};
+
+const API_KEY = getApiKey();
+
 const MODEL_NAME = 'gemini-2.5-flash-native-audio-preview-09-2025';
 const VOICE_NAME = 'Fenrir'; // Using a deeper, more professional voice
 
