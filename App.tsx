@@ -234,9 +234,34 @@ const translations: Record<Language, any> = {
     },
     education: {
       title: "MA Academy",
-      subtitle: "Master The Art",
-      desc: "Immerse yourself in global events where science meets artistry.",
-      events: []
+      subtitle: "Dominar a Arte",
+      desc: "Mergulhe em eventos globais onde a ciência encontra a arte. Nossa educação técnica eleva os padrões em todo o mundo.",
+      events: [
+        {
+          city: "Dubai",
+          date: "Out 2023",
+          title: "Cúpula de Reconstrução Molecular",
+          desc: "Um mergulho exclusivo nas vias enzimáticas do Pro Fusion. Estilistas aprenderam a reverter danos químicos extremos."
+        },
+        {
+          city: "São Paulo",
+          date: "Jan 2024",
+          title: "A Revolução dos Cachos",
+          desc: "Evento de lançamento do My Crown. Workshop prático focado na memória de curvatura e reposição lipídica."
+        },
+        {
+          city: "Milão",
+          date: "Mar 2024",
+          title: "Masterclass de Alinhamento Térmico",
+          desc: "Técnicas avançadas em alisamento ácido. Dominando The First Shampoo e Brushing+ para resultados espelhados sem formol."
+        },
+        {
+          city: "Nova York",
+          date: "Próximo - Nov 2024",
+          title: "Fórum Global de Ciência Capilar",
+          desc: "Junte-se a nós para a revelação das nossas coleções de 2025. Foco em biotecnologia sustentável e crescimento dos salões."
+        }
+      ]
     },
     about: {
         title: "Quem Somos",
@@ -292,18 +317,43 @@ const translations: Record<Language, any> = {
       }
     },
     education: {
-      title: "MA Academy",
-      subtitle: "Master The Art",
-      desc: "Immerse yourself in global events where science meets artistry.",
-      events: []
+      title: "MA アカデミー",
+      subtitle: "芸術を極める",
+      desc: "科学と芸術が出会うグローバルイベントに没頭してください。私たちの技術教育は世界中の基準を高めます。",
+      events: [
+        {
+          city: "ドバイ",
+          date: "2023年10月",
+          title: "分子再構築サミット",
+          desc: "Pro Fusionの酵素経路への独占的な深掘り。スタイリストは独自のバイオテクノロジーを使用して極端な化学的損傷を逆転させる方法を学びました。"
+        },
+        {
+          city: "サンパウロ",
+          date: "2024年1月",
+          title: "カール革命",
+          desc: "My Crownのローンチイベント。テクスチャーヘアのための曲率記憶と脂質補充に焦点を当てた実践的なワークショップ。"
+        },
+        {
+          city: "ミラノ",
+          date: "2024年3月",
+          title: "熱アライメントマスタークラス",
+          desc: "酸性矯正の高度な技術。ホルムアルデヒドなしでガラスのような髪の結果を得るためのThe First ShampooとBrushing+の習得。"
+        },
+        {
+          city: "ニューヨーク",
+          date: "予定 - 2024年11月",
+          title: "グローバル毛髪科学フォーラム",
+          desc: "2025年コレクションの発表に参加してください。持続可能なバイオテクノロジーとサロンビジネスの成長に焦点を当てます。"
+        }
+      ]
     },
     about: {
         title: "Who We Are",
         subtitle: "Global Leadership",
-        desc: "We are the architects of hair transformation.",
-        ambassadorsTitle: "Brand Ambassadors",
-        repsTitle: "United States Leadership",
-        repsDesc: "The visionaries leading our expansion."
+        desc: "私たちは髪の変革の建築家です。MA Fashion LLCは科学、自然、芸術を融合させ、世界中の専門家に力を与えます。",
+        ambassadorsTitle: "ブランドアンバサダー",
+        repsTitle: "米国リーダーシップ",
+        repsDesc: "北米展開をリードするビジョナリーたち。"
     }
   },
   it: {
@@ -352,17 +402,42 @@ const translations: Record<Language, any> = {
     },
     education: {
       title: "MA Academy",
-      subtitle: "Master The Art",
-      desc: "Immerse yourself in global events where science meets artistry.",
-      events: []
+      subtitle: "Padroneggia l'Arte",
+      desc: "Immergiti in eventi globali dove la scienza incontra l'arte. La nostra formazione tecnica eleva gli standard in tutto il mondo.",
+      events: [
+        {
+          city: "Dubai",
+          date: "Ott 2023",
+          title: "Summit di Ricostruzione Molecolare",
+          desc: "Un approfondimento esclusivo sui percorsi enzimatici di Pro Fusion. Gli stilisti hanno imparato a invertire i danni chimici estremi."
+        },
+        {
+          city: "San Paolo",
+          date: "Gen 2024",
+          title: "La Rivoluzione dei Ricci",
+          desc: "Evento di lancio per My Crown. Workshop pratico incentrato sulla memoria della curvatura e sul ripristino lipidico."
+        },
+        {
+          city: "Milano",
+          date: "Mar 2024",
+          title: "Masterclass di Allineamento Termico",
+          desc: "Tecniche avanzate di lisciatura acida. Padroneggiare The First Shampoo e Brushing+ per risultati a specchio senza formaldeide."
+        },
+        {
+          city: "New York",
+          date: "Prossimo - Nov 2024",
+          title: "Forum Globale di Scienza dei Capelli",
+          desc: "Unisciti a noi per la presentazione delle nostre collezioni 2025. Focus su biotecnologia sostenibile e crescita del business del salone."
+        }
+      ]
     },
     about: {
-        title: "Who We Are",
-        subtitle: "Global Leadership",
-        desc: "We are the architects of hair transformation.",
+        title: "Chi Siamo",
+        subtitle: "Leadership Globale",
+        desc: "Siamo gli architetti della trasformazione dei capelli. MA Fashion LLC unisce scienza, natura e arte per potenziare i professionisti in tutto il mondo.",
         ambassadorsTitle: "Brand Ambassadors",
-        repsTitle: "United States Leadership",
-        repsDesc: "The visionaries leading our expansion."
+        repsTitle: "Leadership Stati Uniti",
+        repsDesc: "I visionari che guidano la nostra espansione in Nord America."
     }
   },
   ar: {
@@ -410,18 +485,43 @@ const translations: Record<Language, any> = {
       }
     },
     education: {
-      title: "MA Academy",
-      subtitle: "Master The Art",
-      desc: "Immerse yourself in global events where science meets artistry.",
-      events: []
+      title: "أكاديمية MA",
+      subtitle: "إتقان الفن",
+      desc: "انغمس في الأحداث العالمية حيث يلتقي العلم بالفن. تعليمنا التقني يرفع المعايير في جميع أنحاء العالم.",
+      events: [
+        {
+          city: "دبي",
+          date: "أكتوبر 2023",
+          title: "قمة إعادة البناء الجزيئي",
+          desc: "تعمق حصري في المسارات الإنزيمية لـ Pro Fusion. تعلم المصممون عكس الضرر الكيميائي الشديد باستخدام التكنولوجيا الحيوية الخاصة بنا."
+        },
+        {
+          city: "ساو باولو",
+          date: "يناير 2024",
+          title: "ثورة الشعر المجعد",
+          desc: "حدث إطلاق My Crown. ورشة عمل عملية تركز على ذاكرة الانحناء واستبدال الدهون للشعر المجعد."
+        },
+        {
+          city: "ميلانو",
+          date: "مارس 2024",
+          title: "دورة احترافية في المحاذاة الحرارية",
+          desc: "تقنيات متقدمة في التمليس الحمضي. إتقان The First Shampoo و Brushing+ للحصول على نتائج الشعر الزجاجي بدون فورمالديهايد."
+        },
+        {
+          city: "نيويورك",
+          date: "القادم - نوفمبر 2024",
+          title: "المنتدى العالمي لعلوم الشعر",
+          desc: "انضم إلينا للكشف عن مجموعاتنا لعام 2025. التركيز على التكنولوجيا الحيوية المستدامة ونمو أعمال الصالونات."
+        }
+      ]
     },
     about: {
-        title: "Who We Are",
-        subtitle: "Global Leadership",
-        desc: "We are the architects of hair transformation.",
-        ambassadorsTitle: "Brand Ambassadors",
-        repsTitle: "United States Leadership",
-        repsDesc: "The visionaries leading our expansion."
+        title: "من نحن",
+        subtitle: "القيادة العالمية",
+        desc: "نحن مهندسو تحول الشعر. توحد MA Fashion LLC العلم والطبيعة والفن لتمكين المهنيين في جميع أنحاء العالم.",
+        ambassadorsTitle: "سفراء العلامة التجارية",
+        repsTitle: "القيادة في الولايات المتحدة",
+        repsDesc: "أصحاب الرؤى الذين يقودون توسعنا في أمريكا الشمالية."
     }
   },
   cn: {
@@ -469,18 +569,43 @@ const translations: Record<Language, any> = {
       }
     },
     education: {
-      title: "MA Academy",
-      subtitle: "Master The Art",
-      desc: "Immerse yourself in global events where science meets artistry.",
-      events: []
+      title: "MA 学院",
+      subtitle: "掌握艺术",
+      desc: "沉浸在科学与艺术相遇的全球活动中。我们的技术教育提高了全球标准。",
+      events: [
+        {
+          city: "迪拜",
+          date: "2023年10月",
+          title: "分子重组峰会",
+          desc: "独家深入了解 Pro Fusion 的酶途径。造型师学习了如何使用我们专有的生物技术逆转极端化学损伤。"
+        },
+        {
+          city: "圣保罗",
+          date: "2024年1月",
+          title: "卷发革命",
+          desc: "My Crown 发布会。专注于纹理头发的曲率记忆和脂质替代的实践研讨会。"
+        },
+        {
+          city: "米兰",
+          date: "2024年3月",
+          title: "热对齐大师班",
+          desc: "酸性拉直的高级技术。掌握 The First Shampoo 和 Brushing+，实现无甲醛的玻璃发效果。"
+        },
+        {
+          city: "纽约",
+          date: "即将举行 - 2024年11月",
+          title: "全球发科学论坛",
+          desc: "加入我们，揭晓 2025 系列。专注于可持续生物技术和沙龙业务增长。"
+        }
+      ]
     },
     about: {
-        title: "Who We Are",
-        subtitle: "Global Leadership",
-        desc: "We are the architects of hair transformation.",
-        ambassadorsTitle: "Brand Ambassadors",
-        repsTitle: "United States Leadership",
-        repsDesc: "The visionaries leading our expansion."
+        title: "关于我们",
+        subtitle: "全球领导力",
+        desc: "我们是头发变革的建筑师。MA Fashion LLC 结合科学、自然和艺术，为全球专业人士赋能。",
+        ambassadorsTitle: "品牌大使",
+        repsTitle: "美国领导层",
+        repsDesc: "引领我们在北美扩张的远见卓识者。"
     }
   }
 };
