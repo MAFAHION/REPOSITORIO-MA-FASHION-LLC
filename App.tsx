@@ -10,6 +10,11 @@ type Language = 'en' | 'es' | 'pt' | 'jp' | 'it' | 'ar' | 'cn';
 
 const translations: Record<Language, any> = {
   en: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "Education"
+    },
     tagline: "Global Hair Biotechnology",
     titleStart: "The Science of",
     titleEnd: "Beauty.",
@@ -80,6 +85,11 @@ const translations: Record<Language, any> = {
     }
   },
   es: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "Educación"
+    },
     tagline: "Biotecnología Capilar Global",
     titleStart: "La Ciencia de",
     titleEnd: "la Belleza.",
@@ -149,9 +159,12 @@ const translations: Record<Language, any> = {
       ]
     }
   },
-  // Defaulting other languages to English structure for brevity, 
-  // in production these would be fully translated.
   pt: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "Educação"
+    },
     tagline: "Biotecnologia Capilar Global",
     titleStart: "A Ciência da",
     titleEnd: "Beleza.",
@@ -193,10 +206,15 @@ const translations: Record<Language, any> = {
       title: "MA Academy",
       subtitle: "Master The Art",
       desc: "Immerse yourself in global events where science meets artistry.",
-      events: [] // Filled in runtime with fallback or proper translation
+      events: []
     }
   },
   jp: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "教育"
+    },
     tagline: "グローバル・ヘア・バイオテクノロジー",
     titleStart: "美の",
     titleEnd: "科学。",
@@ -242,6 +260,11 @@ const translations: Record<Language, any> = {
     }
   },
   it: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "Formazione"
+    },
     tagline: "Biotecnologia Capillare Globale",
     titleStart: "La Scienza della",
     titleEnd: "Bellezza.",
@@ -287,6 +310,11 @@ const translations: Record<Language, any> = {
     }
   },
   ar: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "التعليم"
+    },
     tagline: "التكنولوجيا الحيوية العالمية للشعر",
     titleStart: "علم",
     titleEnd: "الجمال.",
@@ -332,6 +360,11 @@ const translations: Record<Language, any> = {
     }
   },
   cn: {
+    nav: {
+      sweet: "Sweet Professional",
+      s: "S Professional",
+      edu: "教育"
+    },
     tagline: "全球美发生物科技",
     titleStart: "美的",
     titleEnd: "科学。",
@@ -420,9 +453,9 @@ const Footer = ({ t }: { t: any }) => (
           <div>
               <h4 className="text-white uppercase tracking-[0.2em] text-xs font-bold mb-6">{t.footer.links}</h4>
               <ul className="space-y-4">
-                  <li><a href="#" className="hover:text-amber-500 transition-colors">Sweet Professional</a></li>
-                  <li><a href="#" className="hover:text-amber-500 transition-colors">S Professional</a></li>
-                  <li><a href="#" className="hover:text-amber-500 transition-colors">Academy</a></li>
+                  <li><a href="#" className="hover:text-amber-500 transition-colors">{t.nav.sweet}</a></li>
+                  <li><a href="#" className="hover:text-amber-500 transition-colors">{t.nav.s}</a></li>
+                  <li><a href="#" className="hover:text-amber-500 transition-colors">{t.nav.edu}</a></li>
                   <li><a href="#" className="hover:text-amber-500 transition-colors">Distributors</a></li>
               </ul>
           </div>
@@ -630,6 +663,7 @@ const App: React.FC = () => {
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const [lang, setLang] = useState<Language>('en');
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile Menu State
   const [currentView, setCurrentView] = useState<'home' | 's-professional' | 'education'>('home');
   
   // RTL Detection
@@ -673,15 +707,16 @@ const App: React.FC = () => {
              <span className="text-[0.6rem] tracking-[0.3em] text-amber-600/80 uppercase text-center">LLC Group</span>
           </div>
           
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-12 text-xs tracking-widest font-medium text-zinc-500 uppercase">
-            <button onClick={() => setCurrentView('home')} className={`hover:text-amber-500 transition-colors ${currentView === 'home' ? 'text-white' : ''}`}>Sweet Professional</button>
-            <button onClick={() => setCurrentView('s-professional')} className={`hover:text-amber-500 transition-colors ${currentView === 's-professional' ? 'text-white' : ''}`}>S Professional</button>
-            <button onClick={() => setCurrentView('education')} className={`hover:text-amber-500 transition-colors ${currentView === 'education' ? 'text-white' : ''}`}>Education</button>
+            <button onClick={() => setCurrentView('home')} className={`hover:text-amber-500 transition-colors ${currentView === 'home' ? 'text-white' : ''}`}>{t.nav.sweet}</button>
+            <button onClick={() => setCurrentView('s-professional')} className={`hover:text-amber-500 transition-colors ${currentView === 's-professional' ? 'text-white' : ''}`}>{t.nav.s}</button>
+            <button onClick={() => setCurrentView('education')} className={`hover:text-amber-500 transition-colors ${currentView === 'education' ? 'text-white' : ''}`}>{t.nav.edu}</button>
           </div>
 
           <div className="flex items-center gap-6">
-             {/* Language Switcher */}
-             <div className="relative">
+             {/* Desktop Language Switcher */}
+             <div className="hidden md:block relative">
                 <button 
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                   className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -710,14 +745,92 @@ const App: React.FC = () => {
                 )}
              </div>
 
-             <div className="h-4 w-[1px] bg-zinc-800"></div>
+             <div className="hidden md:block h-4 w-[1px] bg-zinc-800"></div>
 
-             <button className="text-zinc-400 hover:text-white transition-colors">
+             <button className="hidden md:block text-zinc-400 hover:text-white transition-colors">
                 <ShoppingBag size={20} />
+             </button>
+
+             {/* Mobile Menu Button */}
+             <button 
+               className="md:hidden text-zinc-200 hover:text-amber-500 transition-colors p-2"
+               onClick={() => setIsMobileMenuOpen(true)}
+             >
+                <Menu size={24} />
              </button>
           </div>
         </div>
       </nav>
+
+      {/* --- Mobile Menu Overlay --- */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-2xl flex flex-col p-8 animate-fade-in md:hidden">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-16">
+               <div className="flex flex-col">
+                  <span className="font-serif text-2xl tracking-widest text-white italic">MA</span>
+               </div>
+               <button 
+                 onClick={() => setIsMobileMenuOpen(false)}
+                 className="p-2 text-zinc-400 hover:text-white border border-white/10 rounded-full"
+               >
+                   <X size={24} />
+               </button>
+            </div>
+
+            {/* Links - Cascading Animation */}
+            <div className="flex flex-col gap-8 mb-12">
+               <button 
+                 onClick={() => { setCurrentView('home'); setIsMobileMenuOpen(false); }} 
+                 className="text-4xl font-serif italic text-white text-left hover:text-amber-500 transition-colors animate-fade-in-up" 
+                 style={{animationDelay: '0.1s'}}
+               >
+                 {t.nav.sweet}
+               </button>
+               <button 
+                 onClick={() => { setCurrentView('s-professional'); setIsMobileMenuOpen(false); }} 
+                 className="text-4xl font-serif italic text-white text-left hover:text-amber-500 transition-colors animate-fade-in-up" 
+                 style={{animationDelay: '0.2s'}}
+               >
+                 {t.nav.s}
+               </button>
+               <button 
+                 onClick={() => { setCurrentView('education'); setIsMobileMenuOpen(false); }} 
+                 className="text-4xl font-serif italic text-white text-left hover:text-amber-500 transition-colors animate-fade-in-up" 
+                 style={{animationDelay: '0.3s'}}
+               >
+                 {t.nav.edu}
+               </button>
+            </div>
+
+            {/* Bottom Section - Languages & Social */}
+            <div className="mt-auto animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                <div className="h-[1px] w-full bg-white/10 mb-8"></div>
+                
+                <div className="flex justify-between items-end">
+                    <div className="flex flex-col gap-4">
+                        <span className="text-xs uppercase tracking-widest text-zinc-500">Language</span>
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-3">
+                            {(['en', 'es', 'pt', 'jp', 'it', 'ar', 'cn'] as Language[]).map((l) => (
+                                <button 
+                                  key={l}
+                                  onClick={() => setLang(l)}
+                                  className={`text-sm text-left ${lang === l ? 'text-amber-500' : 'text-zinc-400'}`}
+                                >
+                                  {l.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <div className="flex gap-4">
+                        <a href="#" className="text-zinc-400 hover:text-white"><Instagram size={20}/></a>
+                        <a href="#" className="text-zinc-400 hover:text-white"><Twitter size={20}/></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+      )}
 
       {/* --- Main Content Area --- */}
       {currentView === 'home' ? (
