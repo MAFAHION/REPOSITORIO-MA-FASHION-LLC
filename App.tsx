@@ -3,7 +3,7 @@ import { useLiveAPI } from './hooks/use-live-api';
 import Visualizer from './components/Visualizer';
 import ControlTray from './components/ControlTray';
 import { LiveStatus } from './types';
-import { ShoppingBag, Menu, X, ArrowRight, Sparkles, Mic, Globe, Database, ChevronRight, Facebook, Instagram, Twitter, Linkedin, Calendar, MapPin } from 'lucide-react';
+import { ShoppingBag, Menu, X, ArrowRight, Sparkles, Mic, Globe, Database, ChevronRight, Facebook, Instagram, Twitter, Linkedin, Calendar, MapPin, Users, Star } from 'lucide-react';
 
 // --- Translation Data ---
 type Language = 'en' | 'es' | 'pt' | 'jp' | 'it' | 'ar' | 'cn';
@@ -13,7 +13,8 @@ const translations: Record<Language, any> = {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "Education"
+      edu: "Education",
+      about: "About Us"
     },
     tagline: "Global Hair Biotechnology",
     titleStart: "The Science of",
@@ -82,13 +83,22 @@ const translations: Record<Language, any> = {
           desc: "Join us for the unveiling of our 2025 collections. Focus on sustainable biotechnology and salon business growth."
         }
       ]
+    },
+    about: {
+        title: "Who We Are",
+        subtitle: "Global Leadership",
+        desc: "We are the architects of hair transformation. MA Fashion LLC unites science, nature, and artistry to empower professionals worldwide.",
+        ambassadorsTitle: "Brand Ambassadors",
+        repsTitle: "United States Leadership",
+        repsDesc: "The visionaries leading our expansion across North America."
     }
   },
   es: {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "Educación"
+      edu: "Educación",
+      about: "Nosotros"
     },
     tagline: "Biotecnología Capilar Global",
     titleStart: "La Ciencia de",
@@ -157,13 +167,22 @@ const translations: Record<Language, any> = {
           desc: "Únete a nosotros para la revelación de nuestras colecciones 2025. Enfoque en biotecnología sostenible y negocios de salón."
         }
       ]
+    },
+    about: {
+        title: "Quiénes Somos",
+        subtitle: "Liderazgo Global",
+        desc: "Somos los arquitectos de la transformación capilar. MA Fashion LLC une ciencia, naturaleza y arte para empoderar a los profesionales de todo el mundo.",
+        ambassadorsTitle: "Embajadoras Globales",
+        repsTitle: "Representantes Estados Unidos",
+        repsDesc: "Los visionarios que lideran nuestra expansión en Norteamérica."
     }
   },
   pt: {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "Educação"
+      edu: "Educação",
+      about: "Sobre Nós"
     },
     tagline: "Biotecnologia Capilar Global",
     titleStart: "A Ciência da",
@@ -207,13 +226,22 @@ const translations: Record<Language, any> = {
       subtitle: "Master The Art",
       desc: "Immerse yourself in global events where science meets artistry.",
       events: []
+    },
+    about: {
+        title: "Quem Somos",
+        subtitle: "Liderança Global",
+        desc: "Somos os arquitetos da transformação capilar. MA Fashion LLC une ciência, natureza e arte para empoderar profissionais em todo o mundo.",
+        ambassadorsTitle: "Embaixadoras Globais",
+        repsTitle: "Liderança Estados Unidos",
+        repsDesc: "Os visionários liderando nossa expansão na América do Norte."
     }
   },
   jp: {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "教育"
+      edu: "教育",
+      about: "私たちについて"
     },
     tagline: "グローバル・ヘア・バイオテクノロジー",
     titleStart: "美の",
@@ -257,13 +285,22 @@ const translations: Record<Language, any> = {
       subtitle: "Master The Art",
       desc: "Immerse yourself in global events where science meets artistry.",
       events: []
+    },
+    about: {
+        title: "Who We Are",
+        subtitle: "Global Leadership",
+        desc: "We are the architects of hair transformation.",
+        ambassadorsTitle: "Brand Ambassadors",
+        repsTitle: "United States Leadership",
+        repsDesc: "The visionaries leading our expansion."
     }
   },
   it: {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "Formazione"
+      edu: "Formazione",
+      about: "Chi Siamo"
     },
     tagline: "Biotecnologia Capillare Globale",
     titleStart: "La Scienza della",
@@ -307,13 +344,22 @@ const translations: Record<Language, any> = {
       subtitle: "Master The Art",
       desc: "Immerse yourself in global events where science meets artistry.",
       events: []
+    },
+    about: {
+        title: "Who We Are",
+        subtitle: "Global Leadership",
+        desc: "We are the architects of hair transformation.",
+        ambassadorsTitle: "Brand Ambassadors",
+        repsTitle: "United States Leadership",
+        repsDesc: "The visionaries leading our expansion."
     }
   },
   ar: {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "التعليم"
+      edu: "التعليم",
+      about: "معلومات عنا"
     },
     tagline: "التكنولوجيا الحيوية العالمية للشعر",
     titleStart: "علم",
@@ -357,13 +403,22 @@ const translations: Record<Language, any> = {
       subtitle: "Master The Art",
       desc: "Immerse yourself in global events where science meets artistry.",
       events: []
+    },
+    about: {
+        title: "Who We Are",
+        subtitle: "Global Leadership",
+        desc: "We are the architects of hair transformation.",
+        ambassadorsTitle: "Brand Ambassadors",
+        repsTitle: "United States Leadership",
+        repsDesc: "The visionaries leading our expansion."
     }
   },
   cn: {
     nav: {
       sweet: "Sweet Professional",
       s: "S Professional",
-      edu: "教育"
+      edu: "教育",
+      about: "关于我们"
     },
     tagline: "全球美发生物科技",
     titleStart: "美的",
@@ -407,6 +462,14 @@ const translations: Record<Language, any> = {
       subtitle: "Master The Art",
       desc: "Immerse yourself in global events where science meets artistry.",
       events: []
+    },
+    about: {
+        title: "Who We Are",
+        subtitle: "Global Leadership",
+        desc: "We are the architects of hair transformation.",
+        ambassadorsTitle: "Brand Ambassadors",
+        repsTitle: "United States Leadership",
+        repsDesc: "The visionaries leading our expansion."
     }
   }
 };
@@ -646,6 +709,103 @@ const EducationPage = ({ t }: { t: any }) => {
     );
 };
 
+// --- About Us Page Component ---
+const AboutPage = ({ t }: { t: any }) => {
+    // Brand Ambassadors
+    const ambassadors = [
+        { name: "Elena Rossi", role: "Global Creative Director", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" },
+        { name: "Yuki Tanaka", role: "Master Colorist", image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=1887&auto=format&fit=crop" },
+        { name: "Isabella Silva", role: "Texture Specialist", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1887&auto=format&fit=crop" }
+    ];
+
+    // US Representatives (Special 4)
+    const usReps = [
+        { name: "Sarah Jenkins", region: "East Coast Director", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1888&auto=format&fit=crop" },
+        { name: "Michael Chen", region: "West Coast Lead", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop" },
+        { name: "Jessica Williams", region: "Midwest Operations", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop" },
+        { name: "David Miller", region: "Southern Territories", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop" }
+    ];
+
+    return (
+        <div className="pt-32 pb-16 animate-fade-in relative">
+            {/* Ambient Background */}
+            <div className="absolute top-[20%] left-0 w-[40vw] h-[40vw] bg-amber-900/10 rounded-full blur-[100px] pointer-events-none opacity-30"></div>
+
+            {/* Hero */}
+            <div className="text-center px-6 mb-32 relative z-10">
+                <span className="text-zinc-500 tracking-[0.4em] uppercase text-xs font-bold mb-6 block animate-fade-in-up" style={{animationDelay: '0.1s'}}>MA Fashion LLC</span>
+                <h1 className="text-6xl md:text-8xl font-serif italic text-white mb-8 animate-fade-in-up" style={{animationDelay: '0.2s'}}>{t.about?.title || "Who We Are"}</h1>
+                <p className="text-xl text-zinc-300 font-light max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+                    {t.about?.desc || "We are the architects of hair transformation."}
+                </p>
+            </div>
+
+            {/* Ambassadors Section */}
+            <section className="mb-40 px-6 max-w-7xl mx-auto">
+                <div className="flex items-center justify-between mb-16 border-b border-white/5 pb-8">
+                    <h2 className="text-4xl font-serif italic text-white">{t.about?.ambassadorsTitle || "Brand Ambassadors"}</h2>
+                    <Star className="text-amber-500" size={24} />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {ambassadors.map((amb, index) => (
+                        <div key={index} className="group relative h-[600px] overflow-hidden cursor-pointer">
+                            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style={{backgroundImage: `url('${amb.image}')`}}></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                            <div className="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 className="text-3xl font-serif text-white italic mb-2">{amb.name}</h3>
+                                <p className="text-amber-500 text-xs tracking-widest uppercase">{amb.role}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* US Representatives - Special Framed Section */}
+            <section className="px-6 max-w-7xl mx-auto relative z-10">
+                 {/* Decorative Frame Container */}
+                 <div className="relative border border-amber-500/30 bg-gradient-to-b from-[#0a0a0a] to-[#050505] p-8 md:p-20 overflow-hidden">
+                    
+                    {/* Art Deco Corner Accents */}
+                    <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-amber-500/60"></div>
+                    <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-amber-500/60"></div>
+                    <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-amber-500/60"></div>
+                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-amber-500/60"></div>
+
+                    {/* Section Header */}
+                    <div className="text-center mb-16">
+                        <span className="inline-block p-3 rounded-full bg-amber-500/10 text-amber-500 mb-6"><Users size={24} /></span>
+                        <h2 className="text-4xl md:text-5xl font-serif italic text-white mb-4">{t.about?.repsTitle || "United States Leadership"}</h2>
+                        <div className="w-24 h-[1px] bg-amber-500 mx-auto mb-6"></div>
+                        <p className="text-zinc-400 max-w-lg mx-auto">{t.about?.repsDesc || "The visionaries leading our expansion."}</p>
+                    </div>
+
+                    {/* The 4 Representatives Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {usReps.map((rep, index) => (
+                            <div key={index} className="flex flex-col items-center text-center group">
+                                {/* Hexagon/Circle Frame for Image */}
+                                <div className="relative w-48 h-48 mb-8">
+                                    <div className="absolute inset-0 rounded-full border border-amber-500/20 group-hover:border-amber-500/60 transition-colors duration-500 scale-110"></div>
+                                    <div className="w-full h-full rounded-full overflow-hidden border-2 border-zinc-800 group-hover:border-amber-500 transition-colors duration-500">
+                                        <img src={rep.image} alt={rep.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                                    </div>
+                                </div>
+                                
+                                <h3 className="text-xl text-white font-serif tracking-wide mb-2 group-hover:text-amber-400 transition-colors">{rep.name}</h3>
+                                <p className="text-xs text-zinc-500 uppercase tracking-widest">{rep.region}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Subtle Background Glow */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-amber-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+                 </div>
+            </section>
+        </div>
+    );
+};
+
 const App: React.FC = () => {
   const {
     connect,
@@ -664,7 +824,7 @@ const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('en');
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile Menu State
-  const [currentView, setCurrentView] = useState<'home' | 's-professional' | 'education'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 's-professional' | 'education' | 'about'>('home');
   
   // RTL Detection
   useEffect(() => {
@@ -712,6 +872,7 @@ const App: React.FC = () => {
             <button onClick={() => setCurrentView('home')} className={`hover:text-amber-500 transition-colors ${currentView === 'home' ? 'text-white' : ''}`}>{t.nav.sweet}</button>
             <button onClick={() => setCurrentView('s-professional')} className={`hover:text-amber-500 transition-colors ${currentView === 's-professional' ? 'text-white' : ''}`}>{t.nav.s}</button>
             <button onClick={() => setCurrentView('education')} className={`hover:text-amber-500 transition-colors ${currentView === 'education' ? 'text-white' : ''}`}>{t.nav.edu}</button>
+            <button onClick={() => setCurrentView('about')} className={`hover:text-amber-500 transition-colors ${currentView === 'about' ? 'text-white' : ''}`}>{t.nav.about}</button>
           </div>
 
           <div className="flex items-center gap-6">
@@ -801,10 +962,17 @@ const App: React.FC = () => {
                >
                  {t.nav.edu}
                </button>
+               <button 
+                 onClick={() => { setCurrentView('about'); setIsMobileMenuOpen(false); }} 
+                 className="text-4xl font-serif italic text-white text-left hover:text-amber-500 transition-colors animate-fade-in-up" 
+                 style={{animationDelay: '0.4s'}}
+               >
+                 {t.nav.about}
+               </button>
             </div>
 
             {/* Bottom Section - Languages & Social */}
-            <div className="mt-auto animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+            <div className="mt-auto animate-fade-in-up" style={{animationDelay: '0.5s'}}>
                 <div className="h-[1px] w-full bg-white/10 mb-8"></div>
                 
                 <div className="flex justify-between items-end">
@@ -902,8 +1070,10 @@ const App: React.FC = () => {
         </>
       ) : currentView === 's-professional' ? (
         <SProfessionalPage t={t} />
-      ) : (
+      ) : currentView === 'education' ? (
         <EducationPage t={t} />
+      ) : (
+        <AboutPage t={t} />
       )}
 
       {/* --- Footer --- */}
