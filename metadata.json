@@ -1,0 +1,8 @@
+{
+  "name": "Web MA FASHION LLC",
+  "description": "A real-time multimodal voice and video chat interface powered by Gemini Live API.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
