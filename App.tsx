@@ -363,7 +363,7 @@ const translations: Record<Language, any> = {
     viewAll: "Vedi Tutto",
     kbActive: "Database: Collegato",
     waHelp: "Bisogno di assistenza?",
-    promos: { ticker: "NOTIZIA: Nuovo Programma Partner • Acquista 5 ricevi 1 gratis", title: "Programma Partner", desc: "Prezzi esclusivi.", cta: "Candidati Ora" },
+    promos: { ticker: "NOTICIA: Nuovo Programma Partner • Acquista 5 ricevi 1 gratis", title: "Programma Partner", desc: "Prezzi esclusivi.", cta: "Candidati Ora" },
     products: {
       p1: { title: "The First Shampoo", desc: "Lisciatura termica di prima generazione.", price: "$89.00" },
       p2: { title: "Cronology", desc: "Mappa biotecnologica capillare molecolare.", price: "$120.00" },
@@ -1106,20 +1106,24 @@ const App = () => {
                     {t.subtitle}
                     </p>
                     <div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                    
+                    {/* NEW BUTTON STRUCTURE FOR RADAR EFFECT */}
                     <button 
                         onClick={handleConnect}
-                        className="group relative px-8 py-4 bg-white text-black font-medium text-sm uppercase tracking-widest hover:bg-[#bf953f] hover:text-white transition-all duration-500"
+                        className="group relative inline-flex items-center justify-center px-8 py-4 font-medium text-sm uppercase tracking-widest transition-all duration-500 focus:outline-none"
                     >
-                        {/* Radar Ping Effect - External Ring */}
-                        <span className="absolute -inset-1 rounded-sm bg-[#bf953f] opacity-70 animate-ping group-hover:opacity-100 duration-1000"></span>
+                        {/* Radar Ping Effect - Layer 1 (Back) */}
+                        <span className="absolute inset-0 rounded-sm bg-[#bf953f] animate-ping opacity-60"></span>
                         
-                        {/* Radar Pulse Effect - Internal/Border */}
-                        <span className="absolute -inset-1 rounded-sm border border-[#bf953f] opacity-50 animate-pulse"></span>
+                        {/* Button Background - Layer 2 (Middle) */}
+                        <span className="absolute inset-0 rounded-sm bg-white group-hover:bg-[#bf953f] transition-colors duration-500 shadow-[0_0_20px_rgba(191,149,63,0.3)]"></span>
 
-                        <span className="relative z-10 flex items-center gap-2">
-                        <Sparkles size={16} className="animate-pulse" /> {t.ctaDiagnosis}
+                        {/* Content - Layer 3 (Front) */}
+                        <span className="relative z-10 flex items-center gap-2 text-black group-hover:text-white transition-colors duration-500">
+                           <Sparkles size={16} className="animate-pulse" /> {t.ctaDiagnosis}
                         </span>
                     </button>
+
                     <button className="px-8 py-4 border border-white/20 text-white font-medium text-sm uppercase tracking-widest hover:bg-white/5 transition-all">
                         {t.ctaShop}
                     </button>
