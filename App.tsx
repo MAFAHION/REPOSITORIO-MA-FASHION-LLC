@@ -799,11 +799,11 @@ const SweetProfessionalPage: React.FC<{ language: Language, t: any }> = ({ langu
 
 const SProfessionalPage: React.FC<{ language: Language, t: any }> = ({ language, t }) => {
   const lines = [
-    { id: 'nutrology', title: t.sprofessional.lines.nutrology, img: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1887&auto=format&fit=crop', color: 'from-green-900/40' },
-    { id: 'hidratherapy', title: t.sprofessional.lines.hidratherapy, img: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop', color: 'from-blue-900/40' },
-    { id: 'brushing', title: t.sprofessional.lines.brushing, img: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?q=80&w=1888&auto=format&fit=crop', color: 'from-zinc-800/60' },
-    { id: 'profusion', title: t.sprofessional.lines.profusion, img: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=1887&auto=format&fit=crop', color: 'from-purple-900/40' },
-    { id: 'mycrown', title: t.sprofessional.lines.mycrown, img: 'https://images.unsplash.com/photo-1606210123565-38b438258df7?q=80&w=1964&auto=format&fit=crop', color: 'from-amber-700/40' }
+    { id: 'nutrology', title: t.sprofessional.lines.nutrology, img: 'https://i.ibb.co/3mCLQfnG/Nutrology-Catalogo.jpg', color: 'from-green-900/40' },
+    { id: 'hidratherapy', title: t.sprofessional.lines.hidratherapy, img: 'https://i.ibb.co/b5K9vjdt/Hidratherapy-Catalogo.jpg', color: 'from-blue-900/40' },
+    { id: 'brushing', title: t.sprofessional.lines.brushing, img: 'https://i.ibb.co/ycD8KZgr/Brushing-catalolgo-1.jpg', color: 'from-zinc-800/60' },
+    { id: 'profusion', title: t.sprofessional.lines.profusion, img: 'https://i.ibb.co/G4ygrnym/Profusion-catalogo.jpg', color: 'from-purple-900/40' },
+    { id: 'mycrown', title: t.sprofessional.lines.mycrown, img: 'https://i.ibb.co/7xw4wc49/My-Crown-Catalogo.jpg', color: 'from-amber-700/40' }
   ];
 
   return (
@@ -919,8 +919,6 @@ const App = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showWhatsApp, setShowWhatsApp] = useState(false);
   const { connect, disconnect, status, isMuted, isVideoActive, toggleMute, toggleVideo, volumeLevel, videoRef, canvasRef } = useLiveAPI();
-  const videoRefLocal = useRef<HTMLVideoElement>(null);
-  const canvasRefLocal = useRef<HTMLCanvasElement>(null);
   
   const t = translations[language];
 
@@ -1245,9 +1243,15 @@ const App = () => {
              </div>
           </div>
           
-          {/* Hidden Video Elements for Vision capabilities */}
-          <video ref={videoRefLocal} className="hidden" autoPlay playsInline muted />
-          <canvas ref={canvasRefLocal} className="hidden" />
+          {/* Video Preview - Visible when active */}
+          <video 
+            ref={videoRef} 
+            className={`absolute bottom-32 right-8 w-48 aspect-video rounded-xl border-2 border-[#bf953f] shadow-[0_0_20px_rgba(191,149,63,0.3)] object-cover transition-all duration-500 ${isVideoActive ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`} 
+            autoPlay 
+            playsInline 
+            muted 
+          />
+          <canvas ref={canvasRef} className="hidden" />
         </div>
       )}
     </div>
