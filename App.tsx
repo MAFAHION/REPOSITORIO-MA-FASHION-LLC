@@ -4,7 +4,7 @@ import { useLiveAPI } from './hooks/use-live-api';
 import Visualizer from './components/Visualizer';
 import ControlTray from './components/ControlTray';
 import { LiveStatus } from './types';
-import { ShoppingBag, Menu, X, ArrowRight, Sparkles, Database, Facebook, Instagram, Linkedin, MapPin, Users, Ticket, Star, Clock } from 'lucide-react';
+import { ShoppingBag, Menu, X, ArrowRight, Sparkles, Database, Facebook, Instagram, Linkedin, MapPin, Users, Ticket, Star, Clock, Video, Scan } from 'lucide-react';
 
 // --- Safe API Key Check ---
 const hasApiKey = () => {
@@ -33,7 +33,7 @@ const translations: Record<Language, any> = {
     titleStart: "The Science of",
     titleEnd: "Beauty.",
     subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.",
-    ctaDiagnosis: "AI Assistant",
+    ctaDiagnosis: "Start Video Consultant",
     ctaShop: "View Collection",
     collectionTitle: "Exclusive Collections",
     collectionSub: "Professional Grade. Salon Exclusive.",
@@ -134,7 +134,7 @@ const translations: Record<Language, any> = {
     titleStart: "La Ciencia de",
     titleEnd: "la Belleza.",
     subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.",
-    ctaDiagnosis: "Asistente IA",
+    ctaDiagnosis: "Iniciar Video Consulta",
     ctaShop: "Ver Colección",
     collectionTitle: "Colecciones Exclusivas",
     collectionSub: "Grado Profesional. Exclusivo de Salón.",
@@ -229,7 +229,7 @@ const translations: Record<Language, any> = {
     titleStart: "A Ciência da",
     titleEnd: "Beleza.",
     subtitle: "MA Fashion LLC apresenta o futuro do cuidado capilar profissional.",
-    ctaDiagnosis: "Assistente IA",
+    ctaDiagnosis: "Iniciar Vídeo Consulta",
     ctaShop: "Ver Coleção",
     collectionTitle: "Coleções Exclusivas",
     collectionSub: "Grau Profissional. Exclusivo para Salão.",
@@ -291,7 +291,7 @@ const translations: Record<Language, any> = {
     titleStart: "美の",
     titleEnd: "科学。",
     subtitle: "MA Fashion LLCはプロフェッショナルヘアケアの未来を提示します。",
-    ctaDiagnosis: "AI アシスタント",
+    ctaDiagnosis: "ビデオコンサルタント",
     ctaShop: "コレクションを見る",
     collectionTitle: "限定コレクション",
     collectionSub: "プロフェッショナルグレード。サロン専売。",
@@ -353,7 +353,7 @@ const translations: Record<Language, any> = {
     titleStart: "La Scienza della",
     titleEnd: "Belleza.",
     subtitle: "MA Fashion LLC presenta il futuro della cura professionale dei capelli.",
-    ctaDiagnosis: "Assistente IA",
+    ctaDiagnosis: "Video Consulente",
     ctaShop: "Vedi Collezione",
     collectionTitle: "Collezioni Esclusive",
     collectionSub: "Grado Professionale. Esclusiva Salone.",
@@ -415,7 +415,7 @@ const translations: Record<Language, any> = {
     titleStart: "علم",
     titleEnd: "الجمال.",
     subtitle: "تقدم MA Fashion LLC مستقبل العناية بالشعر الاحترافية.",
-    ctaDiagnosis: "مساعد الذكاء الاصطناعي",
+    ctaDiagnosis: "استشاري الفيديو",
     ctaShop: "عرض المجموعة",
     collectionTitle: "مجموعات حصرية",
     collectionSub: "درجة احترافية. حصري للصالونات.",
@@ -477,7 +477,7 @@ const translations: Record<Language, any> = {
     titleStart: "美的",
     titleEnd: "科学。",
     subtitle: "MA Fashion LLC 展示专业护发的未来。",
-    ctaDiagnosis: "人工智能助手",
+    ctaDiagnosis: "视频顾问",
     ctaShop: "查看系列",
     collectionTitle: "独家系列",
     collectionSub: "专业级。沙龙独家。",
@@ -624,10 +624,10 @@ const AboutPage: React.FC<{ language: Language, t: any }> = ({ language, t }) =>
   ];
 
   const usReps = [
-    { name: "Michael Vance", region: "East Coast Director", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" },
-    { name: "Jessica Cole", region: "West Coast Director", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1888&auto=format&fit=crop" },
-    { name: "David Chen", region: "Midwest Lead", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop" },
-    { name: "Amanda Lewis", region: "Southern Region", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop" }
+    { name: "Alejandra Mendez", role: "International Technical Ambassador", image: "https://i.ibb.co/7NRw8gzw/ALejnadra.jpg", position: "object-top" },
+    { name: "Ernesto Aramburu", role: "CEO & Founder", image: "https://i.ibb.co/tPJq9rPS/Ernesto.jpg", position: "object-top" },
+    { name: "Luisana Munoz", role: "Operations Director", image: "https://i.ibb.co/4w4n2R65/Luisana.jpg", position: "object-top" },
+    { name: "Ernesto Aramburu Jr.", role: "Executive Director", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1887&auto=format&fit=crop", position: "object-center" }
   ];
 
   return (
@@ -668,11 +668,11 @@ const AboutPage: React.FC<{ language: Language, t: any }> = ({ language, t }) =>
                         <div key={idx} className="group relative text-center">
                             <div className="relative w-48 h-48 mx-auto mb-6 rounded-full p-1 bg-gradient-to-br from-[#bf953f] to-zinc-900 group-hover:scale-105 transition-transform duration-500">
                                 <div className="w-full h-full rounded-full overflow-hidden border-4 border-zinc-950">
-                                    <img src={rep.image} alt={rep.name} className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                    <img src={rep.image} alt={rep.name} className={`w-full h-full object-cover ${rep.position} filter grayscale group-hover:grayscale-0 transition-all duration-500`} />
                                 </div>
                             </div>
                             <h3 className="text-xl font-serif text-white mb-1 group-hover:text-[#bf953f] transition-colors">{rep.name}</h3>
-                            <span className="text-sm text-zinc-500 uppercase tracking-widest">{rep.region}</span>
+                            <span className="text-sm text-zinc-500 uppercase tracking-widest">{rep.role}</span>
                         </div>
                     ))}
                 </div>
@@ -1103,28 +1103,47 @@ const App = () => {
                     <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s'}}>
                     {t.subtitle}
                     </p>
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
                     
-                    {/* NEW BUTTON STRUCTURE FOR RADAR EFFECT */}
-                    <button 
-                        onClick={handleConnect}
-                        className="group relative inline-flex items-center justify-center px-8 py-4 font-medium text-sm uppercase tracking-widest transition-all duration-500 focus:outline-none"
-                    >
-                        {/* Radar Ping Effect - Layer 1 (Back) */}
-                        <span className="absolute inset-0 rounded-sm bg-[#bf953f] animate-ping opacity-60"></span>
+                    {/* FUTURISTIC VIDEO CALL INTERFACE CTA */}
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
                         
-                        {/* Button Background - Layer 2 (Middle) */}
-                        <span className="absolute inset-0 rounded-sm bg-white group-hover:bg-[#bf953f] transition-colors duration-500 shadow-[0_0_20px_rgba(191,149,63,0.3)]"></span>
+                        <div onClick={handleConnect} className="group cursor-pointer relative">
+                             {/* Camera/Viewfinder Frame Effect */}
+                             <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-top-4 group-hover:-left-4 transition-all duration-500"></div>
+                             <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-top-4 group-hover:-right-4 transition-all duration-500"></div>
+                             <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-bottom-4 group-hover:-left-4 transition-all duration-500"></div>
+                             <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-bottom-4 group-hover:-right-4 transition-all duration-500"></div>
+                             
+                             {/* Main Action Card */}
+                             <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 px-10 py-6 flex items-center gap-6 overflow-hidden">
+                                 {/* Scanning Line Animation */}
+                                 <div className="absolute top-0 left-0 w-[2px] h-full bg-[#bf953f]/50 animate-[marquee_2s_linear_infinite] opacity-0 group-hover:opacity-100"></div>
 
-                        {/* Content - Layer 3 (Front) */}
-                        <span className="relative z-10 flex items-center gap-2 text-black group-hover:text-white transition-colors duration-500">
-                           <Sparkles size={16} className="animate-pulse" /> {t.ctaDiagnosis}
-                        </span>
-                    </button>
+                                 {/* Icon Container with Pulse */}
+                                 <div className="relative w-16 h-16 flex items-center justify-center bg-white/5 rounded-full border border-white/10 group-hover:border-[#bf953f]/50 transition-colors">
+                                     <span className="absolute inset-0 rounded-full border border-[#bf953f] animate-ping opacity-20"></span>
+                                     <Video size={32} className="text-white relative z-10" />
+                                     <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse border-2 border-black"></div>
+                                 </div>
 
-                    <button className="px-8 py-4 border border-white/20 text-white font-medium text-sm uppercase tracking-widest hover:bg-white/5 transition-all">
-                        {t.ctaShop}
-                    </button>
+                                 {/* Text Content */}
+                                 <div className="text-left">
+                                     <div className="flex items-center gap-2 mb-1">
+                                         <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                                         <span className="text-[#bf953f] text-[10px] uppercase tracking-[0.2em] font-bold">Live Cam Link</span>
+                                     </div>
+                                     <div className="text-2xl font-serif text-white leading-none mb-1 group-hover:text-[#bf953f] transition-colors">{t.ctaDiagnosis}</div>
+                                     <div className="text-zinc-500 text-xs tracking-wide flex items-center gap-2">
+                                         <Scan size={12} /> Video & Voice Enabled
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+
+                        {/* Secondary Button */}
+                        <button className="px-8 py-4 border-b border-white/20 text-zinc-400 font-medium text-sm uppercase tracking-widest hover:text-white hover:border-white transition-all">
+                            {t.ctaShop}
+                        </button>
                     </div>
                 </div>
             </div>
