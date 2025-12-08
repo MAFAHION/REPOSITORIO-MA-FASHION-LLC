@@ -3,7 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MA Fashion LLC | S Professional & Sweet Professional</title>
+    
+    <!-- SEO & Metadata -->
+    <title>MA Fashion LLC | S Professional & Sweet Professional USA</title>
+    <meta name="description" content="Official distributor of S Professional and Sweet Professional in the USA. Advanced hair biotechnology, thermal alignment (Brushing+), ozone therapy (Hidratherapy), and curl definition (My Crown). Servicing salons in Florida and nationwide.">
+    <meta name="keywords" content="MA Fashion LLC, S Professional, Sweet Professional, Brushing, Brushing+, Brushing Plus, Pro Fusion, Profusion, Hidroterapia, Hidratherapy, Hidroterapya, My Crown, Nutrology, Rizos, Curls, Alisados, Hair Straightening, Hair Botox, Keratin Free, Biotecnología Capilar, Salones de Belleza, Beauty Salons, Florida, Miami, Orlando, Tampa, USA, Ernesto Aramburu, Alejandra Mendez, Hair Care Distributor, Professional Hair Products">
+    <meta name="author" content="MA Fashion LLC">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mafashionllc.com/">
+    <meta property="og:title" content="MA Fashion LLC | The Science of Beauty">
+    <meta property="og:description" content="Discover S Professional & Sweet Professional. High-performance hair biotechnology for salons. Thermal alignment, reconstruction, and hydration.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1974&auto=format&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="MA Fashion LLC | Global Hair Biotechnology">
+    <meta property="twitter:description" content="Leading the revolution in professional hair care with S Professional and Sweet Professional.">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
@@ -11,6 +30,7 @@
         background-color: #050505;
         color: #e4e4e7;
         font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        overflow-x: hidden;
       }
       
       .font-serif {
@@ -41,6 +61,28 @@
       }
       .animate-fade-in {
         animation: fadeIn 0.5s ease-out forwards;
+      }
+      
+      /* Scroll Reveal Animation System */
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, opacity;
+      }
+      
+      .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Marquee Animation for News Ticker */
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-marquee {
+        animation: marquee 40s linear infinite;
       }
       
       /* Gold Gradient Text */
