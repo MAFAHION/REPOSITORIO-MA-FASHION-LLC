@@ -24,17 +24,46 @@
     <meta property="twitter:description" content="Leading the revolution in professional hair care with S Professional and Sweet Professional.">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
+      html {
+        background-color: #000000;
+        height: 100%;
+        overscroll-behavior-y: none; /* Prevents white bounce on scroll edges */
+      }
       body {
-        background-color: #050505;
+        background-color: #000000; /* Pure black to match footer */
         color: #e4e4e7;
         font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         overflow-x: hidden;
+        margin: 0;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
       }
       
       .font-serif {
         font-family: 'Playfair Display', serif;
+      }
+
+      /* Cinematic Noise Texture */
+      .bg-noise::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3e");
       }
 
       /* Animation Utilities */
@@ -95,6 +124,40 @@
       
       .bg-gold-gradient {
         background: linear-gradient(to right, #bf953f, #b38728);
+      }
+
+      /* Tech Background Patterns */
+      .bg-grid-white {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgba(255, 255, 255, 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+      }
+
+      @keyframes scan {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 0% 100%; }
+      }
+      
+      .animate-scan {
+        background: linear-gradient(to bottom, transparent 0%, rgba(191, 149, 63, 0.1) 50%, transparent 100%);
+        background-size: 100% 200%;
+        animation: scan 4s linear infinite;
+      }
+
+      /* Outline Text Effect */
+      .text-stroke {
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+        color: transparent;
+      }
+      
+      /* Orbital Animations */
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 20s linear infinite;
+      }
+      .animate-spin-reverse-slow {
+        animation: spin-slow 25s linear reverse infinite;
       }
     </style>
   <script type="importmap">

@@ -1,1280 +1,640 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useLiveAPI } from './hooks/use-live-api';
 import Visualizer from './components/Visualizer';
 import ControlTray from './components/ControlTray';
 import { LiveStatus } from './types';
-import { ShoppingBag, Menu, X, ArrowRight, Sparkles, Database, Facebook, Instagram, Linkedin, MapPin, Users, Ticket, Star, Clock, Video, Scan } from 'lucide-react';
+import { Menu, X, ArrowRight, Sparkles, Clock, ChevronRight, ChevronLeft, Mic, Globe, CheckCircle2, Beaker, Droplets, Wind, Zap, Flame, Crown, Activity, Check, ChevronDown } from 'lucide-react';
 
 // --- Safe API Key Check ---
 const hasApiKey = () => {
     try {
         if (typeof process !== 'undefined' && process.env && process.env.API_KEY) return true;
-        // if using Vite: if (import.meta.env.VITE_API_KEY) return true;
         return false;
     } catch (e) {
         return false;
     }
 }
 
-// --- Translation Data ---
-type Language = 'en' | 'es' | 'pt' | 'jp' | 'it' | 'ar' | 'cn';
+// --- Translation Data Type ---
+type Language = 'en' | 'es' | 'pt' | 'it' | 'fr';
+
+const enTranslation = {
+  nav: { home: "Home", sweet: "Sweet Professional", s: "S Professional", edu: "Education", about: "About Us", partner: "Partner Access", all: "View All" },
+  partner: {
+      title: "Professional Access", subtitle: "Join the elite network of partners of MA Fashion LLC.", success: "Application Received", successMsg: "A representative will contact you shortly.",
+      labels: { name: "Full Name", email: "Email Address", phone: "Phone Number", stylist: "Are you a licensed stylist?", salon: "Do you own a salon?", services: "Services Provided", yes: "Yes", no: "No", next: "Next Step", back: "Back", submit: "Submit Application", return: "Return to Home" },
+      benefits: ["Wholesale pricing up to 40% off", "Access to MA Academy Masterclasses", "Marketing material & social media kit", "Dedicated account manager"],
+      servicesList: ["Thermal Alignment", "Hair Botox", "Coloring", "Cuts", "Extensions", "Treatments", "Retail Sales"]
+  },
+  common: { 
+    discover: "Discover More", collection: "Collection", maNews: "MA NEWS", featured: "Featured Collection", special: "Special Offer", learnMore: "Learn More", innovation: "Innovation & Science", luxury: "Exclusive & Luxurious", privacy: "Privacy Policy", terms: "Terms of Service", representatives: "Representatives", social: "Social", unitedStates: "United States", theInnovation: "The Innovation", theLuxury: "The Luxury", readMore: "Read More", howToUse: "Technical Application", benefits: "Key Benefits", mainAssets: "Main Technology", intensity: "Treatment Intensity", functions: "Primary Functions", 
+    backTo: "Back to", buyForSalon: "Buy for Salon", resultsTitle: "Results that inspire", techManual: "Technical Manual", techManualDesc: "Fill in the details below to receive the technical manual via email.", aiAssistant: "AI Assistant", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
+    hydration: "Hydration", nutrition: "Nutrition", reconstruction: "Reconstruction", buyNow: "Buy Now"
+  },
+  tagline: "Global Hair Biotechnology", titleStart: "The Science of", titleEnd: "Beauty.", subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.", ctaDiagnosis: "24/7 Live Assistance", ctaShop: "View Collection", collectionTitle: "Exclusive Collections", collectionSub: "Professional Grade. Salon Exclusive.", viewAll: "View All", 
+  promos: {
+      ticker: "BREAKING: New Partner Program Available • Buy 5 Get 1 Free on The First Shampoo • Join the Revolution", comingUp: "Coming Up",
+      items: [
+          { title: "Salon Partner Program", desc: "Exclusive pricing and advanced education for licensed professionals.", cta: "Apply Now" },
+          { title: "My Crown Launch", desc: "The revolution for curly hair is here. Define, hydrate, and memorize the curl with biotechnology.", cta: "Discover My Crown" },
+          { title: "Master The Art", desc: "Join our next certification masterclass in the United States. Learn the secrets of enzymatic reconstruction.", cta: "Reserve Seat" }
+      ]
+  },
+  footer: { about: "MA Fashion LLC leads the global market in hair biotechnology, providing high-performance solutions for beauty professionals.", links: "Quick Links", legal: "Legal", contact: "Contact", rights: "© 2024 MA Fashion LLC. All rights reserved." },
+  sweet: { title: "Sweet Professional", desc: "The brand that revolutionized the market with the first thermal straightener in shampoo form. Innovation, speed, and safety.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "The first straightening shampoo in the world. 5 international patents.", cronology: "Biotechnology mapping for personalized hair treatment.", sos: "Emergency rescue for chemically damaged hair." } },
+  sprofessional: {
+    title: "S Professional", subtitle: "Advanced Hair Therapy Systems", desc: "A complete ecosystem of treatments designed for the modern stylist. From thermal alignment to deep reconstruction.", commonDesc: "Experience the ultimate hair transformation with our patented biotechnology. Designed for salon perfection.",
+    lines: { nutrology: "Nutrology - Deep Nutrition", hidratherapy: "Hidratherapy - Ozone Hydration", brushing: "Brushing+ - Thermal Alignment", profusion: "Pro Fusion - Enzyme Reconstruction", mycrown: "My Crown - Curl Definition" },
+    details: {
+      nutrology: {
+          headline: "Biotechnology & Natural Humectants",
+          info: "Nutrology provides intense nutrition according to hair dryness. Using a unique blend of vegetable oils, it restores nutrients and lipids needed to maintain hair with shine, softness and silkiness.",
+          benefits: ["Instant lipid replacement", "Diamond-like shine", "Anti-frizz protection", "Weightless movement"],
+          assets: ["Lipidic Nano-Particles", "Amino Acid Complex", "Organic Shea Butter"],
+          intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
+          functions: [
+            { title: "Nutrology Technology", desc: "Employs biotechnology for Intense Nutrition, ensuring greater permeation into the hair cortex for instant recovery and smoothness." },
+            { title: "Key Functions", desc: "Intense nutrition for dry hair, antioxidant protection, recovery for chemically damaged hair, and hair cuticle repositioning." }
+          ]
+      },
+      hidratherapy: {
+          headline: "Ozone Technology & Ultimate Hydration",
+          benefits: ["Deep cellular hydration", "Ozone effect protection", "Extreme softness", "Revitalizes hair fiber"],
+          assets: ["Active Ozone O3", "Hyaluronic Acid", "Blueberry Extract"],
+          intensity: { hydration: 100, nutrition: 20, reconstruction: 10 }
+      },
+      profusion: {
+          headline: "Enzymatic High-Performance Reconstruction",
+          benefits: ["Reverses chemical damage", "Strengthens disulfide bonds", "Restores elasticity", "Stops hair breakage"],
+          assets: ["Proteolytic Enzymes", "Bio-Keratin", "Hydrolyzed Silk Protein"],
+          intensity: { hydration: 30, nutrition: 40, reconstruction: 100 }
+      },
+      brushing: {
+          headline: "Organic High-Speed Thermal Alignment",
+          benefits: ["100% Formaldehyde free", "Ultra-fast application", "Intense mirrored shine", "Long-lasting smoothness"],
+          assets: ["Taninoplasty Base", "Organic Acids", "Exotic Oils"],
+          intensity: { hydration: 40, nutrition: 50, reconstruction: 30 }
+      },
+      mycrown: {
+          headline: "The Curvature Memory Revolution",
+          benefits: ["Defines all curl types", "Locks in hydration", "Memorizes curvature", "Control extreme frizz"],
+          assets: ["Curl Memory Technology", "Murumuru Butter", "Flaxseed Oil"],
+          intensity: { hydration: 60, nutrition: 80, reconstruction: 20 }
+      }
+    }
+  },
+  education: {
+    title: "MA Academy", subtitle: "Master The Art", desc: "Immerse yourself in global events where science meets artistry. Our technical education elevates standards worldwide."
+  },
+  about: { title: "Who We Are", subtitle: "Global Leadership", desc: "We are the architects of hair transformation. MA Fashion LLC unites science, nature, and artistry to empower professionals worldwide.", ambassadorsTitle: "Artistic Ambassador Network", ambassadorsDesc: "Our elite team of official artists in the United States. These master stylists define the trends and techniques of tomorrow.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educator", location: "United States" }, { name: "Fernando Mendez", role: "Master Stylist", location: "United States" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "United States" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "United States" }], repsTitle: "Executive Board", stats: { years: "Years of Excellence", salons: "Partner Salons", countries: "Global Presence" }, roles: { techAmb: "Founder, Ambassador & Intl Technician", ceo: "CEO & Founder", marketingDir: "Director of Marketing", opsDir: "Director of Operations", stylist: "Elite Stylist & Educator" } }
+};
+
+const esTranslation = {
+  nav: { home: "Inicio", sweet: "Sweet Professional", s: "S Professional", edu: "Educación", about: "Nosotros", partner: "Acceso Socios", all: "Ver Todos" },
+  partner: {
+      title: "Acceso Profesional", subtitle: "Únase a la red élite de socios de MA Fashion LLC.", success: "Solicitud Recibida", successMsg: "Un representante se pondrá en contacto con usted brevemente.",
+      labels: { name: "Nombre Completo", email: "Correo Electrónico", phone: "Número de Teléfono", stylist: "¿Es usted estilista licenciado?", salon: "¿Es propietario de un salón?", services: "Servicios que ofrece", yes: "Sí", no: "No", next: "Siguiente Paso", back: "Atrás", submit: "Enviar Solicitud", return: "Volver al Inicio" },
+      benefits: ["Precios mayoristas, minoristas o de salón", "Acceso a Masterclasses de Academia MA", "Kit de marketing y redes sociales", "Gerente de cuenta dedicado"],
+      servicesList: ["Alineación Térmica", "Botox Capilar", "Coloración", "Cortes", "Extensiones", "Tratamientos", "Ventas al por menor"]
+  },
+  common: { 
+    discover: "Descubrir Más", collection: "Colección", maNews: "NOTICIAS MA", featured: "Colección Destacada", special: "Oferta Especial", learnMore: "Saber Más", innovation: "Innovación y Ciencia", luxury: "Exclusivo y Lujoso", privacy: "Política de Privacidad", terms: "Términos de Servicio", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "La Innovación", theLuxury: "El Lujo", readMore: "Leer Más", howToUse: "Aplicación Técnica", benefits: "Beneficios Clave", mainAssets: "Tecnología Principal", intensity: "Intensidad del Tratamiento", functions: "Funciones Principales", 
+    backTo: "Volver a", buyForSalon: "Comprar para Salón", resultsTitle: "Resultados que inspiran", techManual: "Manual Técnico", techManualDesc: "Complete los detalles a continuación para recibir el manual técnico por correo electrónico.", aiAssistant: "Asistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA",
+    hydration: "Hidratación", nutrition: "Nutrición", reconstruction: "Reconstrucción", buyNow: "Comprar Ahora"
+  },
+  tagline: "Biotecnologia Capilar Global", titleStart: "La Ciencia de", titleEnd: "la Belleza.", subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.", ctaDiagnosis: "Asistencia En Vivo 24/7", ctaShop: "Ver Colección", collectionTitle: "Colecciones Exclusivas", collectionSub: "Grado Profesional. Exclusivo de Salón.", viewAll: "Ver Todo",
+  promos: {
+      ticker: "NOTICIA: Nuevo Programa de Socios • Compra 5 y Recibe 1 Gratis en The First Shampoo • Únete a la Revolución", comingUp: "Siguiente",
+      items: [
+          { title: "Programa de Socios de Salón", desc: "Precios exclusivos y educación avanzada para profesionales.", cta: "Aplicar Ahora" },
+          { title: "Lanzamiento My Crown", desc: "La revolución para cabellos rizados está aquí. Define, hidrata y memoriza el rizo con biotecnología.", cta: "Descubrir My Crown" },
+          { title: "Domina el Arte", desc: "Únete a nuestra próxima masterclass de certificación en Estados Unidos. Aprende los secretos de la reconstrucción enzimática.", cta: "Reservar Cupo" }
+      ]
+  },
+  homeCards: { sweet: "The First Shampoo y Cronology. Reestructuración molecular para la transformación.", s: "Hidratherapy, Nutrology y My Crown. Ecosistema avanzado para la salud capilar." },
+  footer: { about: "MA Fashion LLC lidera el mercado global en biotecnologia capilar, brindando soluciones de alto rendimiento para profesionales.", links: "Enlaces Rápidos", legal: "Legal", contact: "Contacto", rights: "© 2024 MA Fashion LLC. Todos los derechos reservados." },
+  sweet: { title: "Sweet Professional", desc: "La marca que revolucionó el mercado con el primer alisador térmico en forma de champú. Innovación, rapidez y seguridad.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "El primer champú alisador del mundo. 5 patentes internacionales.", cronology: "Mapeo biotecnológico para tratamientos capilares personalizados.", sos: "Rescate de emergencia para cabellos dañados químicamente." } },
+  sprofessional: {
+    title: "S Professional", subtitle: "Sistemas Avanzados de Terapia Capilar", desc: "Un ecosistema completo de tratamientos diseñados para el estilista moderno. Desde alineación térmica hasta reconstrucción profunda.", commonDesc: "Experimente la máxima transformación capilar con nuestra biotecnología patentada. Diseñado para la perfección en el salón.",
+    lines: { nutrology: "Nutrology - Nutrición Profunda", hidratherapy: "Hidratherapy - Hidratación con Ozono", brushing: "Brushing+ - Alineación Térmica", profusion: "Pro Fusion - Reconstrucción Enzimática", mycrown: "My Crown - Definición de Rizos" },
+    details: {
+      nutrology: {
+          headline: "Biotecnología y Humectantes Naturales",
+          info: "Nutrology proporciona nutrición intensa de acuerdo con el resecamiento del cabello. Con un exclusivo blend de aceites vegetales, promueve la reposición de nutrientes y lípidos necesarios para mantener el brillo y la sedosidad.",
+          benefits: ["Reemplazo lipídico instantáneo", "Brillo tipo diamante", "Protección anti-frizz", "Movimiento sin peso"],
+          assets: ["Nano-partículas lipídicas", "Complejo de aminoácidos", "Manteca de karité orgánica"],
+          intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
+          functions: [
+            { title: "Tecnología Nutrology", desc: "Emplea biotecnología para Nutrición Intensa, permitiendo una mayor permeación en el córtex capilar para una recuperación y suavidad instantáneas." },
+            { title: "Funciones Principales", desc: "Nutrición intensa para cabellos secos, antioxidante, recuperación para cabellos dañados químicamente y reposicionamiento de cutículas." }
+          ]
+      },
+      hidratherapy: {
+          headline: "Tecnología de Ozono e Hidratación Extrema",
+          benefits: ["Hidratación celular profunda", "Protección efecto ozono", "Suavidad extrema", "Revitaliza la fibra capilar"],
+          assets: ["Ozono activo O3", "Ácido hialurónico", "Extracto de arándano"],
+          intensity: { hydration: 100, nutrition: 20, reconstruction: 10 }
+      },
+      profusion: {
+          headline: "Reconstrucción Enzimática de Alto Rendimiento",
+          benefits: ["Revierte el daño químico", "Fortalece puentes de disulfuro", "Restaura la elasticidad", "Detiene la rotura"],
+          assets: ["Enzimas proteolíticas", "Bio-queratina", "Proteína de seda hidrolizada"],
+          intensity: { hydration: 30, nutrition: 40, reconstruction: 100 }
+      },
+      brushing: {
+          headline: "Alineación Térmica Orgánica de Alta Velocidad",
+          benefits: ["100% Libre de formol", "Aplicación ultra rápida", "Brillo espejado intenso", "Liso duradero"],
+          assets: ["Base de taninoplastia", "Ácidos orgánicos", "Aceites exóticos"],
+          intensity: { hydration: 40, nutrition: 50, reconstruction: 30 }
+      },
+      mycrown: {
+          headline: "La Revolución de la Memoria de Curvatura",
+          benefits: ["Define todo tipo de rizos", "Retiene la hidratación", "Memoriza la curvatura", "Control extremo del frizz"],
+          assets: ["Tecnología Curl Memory", "Manteca de Murumuru", "Aceite de linaza"],
+          intensity: { hydration: 60, nutrition: 80, reconstruction: 20 }
+      }
+    }
+  },
+  education: {
+    title: "Academia MA", subtitle: "Domina el Arte", desc: "Sumérgete en eventos globales donde la ciencia se encuentra con el arte. Nuestra educación técnica eleva los estándares en todo el mundo."
+  },
+  about: { title: "Quiénes Somos", subtitle: "Liderazgo Global", desc: "Somos los arquitectos de la transformación capilar. MA Fashion LLC une ciencia, naturaleza y arte para empoderar a los profesionales.", ambassadorsTitle: "Red de Embajadores Artísticos", ambassadorsDesc: "Nuestro equipo élite de artistas oficiales en Estados Unidos. Estilistas maestras que definen las tendencias y técnicas del mañana.", ambassadorList: [{ name: "Katherine Avendaño", role: "Estilista Master y Educadora", location: "Estados Unidos" }, { name: "Fernando Mendez", role: "Master Stylist", location: "Estados Unidos" }, { name: "Ohnayak Firpi", role: "Estilista Master", location: "Estados Unidos" }, { name: "Arnaldo Cruz", role: "Barbero Master", location: "Estados Unidos" }], repsTitle: "Junta Directiva", stats: { years: "Años de Excelencia", salons: "Salones Asociados", countries: "Presencia Global" }, roles: { techAmb: "Fundadora, Embajadora y Técnica Intl", ceo: "CEO y Fundador", marketingDir: "Directora de Marketing", opsDir: "Director de Operaciones", stylist: "Estilista Elite y Educadora" } }
+};
+
+const ptTranslation = {
+  nav: { home: "Início", sweet: "Sweet Professional", s: "S Professional", edu: "Educação", about: "Sobre Nós", partner: "Acesso Parceiros", all: "Ver Todos" },
+  partner: {
+      title: "Acesso Profissional", subtitle: "Junte-se à rede de elite da MA Fashion LLC.", success: "Candidatura Recebida", successMsg: "Um representante entrará em contato em breve.",
+      labels: { name: "Nome Completo", email: "E-mail", phone: "Telefone", stylist: "Você é um estilista licenciado?", salon: "Você possui um salão?", services: "Serviços prestados", yes: "Sim", no: "Não", next: "Próximo Passo", back: "Voltar", submit: "Enviar Candidatura", return: "Voltar ao Início" },
+      benefits: ["Preços de atacado de até 40% de desconto", "Acesso a Masterclasses MA", "Kit de marketing e mídia social", "Gerente de conta dedicado"],
+      servicesList: ["Alinhamento Térmico", "Hair Botox", "Coloração", "Cortes", "Extensões", "Tratamentos", "Vendas a Varejo"]
+  },
+  common: { 
+    discover: "Descubra Mais", collection: "Coleção", maNews: "NOTÍCIAS MA", featured: "Coleção em Destaque", special: "Oferta Especial", learnMore: "Saiba Mais", innovation: "Inovação e Ciência", luxury: "Exclusivo e Luxuoso", privacy: "Política de Privacidade", terms: "Termos de Serviço", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "A Inovação", theLuxury: "O Luxo", readMore: "Ler Mais", howToUse: "Aplicação Técnica", benefits: "Principais Benefícios", mainAssets: "Tecnologia Principal", intensity: "Intensidade do Tratamento", functions: "Principais Funções", 
+    backTo: "Voltar para", buyForSalon: "Comprar para Salão", resultsTitle: "Resultados que inspiram", techManual: "Manual Técnico", techManualDesc: "Preencha os detalhes abaixo para receber o manual técnico por e-mail.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
+    hydration: "Hidratação", nutrition: "Nutrição", reconstruction: "Reconstrução", buyNow: "Comprar Agora"
+  },
+  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profissional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Coleção", collectionTitle: "Coleções Exclusivas", collectionSub: "Grau Profissional. Exclusivo para Salões.", viewAll: "Ver Tudo",
+  promos: {
+      ticker: "NOTÍCIA: Novo Programa de Parceiros • Compre 5 Leve 1 Grátis no The First Shampoo • Junte-se à Revolução", comingUp: "Próximo",
+      items: [
+          { title: "Programa de Parceiros", desc: "Preços exclusivos e educação avançada para profissionais licenciados.", cta: "Candidate-se Agora" },
+          { title: "Lançamento My Crown", desc: "A revolução para cabelos cacheados. Defina, hidrate e memorize a curvatura.", cta: "Descubra My Crown" },
+          { title: "Domine a Arte", desc: "Participe da nossa próxima certificação nos EUA. Aprenda os segredos da reconstrução enzimática.", cta: "Reserve seu Lugar" }
+      ]
+  },
+  footer: { about: "A MA Fashion LLC lidera o mercado global em biotecnologia capilar, fornecendo soluções de alto desempenho.", links: "Links Rápidos", legal: "Jurídico", contact: "Contato", rights: "© 2024 MA Fashion LLC. Todos os direitos reservados." },
+  sweet: { title: "Sweet Professional", desc: "A marca que revolucionou o mercado com o primeiro alisador térmico em champô. Inovação e segurança.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "O primeiro champô alisador do mundo. 5 patentes.", cronology: "Mapeamento biotecnológico para tratamentos personalizados.", sos: "Resgate de emergência para cabelos danificados." } },
+  sprofessional: {
+    title: "S Professional", subtitle: "Sistemas de Terapia Capilar", desc: "Um ecossistema completo de tratamentos para o estilista moderno.", commonDesc: "Experimente a transformação capilar suprema com nossa biotecnologia patenteada.",
+    lines: { nutrology: "Nutrology - Nutrição Profunda", hidratherapy: "Hidratherapy - Hidratação Ozono", brushing: "Brushing+ - Alinhamento Térmico", profusion: "Pro Fusion - Reconstrução Enzimática", mycrown: "My Crown - Definição de Cachos" },
+    details: {
+      nutrology: {
+          headline: "Biotecnologia e Umectantes Naturais",
+          info: "Nutrology fornece nutrição intensa de acordo com o ressecamento do cabelo. Usando um blend único de óleos vegetais.",
+          benefits: ["Reposição lipídica instantânea", "Brilho de diamante", "Proteção anti-frizz", "Movimento leve"],
+          assets: ["Nano-partículas lipídicas", "Complexo de Aminoácidos", "Manteiga de Karité Orgânica"],
+          intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
+          functions: [{ title: "Tecnologia Nutrology", desc: "Nutrição Intensa com alta permeação no córtex." }, { title: "Funções Principais", desc: "Nutrição para cabelos secos e proteção antioxidante." }]
+      },
+      hidratherapy: { headline: "Tecnologia de Ozono e Hidratação Extrema", benefits: ["Hidratação celular profunda", "Proteção de efeito ozono"], assets: ["Ozônio Ativo O3", "Ácido Hialurônico"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
+      profusion: { headline: "Reconstrução Enzimática de Alto Desempenho", benefits: ["Reverte danos químicos", "Restaura elasticidade"], assets: ["Enzimas Proteolíticas", "Bio-Keratina"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
+      brushing: { headline: "Alinhamento Térmico Orgânico de Alta Velocidade", benefits: ["100% Livre de Formol", "Aplicação ultra-rápida"], assets: ["Base Taninoplastia", "Ácidos Orgânicos"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
+      mycrown: { headline: "A Revolução da Memória de Curvatura", benefits: ["Define todos os tipos de cachos", "Memoriza curvatura"], assets: ["Tecnologia Curl Memory", "Óleo de Linhaça"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+    }
+  },
+  education: { title: "Academia MA", subtitle: "Domine a Arte", desc: "Mergulhe em eventos globais onde a ciência encontra a arte. Nossa educação técnica eleva os padrões." },
+  about: { title: "Quem Somos", subtitle: "Liderança Global", desc: "Somos os arquitetos da transformação capilar. MA Fashion LLC une ciência e arte.", ambassadorsTitle: "Rede de Embaixadores Artísticos", ambassadorsDesc: "Nossa equipe de elite de artistas oficiais nos EUA.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educadora", location: "EUA" }, { name: "Fernando Mendez", role: "Master Stylist", location: "EUA" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "EUA" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "EUA" }], repsTitle: "Conselho Executivo", stats: { years: "Anos de Excelência", salons: "Salões Parceiros", countries: "Presença Global" }, roles: { techAmb: "Fundadora, Embaixadora & Técnica Intl", ceo: "CEO & Fundador", marketingDir: "Diretora de Marketing", opsDir: "Diretor de Operações", stylist: "Elite Stylist & Educadora" } }
+};
+
+const itTranslation = {
+  nav: { home: "Home", sweet: "Sweet Professional", s: "S Professional", edu: "Formazione", about: "Chi Siamo", partner: "Accesso Partner", all: "Vedi Tutto" },
+  partner: {
+      title: "Accesso Professionale", subtitle: "Unisciti alla rete d'élite di MA Fashion LLC.", success: "Candidatura Ricevuta", successMsg: "Un rappresentante ti contatterà presto.",
+      labels: { name: "Nome Completo", email: "E-mail", phone: "Telefono", stylist: "Sei uno stilista certificato?", salon: "Possiedi un salone?", services: "Servizi offerti", yes: "Sì", no: "No", next: "Avanti", back: "Indietro", submit: "Invia Candidatura", return: "Torna alla Home" },
+      benefits: ["Prezzi all'ingrosso fino al 40% di sconto", "Accesso alle Masterclass MA", "Kit marketing & social media", "Account manager dedicato"],
+      servicesList: ["Allineamento Termico", "Hair Botox", "Colorazione", "Tagli", "Extension", "Trattamenti", "Vendite al Dettaglio"]
+  },
+  common: { 
+    discover: "Scopri di Più", collection: "Collezione", maNews: "MA NEWS", featured: "Collezione in Primo Piano", special: "Offerta Speciale", learnMore: "Ulteriori Informazioni", innovation: "Innovazione e Scienza", luxury: "Esclusivo e Lussuoso", privacy: "Privacy Policy", terms: "Termini di Servizio", representatives: "Rappresentanti", social: "Social", unitedStates: "Stati Uniti", theInnovation: "L'Innovazione", theLuxury: "Il Lusso", readMore: "Leggi di Più", howToUse: "Applicazione Tecnica", benefits: "Vantaggi Chiave", mainAssets: "Tecnologia Principale", intensity: "Intensità del Trattamento", functions: "Funzioni Primarie", 
+    backTo: "Torna a", buyForSalon: "Acquista per il Salone", resultsTitle: "Risultati che ispirano", techManual: "Manuale Tecnico", techManualDesc: "Compila i dettagli per ricevere il manuale tecnico via email.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
+    hydration: "Idratazione", nutrition: "Nutrizione", reconstruction: "Ricostruzione", buyNow: "Acquista Ora"
+  },
+  tagline: "Biotecnologia Capillare Globale", titleStart: "La Scienza della", titleEnd: "Bellezza.", subtitle: "MA Fashion LLC presenta il futuro della cura capillare professionale. Scopri Sweet e S Professional.", ctaDiagnosis: "Assistenza Live 24/7", ctaShop: "Vedi Collezione", collectionTitle: "Collezioni Esclusive", collectionSub: "Grado Professionale. Esclusiva per Saloni.", viewAll: "Vedi Tutto",
+  promos: {
+      ticker: "NOVITÀ: Nuovo Programma Partner • Prendi 5 e ricevi 1 gratis su The First Shampoo • Unisciti alla Rivoluzione", comingUp: "In Arrivo",
+      items: [
+          { title: "Programma Partner Salone", desc: "Prezzi esclusivi e formazione avanzata per professionisti.", cta: "Candidati Ora" },
+          { title: "Lancio My Crown", desc: "La rivoluzione per i capelli ricci. Definisci, idrata e memorizza la curvatura.", cta: "Scopri My Crown" },
+          { title: "Domina l'Arte", desc: "Partecipa alla nostra prossima certificazione negli USA. Scopri i segreti della ricostruzione enzimatica.", cta: "Prenota Posto" }
+      ]
+  },
+  footer: { about: "MA Fashion LLC è leader nel mercato globale della biotecnologia capillare, offrendo soluzioni ad alte prestazioni.", links: "Link Rapidi", legal: "Legale", contact: "Contatti", rights: "© 2024 MA Fashion LLC. Tutti i diritti riservati." },
+  sweet: { title: "Sweet Professional", desc: "Il brand che ha rivoluzionato il mercato con il primo lisciante termico in shampoo. Innovazione e sicurezza.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "Il primo shampoo lisciante al mondo. 5 brevetti.", cronology: "Mappatura biotecnologica per trattamenti personalizzati.", sos: "Soccorso d'emergenza per capelli danneggiati chimicamente." } },
+  sprofessional: {
+    title: "S Professional", subtitle: "Sistemi di Terapia Capillare", desc: "Un ecosistema completo di trattamenti per lo stilista moderno.", commonDesc: "Sperimenta la trasformazione capillare definitiva con la nostra biotecnologia.",
+    lines: { nutrology: "Nutrology - Nutrizione Profonda", hidratherapy: "Hidratherapy - Idratazione Ozono", brushing: "Brushing+ - Allineamento Termico", profusion: "Pro Fusion - Ricostruzione Enzimatica", mycrown: "My Crown - Definizione Ricci" },
+    details: {
+      nutrology: {
+          headline: "Biotecnologia e Umettanti Naturali",
+          info: "Nutrology fornisce una nutrizione intensa in base alla secchezza dei capelli. Utilizza una miscela unica di oli vegetali.",
+          benefits: ["Sostituzione lipidica istantanea", "Brillantezza diamante", "Protezione anti-frizz", "Movimento leggero"],
+          assets: ["Nano-Particelle Lipidiche", "Complesso di Aminoacidi", "Burro di Karitè Bio"],
+          intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
+          functions: [{ title: "Tecnologia Nutrology", desc: "Nutrizione Intensa con alta penetrazione nel cortex." }, { title: "Funzioni Chiave", desc: "Nutrizione per capelli secchi e protezione antiossidante." }]
+      },
+      hidratherapy: { headline: "Tecnologia Ozono e Idratazione Estrema", benefits: ["Idratazione cellulare profonda", "Effetto ozono protettivo"], assets: ["Ozono Attivo O3", "Acido Ialuronico"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
+      profusion: { headline: "Ricostruzione Enzimatica ad Alte Prestazioni", benefits: ["Inverte il danno chimico", "Ripristina elasticità"], assets: ["Enzimi Proteolitici", "Bio-Cheratina"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
+      brushing: { headline: "Allineamento Termico Organico Veloce", benefits: ["100% Senza Formaldeide", "Applicazione ultra-veloce"], assets: ["Base Taninoplastia", "Acidi Organici"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
+      mycrown: { headline: "La Rivoluzione della Memoria di Curvatura", benefits: ["Definisce tutti i tipi di ricci", "Memorizza curvatura"], assets: ["Tecnologia Curl Memory", "Olio di Lino"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+    }
+  },
+  education: { title: "MA Academy", subtitle: "Domina l'Arte", desc: "Immergiti negli eventi globali dove la scienza incontra l'arte. La nostra formazione eleva gli standard." },
+  about: { title: "Chi Siamo", subtitle: "Leadership Globale", desc: "Siamo gli architetti della trasformazione capillare. MA Fashion LLC unisce scienza e arte.", ambassadorsTitle: "Rete di Ambasciatori Artistici", ambassadorsDesc: "Il nostro team d'élite di artisti ufficiali negli USA.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educatrice", location: "Stati Uniti" }, { name: "Fernando Mendez", role: "Master Stylist", location: "Stati Uniti" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "Stati Uniti" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "Stati Uniti" }], repsTitle: "Consiglio Direttivo", stats: { years: "Anni di Eccellenza", salons: "Saloni Partner", countries: "Presenza Globale" }, roles: { techAmb: "Fondatrice, Ambasciatrice & Tecnico Intl", ceo: "CEO & Fondatore", marketingDir: "Direttore Marketing", opsDir: "Direttore Operativo", stylist: "Elite Stylist & Educatrice" } }
+};
+
+const frTranslation = {
+  nav: { home: "Accueil", sweet: "Sweet Professional", s: "S Professional", edu: "Éducation", about: "À Propos", partner: "Accès Partenaire", all: "Voir Tout" },
+  partner: {
+      title: "Accès Professionnel", subtitle: "Rejoignez le réseau d'élite de MA Fashion LLC.", success: "Candidature Reçue", successMsg: "Un représentant vous contactera sous peu.",
+      labels: { name: "Nom Complet", email: "E-mail", phone: "Téléphone", stylist: "Êtes-vous un styliste agréé ?", salon: "Possédez-vous un salon ?", services: "Services fournis", yes: "Oui", no: "Non", next: "Suivant", back: "Retour", submit: "Envoyer la Candidature", return: "Retour à l'Accueil" },
+      benefits: ["Prix de gros jusqu'à 40% de réduction", "Accès aux Masterclasses MA", "Kit marketing & réseaux sociaux", "Gestionnaire de compte dédié"],
+      servicesList: ["Alignement Thermique", "Hair Botox", "Coloration", "Coupes", "Extensions", "Traitements", "Ventes au Détail"]
+  },
+  common: { 
+    discover: "Découvrir Plus", collection: "Collection", maNews: "MA NEWS", featured: "Collection Vedette", special: "Offre Spéciale", learnMore: "En Savoir Plus", innovation: "Innovation & Science", luxury: "Exclusif & Luxueux", privacy: "Politique de Confidentialité", terms: "Conditions d'Utilisation", representatives: "Représentants", social: "Social", unitedStates: "États-Unis", theInnovation: "L'Innovation", theLuxury: "Le Luxe", readMore: "Lire Plus", howToUse: "Application Technique", benefits: "Avantages Clés", mainAssets: "Technologie Principale", intensity: "Intensité du Traitement", functions: "Fonctions Primaires", 
+    backTo: "Retour à", buyForSalon: "Acheter pour le Salon", resultsTitle: "Des résultats qui inspirent", techManual: "Manuel Technique", techManualDesc: "Remplissez les détails pour recevoir le manuel technique par e-mail.", aiAssistant: "Assistant IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
+    hydration: "Hydratation", nutrition: "Nutrition", reconstruction: "Reconstruction", buyNow: "Acheter Maintenant"
+  },
+  tagline: "Biotechnologie Capillaire Globale", titleStart: "La Science de la", titleEnd: "Beauté.", subtitle: "MA Fashion LLC présente l'avenir des soins capillaires professionnels. Découvrez Sweet et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir Collection", collectionTitle: "Collections Exclusives", collectionSub: "Grade Professionnel. Exclusif aux Salons.", viewAll: "Voir Tout",
+  promos: {
+      ticker: "ACTUALITÉ : Nouveau Programme Partenaire • Achetez 5 recevez 1 gratuit sur The First Shampoo • Rejoignez la Révolution", comingUp: "À Suivre",
+      items: [
+          { title: "Programme Partenaire Salon", desc: "Prix exclusifs et éducation avancée pour les professionnels.", cta: "Postuler Maintenant" },
+          { title: "Lancement My Crown", desc: "La révolution pour les cheveux bouclés. Définissez, hydratez et mémorisez la courbure.", cta: "Découvrir My Crown" },
+          { title: "Maîtriser l'Art", desc: "Rejoignez notre prochaine certification aux USA. Apprenez les secrets de la reconstruction enzymatique.", cta: "Réserver Place" }
+      ]
+  },
+  footer: { about: "MA Fashion LLC mène le marché mondial de la biotechnologie capillaire, offrant des solutions haute performance.", links: "Liens Rapides", legal: "Juridique", contact: "Contact", rights: "© 2024 MA Fashion LLC. Tous droits réservés." },
+  sweet: { title: "Sweet Professional", desc: "La marque qui a révolutionné le marché avec le premier lisseur thermique en shampooing. Innovation et sécurité.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "Le premier shampooing lissant au monde. 5 brevets.", cronology: "Cartographie biotechnologique pour des traitements personnalisés.", sos: "Sauvetage d'urgence pour cheveux chimiquement endommagés." } },
+  sprofessional: {
+    title: "S Professional", subtitle: "Systèmes de Thérapie Capillaire", desc: "Un écosystème complet de traitements pour le styliste moderne.", commonDesc: "Découvrez la transformation capillaire ultime avec notre biotechnologie brevetée.",
+    lines: { nutrology: "Nutrology - Nutrition Profonde", hidratherapy: "Hidratherapy - Hydratation Ozone", brushing: "Brushing+ - Alignement Thermique", profusion: "Pro Fusion - Reconstruction Enzymatique", mycrown: "My Crown - Définition des Boucles" },
+    details: {
+      nutrology: {
+          headline: "Biotechnologie et Humectants Naturels",
+          info: "Nutrology offre une nutrition intense selon la sécheresse des cheveux. Utilise un mélange unique d'huiles végétales.",
+          benefits: ["Remplacement lipidique instantané", "Brillance diamant", "Protection anti-frizz", "Mouvement léger"],
+          assets: ["Nano-Particules Lipidiques", "Complexe d'Acides Aminés", "Beurre de Karité Bio"],
+          intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
+          functions: [{ title: "Technologie Nutrology", desc: "Nutrition Intense avec haute perméation dans le cortex." }, { title: "Fonctions Clés", desc: "Nutrition pour cheveux secs et protection antioxydante." }]
+      },
+      hidratherapy: { headline: "Technologie Ozone et Hydratation Extrême", benefits: ["Hydratation cellulaire profonde", "Protection effet ozone"], assets: ["Ozone Actif O3", "Acide Hyaluronique"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
+      profusion: { headline: "Reconstruction Enzymatique Haute Performance", benefits: ["Inverse les dommages chimiques", "Restaure l'élasticité"], assets: ["Enzymes Protéolytiques", "Bio-Kératine"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
+      brushing: { headline: "Alignement Thermique Organique Rapide", benefits: ["100% Sans Formaldéhyde", "Application ultra-rapide"], assets: ["Base Taninoplastie", "Acides Organiques"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
+      mycrown: { headline: "La Révolution de la Mémoire de Courbure", benefits: ["Définit tous types de boucles", "Mémorise la courbure"], assets: ["Technologie Curl Memory", "Huile de Lin"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+    }
+  },
+  education: { title: "Académie MA", subtitle: "Maîtriser l'Art", desc: "Plongez dans des événements mondiaux où la science rencontre l'art. Notre éducation technique élève les standards." },
+  about: { title: "Qui Sommes-Nous", subtitle: "Leadership Mondial", desc: "Nous sommes les architectes de la transformation capillaire. MA Fashion LLC unit science et art.", ambassadorsTitle: "Réseau d'Ambassadeurs Artistiques", ambassadorsDesc: "Notre équipe d'élite d'artistes officiels aux États-Unis.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Éducatrice", location: "États-Unis" }, { name: "Fernando Mendez", role: "Master Stylist", location: "États-Unis" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "États-Unis" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "États-Unis" }], repsTitle: "Conseil d'Administration", stats: { years: "Années d'Excellence", salons: "Salons Partenaires", countries: "Présence Mondiale" }, roles: { techAmb: "Fondatrice, Ambassadrice & Tech Intl", ceo: "PDG & Fondateur", marketingDir: "Directrice Marketing", opsDir: "Directeur des Opérations", stylist: "Styliste Élite & Éducatrice" } }
+};
 
 const translations: Record<Language, any> = {
-  en: {
-    nav: {
-      home: "Home",
-      sweet: "Sweet Professional",
-      s: "S Professional",
-      edu: "Education",
-      about: "About Us"
-    },
-    tagline: "Global Hair Biotechnology",
-    titleStart: "The Science of",
-    titleEnd: "Beauty.",
-    subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.",
-    ctaDiagnosis: "Start Video Consultant",
-    ctaShop: "View Collection",
-    collectionTitle: "Exclusive Collections",
-    collectionSub: "Professional Grade. Salon Exclusive.",
-    consultantActive: "Consultant Active",
-    connecting: "Connecting...",
-    listening: "I'm listening. How can we transform your hair today?",
-    viewAll: "View All",
-    kbActive: "Knowledge Base: Linked",
-    waHelp: "Need assistance?",
-    promos: {
-        ticker: "BREAKING: New Partner Program Available • Buy 5 Get 1 Free on The First Shampoo • Join the Revolution",
-        title: "Salon Partner Program",
-        desc: "Exclusive pricing and education for licensed professionals.",
-        cta: "Apply Now"
-    },
-    products: {
-      p1: { title: "The First Shampoo", desc: "First generation thermal straightener.", price: "$89.00" },
-      p2: { title: "Cronology", desc: "Molecular hair biotechnology map.", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "S Professional emergency rescue.", price: "$65.00" }
-    },
-    footer: {
-      about: "MA Fashion LLC leads the global market in hair biotechnology, providing high-performance solutions for beauty professionals.",
-      links: "Quick Links",
-      legal: "Legal",
-      contact: "Contact",
-      rights: "© 2024 MA Fashion LLC. All rights reserved."
-    },
-    sweet: {
-        title: "Sweet Professional",
-        desc: "The brand that revolutionized the market with the first thermal straightener in shampoo form. Innovation, speed, and safety.",
-        lines: {
-            thefirst: "The First",
-            cronology: "Cronology",
-            sos: "S.O.S"
-        }
-    },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "Advanced Hair Therapy Systems",
-      desc: "A complete ecosystem of treatments designed for the modern stylist. From thermal alignment to deep reconstruction.",
-      lines: {
-        nutrology: "Nutrology - Deep Nutrition",
-        hidratherapy: "Hidratherapy - Ozone Hydration",
-        brushing: "Brushing+ - Thermal Alignment",
-        profusion: "Pro Fusion - Enzyme Reconstruction",
-        mycrown: "My Crown - Curl Definition"
-      }
-    },
-    education: {
-      title: "MA Academy",
-      subtitle: "Master The Art",
-      desc: "Immerse yourself in global events where science meets artistry. Our technical education elevates standards worldwide.",
-      events: [
-        {
-          city: "Dubai",
-          date: "Oct 2023",
-          title: "Molecular Reconstruction Summit",
-          desc: "An exclusive deep-dive into the enzymatic pathways of Pro Fusion. Stylists learned to reverse extreme chemical damage using our proprietary biotechnology."
-        },
-        {
-          city: "São Paulo",
-          date: "Jan 2024",
-          title: "The Curly Revolution",
-          desc: "Launch event for My Crown. Hands-on workshop focusing on curvature memory and lipid replacement for textured hair."
-        },
-        {
-          city: "Milan",
-          date: "Mar 2024",
-          title: "Thermal Alignment Masterclass",
-          desc: "Advanced techniques in acid-based straightening. Mastering The First Shampoo and Brushing+ for glass-hair results without formaldehyde."
-        },
-        {
-          city: "New York",
-          date: "Upcoming - Nov 2024",
-          title: "Global Hair Science Forum",
-          desc: "Join us for the unveiling of our 2025 collections. Focus on sustainable biotechnology and salon business growth."
-        }
-      ]
-    },
-    about: {
-        title: "Who We Are",
-        subtitle: "Global Leadership",
-        desc: "We are the architects of hair transformation. MA Fashion LLC unites science, nature, and artistry to empower professionals worldwide.",
-        ambassadorsTitle: "Brand Ambassadors",
-        repsTitle: "United States Leadership",
-        repsDesc: "The visionaries leading our expansion across North America."
-    }
-  },
-  es: {
-    nav: {
-      home: "Inicio",
-      sweet: "Sweet Professional",
-      s: "S Professional",
-      edu: "Educación",
-      about: "Nosotros"
-    },
-    tagline: "Biotecnología Capilar Global",
-    titleStart: "La Ciencia de",
-    titleEnd: "la Belleza.",
-    subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.",
-    ctaDiagnosis: "Iniciar Video Consulta",
-    ctaShop: "Ver Colección",
-    collectionTitle: "Colecciones Exclusivas",
-    collectionSub: "Grado Profesional. Exclusivo de Salón.",
-    consultantActive: "Consultor Activo",
-    connecting: "Conectando...",
-    listening: "Te escucho. ¿Cómo podemos transformar tu cabello hoy?",
-    viewAll: "Ver Todo",
-    kbActive: "Base de Datos: Conectada",
-    waHelp: "¿Necesita asistencia?",
-    promos: {
-        ticker: "NOTICIA: Nuevo Programa de Socios • Compra 5 y Recibe 1 Gratis en The First Shampoo • Únete a la Revolución",
-        title: "Programa de Socios de Salón",
-        desc: "Precios exclusivos y educación para profesionales con licencia.",
-        cta: "Aplicar Ahora"
-    },
-    products: {
-      p1: { title: "The First Shampoo", desc: "Alisado térmico de primera generación.", price: "$89.00" },
-      p2: { title: "Cronology", desc: "Mapa de biotecnología capilar molecular.", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "Rescate de emergencia S Professional.", price: "$65.00" }
-    },
-    footer: {
-      about: "MA Fashion LLC lidera el mercado global en biotecnología capilar, brindando soluciones de alto rendimiento para profesionales.",
-      links: "Enlaces Rápidos",
-      legal: "Legal",
-      contact: "Contacto",
-      rights: "© 2024 MA Fashion LLC. Todos los derechos reservados."
-    },
-    sweet: {
-        title: "Sweet Professional",
-        desc: "La marca que revolucionó el mercado con el primer alisador térmico en forma de champú. Innovación, rapidez y seguridad.",
-        lines: {
-            thefirst: "The First",
-            cronology: "Cronology",
-            sos: "S.O.S"
-        }
-    },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "Sistemas Avanzados de Terapia Capilar",
-      desc: "Un ecosistema completo de tratamientos diseñados para el estilista moderno. Desde alineación térmica hasta reconstrucción profunda.",
-      lines: {
-        nutrology: "Nutrology - Nutrición Profunda",
-        hidratherapy: "Hidratherapy - Hidratación con Ozono",
-        brushing: "Brushing+ - Alineación Térmica",
-        profusion: "Pro Fusion - Reconstrucción Enzimática",
-        mycrown: "My Crown - Definición de Rizos"
-      }
-    },
-    education: {
-      title: "Academia MA",
-      subtitle: "Domina el Arte",
-      desc: "Sumérgete en eventos globales donde la ciencia se encuentra con el arte. Nuestra educación técnica eleva los estándares en todo el mundo.",
-      events: [
-        {
-          city: "Dubái",
-          date: "Oct 2023",
-          title: "Cumbre de Reconstrucción Molecular",
-          desc: "Una inmersión exclusiva en las vías enzimáticas de Pro Fusion. Los estilistas aprendieron a revertir el daño químico extremo."
-        },
-        {
-          city: "São Paulo",
-          date: "Ene 2024",
-          title: "La Revolución de los Rizos",
-          desc: "Evento de lanzamiento de My Crown. Taller práctico centrado en la memoria de curvatura y el reemplazo de lípidos."
-        },
-        {
-          city: "Milán",
-          date: "Mar 2024",
-          title: "Clase Magistral de Alineación Térmica",
-          desc: "Técnicas avanzadas en alisado ácido. Dominando The First Shampoo y Brushing+ para resultados de cabello de vidrio."
-        },
-        {
-          city: "Nueva York",
-          date: "Próximo - Nov 2024",
-          title: "Foro Global de Ciencia Capilar",
-          desc: "Únase a nosotros para la presentación de nuestras colecciones 2025. Enfoque en biotecnología sostenible."
-        }
-      ]
-    },
-    about: {
-        title: "Quiénes Somos",
-        subtitle: "Liderazgo Global",
-        desc: "Somos los arquitectos de la transformación capilar. MA Fashion LLC une ciencia, naturaleza y arte para empoderar a los profesionales.",
-        ambassadorsTitle: "Embajadoras de Marca",
-        repsTitle: "Liderazgo Estados Unidos",
-        repsDesc: "Los visionarios que lideran nuestra expansión en Norteamérica."
-    }
-  },
-  pt: {
-    nav: { home: "Início", sweet: "Sweet Professional", s: "S Professional", edu: "Educação", about: "Sobre Nós" },
-    tagline: "Biotecnologia Capilar Global",
-    titleStart: "A Ciência da",
-    titleEnd: "Beleza.",
-    subtitle: "MA Fashion LLC apresenta o futuro do cuidado capilar profissional.",
-    ctaDiagnosis: "Iniciar Vídeo Consulta",
-    ctaShop: "Ver Coleção",
-    collectionTitle: "Coleções Exclusivas",
-    collectionSub: "Grau Profissional. Exclusivo para Salão.",
-    consultantActive: "Consultor Ativo",
-    connecting: "Conectando...",
-    listening: "Estou ouvindo. Como podemos transformar seu cabelo hoje?",
-    viewAll: "Ver Tudo",
-    kbActive: "Base de Dados: Conectada",
-    waHelp: "Precisa de ajuda?",
-    promos: { ticker: "NOVIDADE: Programa de Parceiros • Compre 5 Leve 1 Grátis no The First • Junte-se à Revolução", title: "Programa de Parceiros", desc: "Preços exclusivos.", cta: "Inscreva-se" },
-    products: {
-      p1: { title: "The First Shampoo", desc: "Alisamento térmico de primeira geração.", price: "$89.00" },
-      p2: { title: "Cronology", desc: "Mapa de biotecnologia capilar molecular.", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "Rescate de emergência S Professional.", price: "$65.00" }
-    },
-    footer: {
-      about: "MA Fashion LLC lidera o mercado global em biotecnologia capilar.",
-      links: "Links Rápidos",
-      legal: "Legal",
-      contact: "Contato",
-      rights: "© 2024 MA Fashion LLC. Todos os direitos reservados."
-    },
-    sweet: { title: "Sweet Professional", desc: "Inovação, rapidez e segurança.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" } },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "Sistemas Avançados de Terapia Capilar",
-      desc: "Um ecossistema completo de tratamentos desenhados para o estilista moderno.",
-      lines: {
-        nutrology: "Nutrology - Nutrição Profunda",
-        hidratherapy: "Hidratherapy - Hidratação com Ozônio",
-        brushing: "Brushing+ - Alinhamento Térmico",
-        profusion: "Pro Fusion - Reconstrução Enzimática",
-        mycrown: "My Crown - Definição de Cachos"
-      }
-    },
-    education: {
-      title: "Academia MA",
-      subtitle: "Domine a Arte",
-      desc: "Mergulhe em eventos globais onde a ciência encontra a arte.",
-      events: [
-        { city: "Dubai", date: "Out 2023", title: "Cúpula de Reconstrução Molecular", desc: "Mergulho profundo nas vias enzimáticas do Pro Fusion." },
-        { city: "São Paulo", date: "Jan 2024", title: "A Revolução dos Cachos", desc: "Lançamento do My Crown. Workshop prático sobre memória de curvatura." },
-        { city: "Milão", date: "Mar 2024", title: "Masterclass de Alinhamento Térmico", desc: "Técnicas avançadas em alisamento ácido sem formol." },
-        { city: "Nova York", date: "Próximo - Nov 2024", title: "Fórum Global de Ciência Capilar", desc: "Lançamento das coleções 2025 e foco em sustentabilidade." }
-      ]
-    },
-    about: {
-        title: "Quem Somos",
-        subtitle: "Liderança Global",
-        desc: "Somos os arquitetos da transformação capilar. MA Fashion LLC une ciência, natureza e arte.",
-        ambassadorsTitle: "Embaixadoras da Marca",
-        repsTitle: "Liderança Estados Unidos",
-        repsDesc: "Os visionarios liderando nossa expansão na América do Norte."
-    }
-  },
-  jp: {
-    nav: { home: "ホーム", sweet: "Sweet Professional", s: "S Professional", edu: "教育", about: "私たちについて" },
-    tagline: "グローバルヘアバイオテクノロジー",
-    titleStart: "美の",
-    titleEnd: "科学。",
-    subtitle: "MA Fashion LLCはプロフェッショナルヘアケアの未来を提示します。",
-    ctaDiagnosis: "ビデオコンサルタント",
-    ctaShop: "コレクションを見る",
-    collectionTitle: "限定コレクション",
-    collectionSub: "プロフェッショナルグレード。サロン専売。",
-    consultantActive: "コンサルタント稼働中",
-    connecting: "接続中...",
-    listening: "聞いています。今日はどのように髪を変身させましょうか？",
-    viewAll: "すべて見る",
-    kbActive: "データベース: 接続済み",
-    waHelp: "助けが必要ですか？",
-    promos: { ticker: "ニュース: 新しいパートナープログラム • The First Shampoo 5つ購入で1つ無料", title: "サロンパートナープログラム", desc: "プロフェッショナル専用価格。", cta: "今すぐ申し込む" },
-    products: {
-      p1: { title: "The First Shampoo", desc: "第一世代の熱矯正ストレート。", price: "$89.00" },
-      p2: { title: "Cronology", desc: "分子毛髪バイオテクノロジーマップ。", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "S Professional 緊急レスキュー。", price: "$65.00" }
-    },
-    footer: {
-      about: "MA Fashion LLCは、美容専門家に高性能ソリューションを提供し、ヘアバイオテクノロジーのグローバル市場をリードしています。",
-      links: "クイックリンク",
-      legal: "法務",
-      contact: "お問い合わせ",
-      rights: "© 2024 MA Fashion LLC. 全著作権所有。"
-    },
-    sweet: { title: "Sweet Professional", desc: "革新、スピード、安全性。", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" } },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "高度なヘアセラピーシステム",
-      desc: "現代のスタイリストのために設計された完全なトリートメントエコシステム。",
-      lines: {
-        nutrology: "Nutrology - 深層栄養",
-        hidratherapy: "Hidratherapy - オゾン保湿",
-        brushing: "Brushing+ - 熱整列",
-        profusion: "Pro Fusion - 酵素再構築",
-        mycrown: "My Crown - カール定義"
-      }
-    },
-    education: {
-      title: "MA アカデミー",
-      subtitle: "芸術を極める",
-      desc: "科学と芸術が出会うグローバルイベントに没頭してください。",
-      events: [
-        { city: "ドバイ", date: "2023年10月", title: "分子再構築サミット", desc: "Pro Fusionの酵素経路への独占的な深掘り。" },
-        { city: "サンパウロ", date: "2024年1月", title: "カール革命", desc: "My Crownのローンチイベント。曲率記憶に関するワークショップ。" },
-        { city: "ミラノ", date: "2024年3月", title: "熱整列マスタークラス", desc: "酸性ストレートの高度な技術。" },
-        { city: "ニューヨーク", date: "次回 - 2024年11月", title: "グローバルヘアサイエンスフォーラム", desc: "2025年コレクションの発表と持続可能性への焦点。" }
-      ]
-    },
-    about: {
-        title: "私たちについて",
-        subtitle: "グローバルリーダーシップ",
-        desc: "私たちは髪の変革の建築家です。MA Fashion LLCは科学、自然、芸術を融合させます。",
-        ambassadorsTitle: "ブランドアンバサダー",
-        repsTitle: "米国リーダーシップ",
-        repsDesc: "北米での拡大を主導するビジョナリーたち。"
-    }
-  },
-  it: {
-    nav: { home: "Home", sweet: "Sweet Professional", s: "S Professional", edu: "Formazione", about: "Chi Siamo" },
-    tagline: "Biotecnologia Capillare Globale",
-    titleStart: "La Scienza della",
-    titleEnd: "Belleza.",
-    subtitle: "MA Fashion LLC presenta il futuro della cura professionale dei capelli.",
-    ctaDiagnosis: "Video Consulente",
-    ctaShop: "Vedi Collezione",
-    collectionTitle: "Collezioni Esclusive",
-    collectionSub: "Grado Professionale. Esclusiva Salone.",
-    consultantActive: "Consulente Attivo",
-    connecting: "Connessione...",
-    listening: "Ti ascolto. Come possiamo trasformare i tuoi capelli oggi?",
-    viewAll: "Vedi Tutto",
-    kbActive: "Database: Collegato",
-    waHelp: "Bisogno di assistenza?",
-    promos: { ticker: "NOTICIA: Nuovo Programma Partner • Acquista 5 ricevi 1 gratis", title: "Programma Partner", desc: "Prezzi esclusivi.", cta: "Candidati Ora" },
-    products: {
-      p1: { title: "The First Shampoo", desc: "Lisciatura termica di prima generazione.", price: "$89.00" },
-      p2: { title: "Cronology", desc: "Mappa biotecnologica capillare molecolare.", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "Soccorso d'emergenza S Professional.", price: "$65.00" }
-    },
-    footer: {
-      about: "MA Fashion LLC guida il mercato globale nella biotecnologia capillare.",
-      links: "Link Rapidi",
-      legal: "Legale",
-      contact: "Contatto",
-      rights: "© 2024 MA Fashion LLC. Tutti i diritti riservati."
-    },
-    sweet: { title: "Sweet Professional", desc: "Innovazione, velocità e sicurezza.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" } },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "Sistemi Avanzati di Terapia Capillare",
-      desc: "Un ecosistema completo di trattamenti progettati per lo stilista moderno.",
-      lines: {
-        nutrology: "Nutrology - Nutrizione Profunda",
-        hidratherapy: "Hidratherapy - Idratazione all'Ozono",
-        brushing: "Brushing+ - Allineamento Termico",
-        profusion: "Pro Fusion - Ricostruzione Enzimatica",
-        mycrown: "My Crown - Definizione Ricci"
-      }
-    },
-    education: {
-      title: "Accademia MA",
-      subtitle: "Padroneggia l'Arte",
-      desc: "Immergiti in eventi globali dove la scienza incontra l'arte.",
-      events: [
-        { city: "Dubai", date: "Ott 2023", title: "Vertice sulla Ricostruzione Molecolare", desc: "Approfondimento esclusivo sui percorsi enzimatici di Pro Fusion." },
-        { city: "San Paolo", date: "Gen 2024", title: "La Rivoluzione dei Ricci", desc: "Evento di lancio per My Crown. Workshop pratico sulla memoria della curvatura." },
-        { city: "Milano", date: "Mar 2024", title: "Masterclass di Allineamento Termico", desc: "Tecniche avanzate di stiratura acida senza formaldeide." },
-        { city: "New York", date: "In arrivo - Nov 2024", title: "Forum Globale sulla Scienza dei Capelli", desc: "Presentazione delle collezioni 2025 e focus sulla sostenibilità." }
-      ]
-    },
-    about: {
-        title: "Chi Siamo",
-        subtitle: "Leadership Globale",
-        desc: "Siamo gli architetti della trasformazione dei capelli. MA Fashion LLC unisce scienza, natura e arte.",
-        ambassadorsTitle: "Ambasciatori del Brand",
-        repsTitle: "Leadership Stati Uniti",
-        repsDesc: "I visionari che guidano la nostra espansione in Nord America."
-    }
-  },
-  ar: {
-    nav: { home: "الصفحة الرئيسية", sweet: "Sweet Professional", s: "S Professional", edu: "التعليم", about: "من نحن" },
-    tagline: "التكنولوجيا الحيوية العالمية للشعر",
-    titleStart: "علم",
-    titleEnd: "الجمال.",
-    subtitle: "تقدم MA Fashion LLC مستقبل العناية بالشعر الاحترافية.",
-    ctaDiagnosis: "استشاري الفيديو",
-    ctaShop: "عرض المجموعة",
-    collectionTitle: "مجموعات حصرية",
-    collectionSub: "درجة احترافية. حصري للصالونات.",
-    consultantActive: "مستشار نشط",
-    connecting: "جار الاتصال...",
-    listening: "أنا أستمع. كيف يمكننا تحويل شعرك اليوم؟",
-    viewAll: "عرض الكل",
-    kbActive: "قاعدة البيانات: متصلة",
-    waHelp: "تحتاج مساعدة؟",
-    promos: { ticker: "خبر عاجل: برنامج شركاء جديد • اشتر 5 واحصل على 1 مجانًا", title: "برنامج شركاء الصالون", desc: "أسعار حصرية.", cta: "قدم الآن" },
-    products: {
-      p1: { title: "The First Shampoo", desc: "الجيل الأول من التمليس الحراري.", price: "$89.00" },
-      p2: { title: "Cronology", desc: "خريطة التكنولوجيا الحيوية الجزيئية للشعر.", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "الإنقاذ الطارئ من S Professional.", price: "$65.00" }
-    },
-    footer: {
-      about: "تقود MA Fashion LLC السوق العالمية في التكنولوجيا الحيوية للشعر.",
-      links: "روابط سريعة",
-      legal: "قانوني",
-      contact: "اتصل",
-      rights: "© 2024 MA Fashion LLC. جميع الحقوق محفوظة."
-    },
-    sweet: { title: "Sweet Professional", desc: "ابتكار وسرعة وأمان.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" } },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "أنظمة علاج الشعر المتقدمة",
-      desc: "نظام بيئي كامل للعلاجات مصمم للمصفف الحديث.",
-      lines: {
-        nutrology: "Nutrology - تغذية عميقة",
-        hidratherapy: "Hidratherapy - ترطيب بالأوزون",
-        brushing: "Brushing+ - محاذاة حرارية",
-        profusion: "Pro Fusion - إعادة بناء إنزيمية",
-        mycrown: "My Crown - تحديد تجعيد الشعر"
-      }
-    },
-    education: {
-      title: "أكاديمية MA",
-      subtitle: "إتقان الفن",
-      desc: "انغمس في الأحداث العالمية حيث يلتقي العلم بالفن.",
-      events: [
-        { city: "دبي", date: "أكتوبر 2023", title: "قمة إعادة البناء الجزيئي", desc: "غوص عميق حصري في المسارات الإنزيمية لـ Pro Fusion." },
-        { city: "ساو باولو", date: "يناير 2024", title: "ثورة الشعر المجعد", desc: "حدث إطلاق My Crown. ورشة عمل عملية." },
-        { city: "ميلانو", date: "مارس 2024", title: "دورة المحاذاة الحرارية", desc: "تقنيات متقدمة في التمليس الحمضي بدون فورمالدهايد." },
-        { city: "نيويورك", date: "قادم - نوفمبر 2024", title: "المنتدى العالمي لعلوم الشعر", desc: "الكشف عن مجموعات 2025 والتركيز على الاستدامة." }
-      ]
-    },
-    about: {
-        title: "من نحن",
-        subtitle: "القيادة العالمية",
-        desc: "نحن مهندسو تحول الشعر. MA Fashion LLC توحد العلم والطبيعة والفن.",
-        ambassadorsTitle: "سفراء العلامة التجارية",
-        repsTitle: "قيادة الولايات المتحدة",
-        repsDesc: "الرؤى التي تقود توسعنا في أمريكا الشمالية."
-    }
-  },
-  cn: {
-    nav: { home: "首页", sweet: "Sweet Professional", s: "S Professional", edu: "教育", about: "关于我们" },
-    tagline: "全球美发生物技术",
-    titleStart: "美的",
-    titleEnd: "科学。",
-    subtitle: "MA Fashion LLC 展示专业护发的未来。",
-    ctaDiagnosis: "视频顾问",
-    ctaShop: "查看系列",
-    collectionTitle: "独家系列",
-    collectionSub: "专业级。沙龙独家。",
-    consultantActive: "顾问在线",
-    connecting: "连接中...",
-    listening: "我在听。今天我们要如何改变您的发型？",
-    viewAll: "查看全部",
-    kbActive: "数据库: 已连接",
-    waHelp: "需要帮助？",
-    promos: { ticker: "最新消息：新合作伙伴计划 • 购买 5 送 1 免费 • 加入革命", title: "沙龙合作伙伴计划", desc: "独家价格。", cta: "立即申请" },
-    products: {
-      p1: { title: "The First Shampoo", desc: "第一代热能直发。", price: "$89.00" },
-      p2: { title: "Cronology", desc: "分子头发生物技术图谱。", price: "$120.00" },
-      p3: { title: "S.O.S Repair", desc: "S Professional 紧急救援。", price: "$65.00" }
-    },
-    footer: {
-      about: "MA Fashion LLC 引领全球美发生物技术市场。",
-      links: "快速链接",
-      legal: "法律",
-      contact: "联系方式",
-      rights: "© 2024 MA Fashion LLC. 保留所有权利。"
-    },
-    sweet: { title: "Sweet Professional", desc: "创新，速度与安全。", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" } },
-    sprofessional: {
-      title: "S Professional",
-      subtitle: "先进头发治疗系统",
-      desc: "为现代发型师设计的完整治疗生态系统。",
-      lines: {
-        nutrology: "Nutrology - 深层滋养",
-        hidratherapy: "Hidratherapy - 臭氧保湿",
-        brushing: "Brushing+ - 热能顺直",
-        profusion: "Pro Fusion - 酶重建",
-        mycrown: "My Crown - 卷发定义"
-      }
-    },
-    education: {
-      title: "MA 学院",
-      subtitle: "掌握艺术",
-      desc: "沉浸在科学与艺术相遇的全球活动中。",
-      events: [
-        { city: "迪拜", date: "2023年10月", title: "分子重建峰会", desc: "独家深入了解 Pro Fusion 的酶途径。" },
-        { city: "圣保罗", date: "2024年1月", title: "卷发革命", desc: "My Crown 发布活动。关于卷曲记忆的实践研讨会。" },
-        { city: "米兰", date: "2024年3月", title: "热能顺直大师班", desc: "酸性直发的高级技术。掌握无甲醛的玻璃发效果。" },
-        { city: "纽约", date: "即将到来 - 2024年11月", title: "全球头发科学论坛", desc: "2025年系列发布及可持续发展焦点。" }
-      ]
-    },
-    about: {
-        title: "关于我们",
-        subtitle: "全球领导力",
-        desc: "我们是头发变革的建筑师。MA Fashion LLC 融合科学、自然和艺术。",
-        ambassadorsTitle: "品牌大使",
-        repsTitle: "美国领导层",
-        repsDesc: "引领我们在北美扩张的远见者。"
-    }
-  }
+  en: enTranslation,
+  es: esTranslation,
+  pt: ptTranslation,
+  it: itTranslation,
+  fr: frTranslation
 };
 
-const PromotionsSection: React.FC<{ t: any }> = ({ t }) => {
+// --- Intensity Bar Component with Animation on Scroll ---
+const IntensityBar: React.FC<{ label: string, value: number }> = ({ label, value }) => {
+    const [width, setWidth] = useState(0);
+    const barRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                setWidth(value);
+            } else {
+                setWidth(0); 
+            }
+        }, { threshold: 0.1 });
+
+        if (barRef.current) observer.observe(barRef.current);
+        return () => observer.disconnect();
+    }, [value]);
+
     return (
-        <div className="w-full bg-black relative border-y border-white/10 overflow-hidden group">
-            {/* Glass Container */}
-            <div className="relative flex items-center h-12 bg-white/5 backdrop-blur-md">
-                {/* Fixed Label */}
-                <div className="absolute left-0 top-0 bottom-0 z-20 bg-gradient-to-r from-[#bf953f] to-[#aa771c] px-6 flex items-center gap-3 shadow-2xl">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                    </span>
-                    <span className="text-black font-bold text-xs tracking-widest uppercase">MA NEWS</span>
-                </div>
-
-                {/* Scrolling Text */}
-                <div className="flex whitespace-nowrap animate-marquee pl-32">
-                    {[...Array(8)].map((_, i) => (
-                        <span key={i} className="mx-8 text-xs font-light tracking-[0.2em] text-zinc-300 uppercase flex items-center gap-8">
-                            {t.promos.ticker}
-                            <span className="text-[#bf953f] text-[8px]">◆</span>
-                        </span>
-                    ))}
-                </div>
-                 {/* Duplicate for seamless loop */}
-                <div className="flex whitespace-nowrap animate-marquee" aria-hidden="true">
-                    {[...Array(8)].map((_, i) => (
-                        <span key={i} className="mx-8 text-xs font-light tracking-[0.2em] text-zinc-300 uppercase flex items-center gap-8">
-                            {t.promos.ticker}
-                            <span className="text-[#bf953f] text-[8px]">◆</span>
-                        </span>
-                    ))}
-                </div>
+        <div ref={barRef} className="space-y-2">
+            <div className="flex justify-between text-xs uppercase tracking-widest text-zinc-400 font-bold">
+                <span>{label}</span>
+                <span className="text-amber-500">{value}%</span>
             </div>
-            
-            {/* Promo Hero */}
-            <div className="max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center gap-12 reveal-on-scroll">
-                <div className="w-full md:w-1/2">
-                    <span className="text-[#bf953f] text-xs font-bold uppercase tracking-widest mb-4 block">Limited Time Offer</span>
-                    <h2 className="text-4xl md:text-5xl font-serif text-white mb-6 leading-tight">{t.promos.title}</h2>
-                    <p className="text-zinc-400 mb-8 font-light">{t.promos.desc}</p>
-                    <div className="flex gap-4 mb-8">
-                        <div className="p-4 bg-black/50 border border-white/10 rounded-sm text-center min-w-[80px]">
-                            <span className="block text-2xl text-white font-serif">02</span>
-                            <span className="text-[10px] text-zinc-500 uppercase">Days</span>
-                        </div>
-                        <div className="p-4 bg-black/50 border border-white/10 rounded-sm text-center min-w-[80px]">
-                            <span className="block text-2xl text-white font-serif">14</span>
-                            <span className="text-[10px] text-zinc-500 uppercase">Hours</span>
-                        </div>
-                         <div className="p-4 bg-black/50 border border-white/10 rounded-sm text-center min-w-[80px]">
-                            <span className="block text-2xl text-white font-serif">58</span>
-                            <span className="text-[10px] text-zinc-500 uppercase">Mins</span>
-                        </div>
-                    </div>
-                    <button className="bg-white text-black px-8 py-3 uppercase text-xs font-bold tracking-widest hover:bg-[#bf953f] transition-colors">
-                        {t.promos.cta}
-                    </button>
-                </div>
-                <div className="w-full md:w-1/2 relative h-[400px]">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#bf953f]/20 to-transparent rounded-lg"></div>
-                    <img 
-                        src="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=2069&auto=format&fit=crop" 
-                        className="w-full h-full object-cover rounded-lg shadow-2xl filter brightness-75 hover:brightness-100 transition-all duration-700"
-                    />
-                    <div className="absolute -bottom-6 -left-6 bg-black p-6 border border-white/10 max-w-xs shadow-xl hidden md:block">
-                        <div className="flex items-center gap-2 mb-2">
-                             <Star size={14} className="text-[#bf953f] fill-current"/>
-                             <Star size={14} className="text-[#bf953f] fill-current"/>
-                             <Star size={14} className="text-[#bf953f] fill-current"/>
-                             <Star size={14} className="text-[#bf953f] fill-current"/>
-                             <Star size={14} className="text-[#bf953f] fill-current"/>
-                        </div>
-                        <p className="text-white text-sm italic">"Best investment for my salon this year. The products fly off the shelves."</p>
-                    </div>
-                </div>
+            <div className="h-1.5 w-full bg-black rounded-full overflow-hidden border border-white/5">
+                <div 
+                    className="h-full bg-gradient-to-r from-amber-700 via-amber-500 to-amber-200 transition-all duration-1000 ease-out" 
+                    style={{ width: `${width}%` }} 
+                />
             </div>
         </div>
-    )
-}
-
-const AboutPage: React.FC<{ language: Language, t: any }> = ({ language, t }) => {
-  const ambassadors = [
-    { name: "Alejandra Mendez", role: "Global Technical Director", image: "https://images.unsplash.com/photo-1595959183082-7bce70897967?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Sarah Jenkins", role: "Creative Stylist", image: "https://images.unsplash.com/photo-1583335513577-22f3066e166c?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Elena Rossi", role: "Color Specialist", image: "https://images.unsplash.com/photo-1616776918519-25f05a069502?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Yuki Tanaka", role: "Texture Expert", image: "https://images.unsplash.com/photo-1596288591873-138374d9e033?q=80&w=1887&auto=format&fit=crop" },
-  ];
-
-  const usReps = [
-    { name: "Alejandra Mendez", role: "International Technical Ambassador", image: "https://i.ibb.co/7NRw8gzw/ALejnadra.jpg", position: "object-top" },
-    { name: "Ernesto Aramburu", role: "CEO & Founder", image: "https://i.ibb.co/tPJq9rPS/Ernesto.jpg", position: "object-top" },
-    { name: "Luisana Munoz", role: "Operations Director", image: "https://i.ibb.co/4w4n2R65/Luisana.jpg", position: "object-top" },
-    { name: "Ernesto Aramburu Jr.", role: "Executive Director", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1887&auto=format&fit=crop", position: "object-center" }
-  ];
-
-  return (
-    <div className="w-full bg-zinc-950 text-white min-h-screen pt-20">
-       {/* Hero */}
-       <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-         <div className="absolute inset-0">
-             <img src="https://images.unsplash.com/photo-1521590832169-d75932599c2d?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover opacity-30" />
-             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent" />
-         </div>
-         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-             <span className="block text-gold text-sm tracking-[0.3em] uppercase mb-4 animate-fade-in">{t.about.subtitle}</span>
-             <h1 className="text-5xl md:text-7xl font-serif mb-6 animate-fade-in-up">{t.about.title}</h1>
-             <p className="text-lg text-zinc-300 leading-relaxed max-w-2xl mx-auto font-light animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                {t.about.desc}
-             </p>
-         </div>
-       </div>
-
-       {/* US Leadership VIP Section */}
-       <div className="py-24 bg-zinc-900/30 relative reveal-on-scroll">
-          <div className="max-w-7xl mx-auto px-6">
-             <div className="text-center mb-16">
-                 <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">{t.about.repsTitle}</h2>
-                 <p className="text-zinc-400 font-light">{t.about.repsDesc}</p>
-             </div>
-             
-             {/* Art Deco Frame Container */}
-             <div className="relative p-8 border border-white/5 bg-zinc-950/50 backdrop-blur-sm">
-                {/* Gold Corners */}
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#bf953f]" />
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#bf953f]" />
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#bf953f]" />
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#bf953f]" />
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {usReps.map((rep, idx) => (
-                        <div key={idx} className="group relative text-center">
-                            <div className="relative w-48 h-48 mx-auto mb-6 rounded-full p-1 bg-gradient-to-br from-[#bf953f] to-zinc-900 group-hover:scale-105 transition-transform duration-500">
-                                <div className="w-full h-full rounded-full overflow-hidden border-4 border-zinc-950">
-                                    <img src={rep.image} alt={rep.name} className={`w-full h-full object-cover ${rep.position} filter grayscale group-hover:grayscale-0 transition-all duration-500`} />
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-serif text-white mb-1 group-hover:text-[#bf953f] transition-colors">{rep.name}</h3>
-                            <span className="text-sm text-zinc-500 uppercase tracking-widest">{rep.role}</span>
-                        </div>
-                    ))}
-                </div>
-             </div>
-          </div>
-       </div>
-
-       {/* Ambassadors Grid */}
-       <div className="py-24 max-w-7xl mx-auto px-6 reveal-on-scroll">
-           <h2 className="text-3xl md:text-4xl font-serif text-center mb-16">{t.about.ambassadorsTitle}</h2>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {ambassadors.map((amb, idx) => (
-                  <div key={idx} className="relative aspect-[3/4] group overflow-hidden cursor-pointer">
-                      <img src={amb.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
-                      <div className="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                          <h3 className="text-2xl font-serif text-white mb-2">{amb.name}</h3>
-                          <p className="text-[#bf953f] text-sm uppercase tracking-wider">{amb.role}</p>
-                      </div>
-                  </div>
-              ))}
-           </div>
-       </div>
-    </div>
-  );
+    );
 };
 
-const EducationPage: React.FC<{ language: Language, t: any }> = ({ language, t }) => {
+const Navigation = ({ activeTab, setActiveTab, lang, setLang, t }: any) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSProfessionalOpen, setIsSProfessionalOpen] = useState(false);
+  useEffect(() => { const handleScroll = () => setIsScrolled(window.scrollY > 20); window.addEventListener('scroll', handleScroll); return () => window.removeEventListener('scroll', handleScroll); }, []);
+  const flags: Record<string, string> = { en: "🇺🇸", es: "🇪🇸", pt: "🇧🇷", it: "🇮🇹", fr: "🇫🇷" };
+  const handleNav = (tab: string) => { setActiveTab(tab); setIsMobileMenuOpen(false); setIsSProfessionalOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const sProfessionalTreatments = [
+      { id: 'sp-nutrology', label: t.sprofessional.lines.nutrology.split(' - ')[0] },
+      { id: 'sp-hidratherapy', label: t.sprofessional.lines.hidratherapy.split(' - ')[0] },
+      { id: 'sp-profusion', label: t.sprofessional.lines.profusion.split(' - ')[0] },
+      { id: 'sp-brushing', label: t.sprofessional.lines.brushing.split(' - ')[0] },
+      { id: 'sp-mycrown', label: t.sprofessional.lines.mycrown.split(' - ')[0] }
+  ];
   return (
-    <div className="w-full bg-zinc-950 text-white min-h-screen pt-20">
-      <div className="relative h-[50vh] flex items-center justify-center overflow-hidden">
-        {/* Background Animation */}
-        <div className="absolute inset-0">
-             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-[100px] animate-pulse" />
-             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[100px] animate-pulse" style={{animationDelay: '1s'}} />
+    <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-black/90 backdrop-blur-xl border-b border-white/5 py-3' : 'bg-transparent py-6'}`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <div onClick={() => handleNav('home')} className="flex items-center gap-3 cursor-pointer group">
+          <div className="w-10 h-10 bg-gradient-to-br from-amber-200 to-amber-600 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)] transition-transform group-hover:scale-110"><span className="text-black font-serif font-bold text-xl">MA</span></div>
+          <div className="flex flex-col"><span className="text-white font-serif font-bold text-lg tracking-widest leading-none">MA FASHION</span><span className="text-amber-400 text-[10px] tracking-[0.2em] uppercase opacity-80 group-hover:opacity-100 transition-opacity">Global Biotech</span></div>
         </div>
-        
-        <div className="relative z-10 text-center px-4">
-             <span className="block text-zinc-500 text-sm tracking-[0.3em] uppercase mb-4 animate-fade-in">MA Academy</span>
-             <h1 className="text-5xl md:text-7xl font-serif mb-6 animate-fade-in-up">{t.education.title}</h1>
-             <p className="text-lg text-zinc-400 max-w-xl mx-auto font-light animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                {t.education.desc}
-             </p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-20">
-         <div className="grid grid-cols-1 gap-12">
-            {t.education.events.map((evt: any, idx: number) => (
-              <div key={idx} className="group relative flex flex-col md:flex-row gap-8 items-center border-b border-white/5 pb-12 reveal-on-scroll">
-                 <div className="w-full md:w-1/3 aspect-video overflow-hidden rounded-sm relative">
-                    <img 
-                      src={`https://images.unsplash.com/photo-${idx === 0 ? '1522337660859-02fbefca4702' : idx === 1 ? '1605497788044-5a32c7078486' : idx === 2 ? '1562322140-8baeececf3df' : '1560066984-138dadb4c035'}?q=80&w=1000&auto=format&fit=crop`} 
-                      className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute top-4 left-4 bg-black/80 backdrop-blur px-3 py-1 text-xs uppercase tracking-widest text-white border border-white/10">
-                      {evt.city}
-                    </div>
-                 </div>
-                 <div className="w-full md:w-2/3">
-                    <span className="text-[#bf953f] text-sm font-medium mb-2 block">{evt.date}</span>
-                    <h3 className="text-3xl font-serif text-white mb-4 group-hover:text-zinc-300 transition-colors">{evt.title}</h3>
-                    <p className="text-zinc-400 font-light leading-relaxed max-w-2xl">{evt.desc}</p>
-                 </div>
+        <div className="hidden md:flex items-center gap-10">
+          <button onClick={() => handleNav('home')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'home' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.home}</button>
+          <div className="relative group/nav">
+              <div className="flex items-center gap-1 cursor-pointer">
+                  <button onClick={() => handleNav('sprofessional')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab.startsWith('sp') ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.s}</button>
+                  <ChevronDown size={14} className={`text-zinc-500 transition-transform duration-300 ${isSProfessionalOpen ? 'rotate-180 text-amber-500' : ''}`} onClick={(e) => { e.stopPropagation(); setIsSProfessionalOpen(!isSProfessionalOpen); }} />
               </div>
-            ))}
-         </div>
+              {isSProfessionalOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-zinc-900 border border-white/10 rounded-lg shadow-2xl overflow-hidden py-2 animate-fade-in">
+                    {sProfessionalTreatments.map((item) => (
+                        <button key={item.id} onClick={() => handleNav(item.id)} className="w-full text-left px-6 py-4 text-xs uppercase tracking-widest text-zinc-400 hover:text-amber-400 hover:bg-white/5 transition-all flex items-center justify-between group/sub">
+                            {item.label} <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all" />
+                        </button>
+                    ))}
+                </div>
+              )}
+          </div>
+          <button onClick={() => handleNav('sweet')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'sweet' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.sweet}</button>
+          <button onClick={() => handleNav('education')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'education' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.edu}</button>
+          <button onClick={() => handleNav('about')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'about' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.about}</button>
+          <button onClick={() => handleNav('partner')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'partner' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.partner}</button>
+        </div>
+        <div className="hidden md:flex items-center gap-6">
+           <div className="relative group">
+              <button className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
+                  <Globe size={14} /> <span>{flags[lang]}</span>
+              </button>
+              <div className="absolute top-full right-0 mt-2 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl overflow-hidden hidden group-hover:block min-w-[120px]">
+                  {Object.keys(flags).map((code) => (
+                      <button key={code} onClick={() => setLang(code as Language)} className={`w-full text-left px-4 py-3 text-xs uppercase tracking-wider hover:bg-zinc-800 transition-colors flex items-center gap-3 ${lang === code ? 'text-amber-400 bg-zinc-800/50' : 'text-zinc-400'}`}>
+                          <span className="text-lg">{flags[code]}</span> <span>{code.toUpperCase()}</span>
+                      </button>
+                  ))}
+              </div>
+           </div>
+        </div>
+        <button className="md:hidden text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
-    </div>
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-zinc-800 p-6 flex flex-col gap-4 animate-fade-in-up">
+           <button onClick={() => handleNav('home')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.home}</button>
+           <div className="space-y-4">
+               <button onClick={() => setIsSProfessionalOpen(!isSProfessionalOpen)} className="flex items-center justify-between w-full text-lg uppercase tracking-widest text-white">
+                   {t.nav.s} <ChevronDown className={isSProfessionalOpen ? 'rotate-180' : ''} />
+               </button>
+               {isSProfessionalOpen && (
+                   <div className="pl-6 flex flex-col gap-4 border-l border-amber-500/20">
+                       <button onClick={() => handleNav('sprofessional')} className="text-left text-sm uppercase tracking-widest text-zinc-400">{t.nav.all}</button>
+                       {sProfessionalTreatments.map(item => (
+                           <button key={item.id} onClick={() => handleNav(item.id)} className="text-left text-sm uppercase tracking-widest text-zinc-400">{item.label}</button>
+                       ))}
+                   </div>
+               )}
+           </div>
+           <button onClick={() => handleNav('sweet')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.sweet}</button>
+           <button onClick={() => handleNav('education')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.edu}</button>
+           <button onClick={() => handleNav('about')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.about}</button>
+           <button onClick={() => handleNav('partner')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.partner}</button>
+        </div>
+      )}
+    </nav>
   );
 };
 
-const SweetProfessionalPage: React.FC<{ language: Language, t: any }> = ({ language, t }) => {
-    const lines = [
-        { id: 'thefirst', title: t.sweet.lines.thefirst, img: 'https://images.unsplash.com/photo-1556228552-523de502919c?q=80&w=2000&auto=format&fit=crop', desc: "The first straightening shampoo in the world. 5 international patents.", color: "from-cyan-900/40" },
-        { id: 'cronology', title: t.sweet.lines.cronology, img: 'https://images.unsplash.com/photo-1576426863848-c21f5fc67255?q=80&w=2000&auto=format&fit=crop', desc: "Biotechnology mapping for personalized hair treatment.", color: "from-blue-900/40" },
-        { id: 'sos', title: t.sweet.lines.sos, img: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=2000&auto=format&fit=crop', desc: "Emergency rescue for chemically damaged hair.", color: "from-teal-900/40" }
-    ];
+const TreatmentDetail = ({ id, t, handleNav }: any) => {
+    const key = id.split('-')[1];
+    const data = t.sprofessional.details[key];
+    const labels = t.sprofessional.lines;
+    const commonLabels = t.common;
+    const icons: any = { nutrology: <Droplets className="text-amber-500" />, hidratherapy: <Wind className="text-blue-400" />, profusion: <Zap className="text-yellow-400" />, brushing: <Flame className="text-orange-500" />, mycrown: <Crown className="text-amber-300" /> };
+    const treatmentImages: any = { nutrology: "https://sprofessional.com.br/wp-content/uploads/2023/02/Modelo-Nutrology.jpg", hidratherapy: "https://i.ibb.co/b5K9vjdt/Hidratherapy-Catalogo.jpg", profusion: "https://i.ibb.co/G4ygrnym/Profusion-catalogo.jpg", brushing: "https://i.ibb.co/ycD8KZgr/Brushing-catalolgo-1.jpg", mycrown: "https://i.ibb.co/7xw4wc49/My-Crown-Catalogo.jpg" };
+    const type = key as keyof typeof treatmentImages;
 
     return (
-        <div className="w-full bg-zinc-950 text-white min-h-screen pt-20">
-            {/* Hero */}
-            <div className="relative h-[70vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                    <img src="https://images.unsplash.com/photo-1519699047748-40ba5266f2bd?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover opacity-30 filter contrast-125" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-cyan-950/20 to-transparent" />
+        <div className="bg-black min-h-screen pt-32 pb-20">
+            <div className="max-w-7xl mx-auto px-6">
+                <button onClick={() => handleNav('sprofessional')} className="mb-12 flex items-center gap-2 text-zinc-500 hover:text-white transition-all text-xs uppercase tracking-widest"><ChevronLeft size={16} /> {commonLabels.backTo} S Professional</button>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center mb-32">
+                    <div className="space-y-8 animate-fade-in-up">
+                        <div className="inline-flex items-center gap-3">
+                            <div className="p-3 bg-white/5 rounded-xl">{icons[type]}</div>
+                            <span className="text-amber-500 text-xs font-bold tracking-[0.4em] uppercase">{t.nav.s}</span>
+                        </div>
+                        <h1 className="text-6xl md:text-8xl font-serif text-white tracking-tighter italic">{labels[type].split(' - ')[0]}</h1>
+                        <p className="text-2xl text-zinc-400 font-light border-l-2 border-amber-500 pl-6">{data.headline}</p>
+                        {data.info && <p className="text-lg text-zinc-500 font-light leading-relaxed">{data.info}</p>}
+                        <div className="pt-6"><button onClick={() => handleNav('partner')} className="px-12 py-5 bg-amber-500 text-black font-bold uppercase tracking-widest text-sm hover:bg-amber-400 transition-all rounded-sm shadow-xl">{commonLabels.buyForSalon}</button></div>
+                    </div>
+                    <div className="relative group animate-fade-in"><div className="absolute -inset-4 bg-amber-500/10 rounded-2xl blur-3xl opacity-50"></div><div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10"><img src={treatmentImages[type]} className="w-full h-full object-cover" /></div></div>
                 </div>
-                <div className="relative z-10 animate-fade-in-up">
-                    <span className="block text-cyan-400 text-sm tracking-[0.4em] uppercase mb-6 font-medium drop-shadow-lg">Innovation & Science</span>
-                    <h1 className="text-6xl md:text-9xl font-serif text-white mb-8 tracking-tighter drop-shadow-2xl">Sweet Professional</h1>
-                    <p className="text-xl md:text-2xl text-zinc-200 font-light max-w-2xl mx-auto drop-shadow-md">{t.sweet.desc}</p>
-                </div>
-            </div>
 
-            {/* Product Lines */}
-            <div className="max-w-7xl mx-auto px-6 py-24">
-                <div className="grid grid-cols-1 gap-32">
-                    {lines.map((line, idx) => (
-                        <div key={line.id} className={`flex flex-col md:flex-row gap-16 items-center reveal-on-scroll ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
-                            <div className="w-full md:w-1/2 relative group">
-                                <div className="absolute inset-0 bg-cyan-500 blur-3xl opacity-10 group-hover:opacity-20 transition-opacity duration-700"></div>
-                                <div className="relative aspect-square overflow-hidden rounded-sm border border-white/10">
-                                    <img src={line.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                                    <div className={`absolute inset-0 bg-gradient-to-t ${line.color} to-transparent opacity-60`} />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32">
+                    <div className="space-y-12">
+                         <div className="space-y-6">
+                            <h3 className="text-amber-500 text-xs font-bold tracking-widest uppercase flex items-center gap-2"><Activity size={16} /> {commonLabels.intensity}</h3>
+                            <div className="space-y-8 bg-zinc-900/50 p-8 rounded-2xl border border-white/5">
+                                {Object.entries(data.intensity).map(([k, v]: any) => (
+                                    <IntensityBar 
+                                        key={k} 
+                                        label={k === 'hydration' ? commonLabels.hydration : k === 'nutrition' ? commonLabels.nutrition : commonLabels.reconstruction} 
+                                        value={v} 
+                                    />
+                                ))}
+                            </div>
+                         </div>
+                         {data.functions && (
+                            <div className="space-y-6">
+                                <h3 className="text-amber-500 text-xs font-bold tracking-widest uppercase flex items-center gap-2"><Sparkles size={16} /> {commonLabels.functions}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {data.functions.map((f: any, i: number) => (
+                                        <div key={i} className="p-6 bg-zinc-900 border border-white/5 rounded-xl hover:border-amber-500/30 transition-all">
+                                            <h4 className="text-white font-serif italic text-lg mb-3">{f.title}</h4>
+                                            <p className="text-zinc-400 text-sm leading-relaxed">{f.desc}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                            <div className="w-full md:w-1/2 space-y-8">
-                                <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">0{idx + 1} / Collection</span>
-                                <h2 className="text-5xl font-serif text-white leading-tight">{line.title}</h2>
-                                <p className="text-zinc-400 text-lg font-light leading-relaxed border-l-2 border-cyan-900 pl-6">
-                                    {line.desc}
-                                </p>
-                                <button className="group flex items-center gap-3 text-white text-sm uppercase tracking-widest hover:text-cyan-400 transition-colors">
-                                    Discover More <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
-                                </button>
-                            </div>
+                         )}
+                    </div>
+                    <div className="space-y-12">
+                        <div className="space-y-6">
+                            <h3 className="text-amber-500 text-xs font-bold tracking-widest uppercase flex items-center gap-2"><CheckCircle2 size={16} /> {commonLabels.benefits}</h3>
+                            <ul className="space-y-4">{data.benefits.map((b: string, i: number) => (<li key={i} className="text-zinc-400 text-lg font-light flex items-start gap-3"><div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2.5 shrink-0" />{b}</li>))}</ul>
                         </div>
-                    ))}
+                        <div className="space-y-6">
+                            <h3 className="text-amber-500 text-xs font-bold tracking-widest uppercase flex items-center gap-2"><Beaker size={16} /> {commonLabels.mainAssets}</h3>
+                            <div className="flex flex-wrap gap-2">{data.assets.map((a: string, i: number) => (<span key={i} className="px-4 py-2 bg-zinc-900 border border-white/5 rounded-full text-zinc-300 text-sm italic">{a}</span>))}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-zinc-900/30 rounded-3xl p-12 border border-white/5">
+                    <div className="text-center max-w-2xl mx-auto space-y-6">
+                         <h3 className="text-3xl font-serif text-white">{commonLabels.techManual}</h3>
+                         <p className="text-zinc-400 font-light">{commonLabels.techManualDesc}</p>
+                         <div className="flex flex-col md:flex-row gap-4 mt-8">
+                             <input type="email" placeholder={t.partner.labels.email} className="flex-grow bg-black/50 border border-white/10 rounded-lg px-6 py-4 text-white outline-none focus:border-amber-500" />
+                             <button className="px-8 py-4 bg-amber-500 text-black font-bold uppercase tracking-widest text-sm rounded-lg hover:bg-amber-400 transition-all">{t.partner.labels.submit}</button>
+                         </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-const SProfessionalPage: React.FC<{ language: Language, t: any }> = ({ language, t }) => {
-  const lines = [
-    { id: 'nutrology', title: t.sprofessional.lines.nutrology, img: 'https://i.ibb.co/3mCLQfnG/Nutrology-Catalogo.jpg', color: 'from-green-900/40' },
-    { id: 'hidratherapy', title: t.sprofessional.lines.hidratherapy, img: 'https://i.ibb.co/b5K9vjdt/Hidratherapy-Catalogo.jpg', color: 'from-blue-900/40' },
-    { id: 'brushing', title: t.sprofessional.lines.brushing, img: 'https://i.ibb.co/ycD8KZgr/Brushing-catalolgo-1.jpg', color: 'from-zinc-800/60' },
-    { id: 'profusion', title: t.sprofessional.lines.profusion, img: 'https://i.ibb.co/G4ygrnym/Profusion-catalogo.jpg', color: 'from-purple-900/40' },
-    { id: 'mycrown', title: t.sprofessional.lines.mycrown, img: 'https://i.ibb.co/7xw4wc49/My-Crown-Catalogo.jpg', color: 'from-amber-700/40' }
-  ];
-
+const HeroSection = ({ t }: any) => {
+  const tickerContent = t.promos.items.map((item: any) => `${item.title}: ${item.desc}`).join("  ✦  ").toUpperCase();
   return (
-    <div className="w-full bg-zinc-950 text-white min-h-screen pt-20">
-      {/* Brand Hero */}
-      <div className="relative h-[60vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-         <div className="absolute inset-0 z-0">
-           <img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover opacity-20" />
-           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent" />
-         </div>
-         <div className="relative z-10 animate-fade-in-up">
-           <h1 className="text-6xl md:text-9xl font-serif text-white mb-6 tracking-tighter">S Professional</h1>
-           <p className="text-xl md:text-2xl text-zinc-300 font-light max-w-2xl mx-auto">{t.sprofessional.desc}</p>
-         </div>
-      </div>
-
-      {/* Lines Grid */}
-      <div className="max-w-7xl mx-auto px-6 py-24">
-        <div className="grid grid-cols-1 gap-24">
-           {lines.map((line, idx) => (
-             <div key={line.id} className={`flex flex-col md:flex-row gap-12 items-center reveal-on-scroll ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="w-full md:w-1/2 aspect-[4/5] relative group overflow-hidden rounded-sm">
-                  <img src={line.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                  <div className={`absolute inset-0 bg-gradient-to-t ${line.color} to-transparent opacity-60`} />
-                </div>
-                <div className="w-full md:w-1/2 space-y-6">
-                   <h2 className="text-4xl md:text-5xl font-serif text-white leading-tight">{line.title}</h2>
-                   <div className="h-1 w-20 bg-[#bf953f]" />
-                   <p className="text-zinc-400 text-lg font-light leading-relaxed">
-                     {language === 'en' ? "Advanced biotechnology formulated for professional salon use. Delivers immediate structural recovery and long-lasting results." : 
-                      language === 'es' ? "Biotecnología avanzada formulada para uso profesional en salón. Ofrece recuperación estructural inmediata y resultados duraderos." :
-                      "Biotecnologia avançada formulada para uso profissional em salão."}
-                   </p>
-                   <button className="text-[#bf953f] border border-[#bf953f] px-8 py-3 uppercase tracking-widest text-xs hover:bg-[#bf953f] hover:text-black transition-all">
-                      {language === 'en' ? "Discover Line" : "Descubrir Línea"}
-                   </button>
-                </div>
-             </div>
-           ))}
-        </div>
-      </div>
-    </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1620331313174-d73105a3f333?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 scale-105 animate-spin-reverse-slow duration-[100s]" /><div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" /><div className="absolute inset-0 bg-noise opacity-50 mix-blend-overlay"></div></div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center"><div className="inline-flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full mb-8 animate-fade-in-up backdrop-blur-md"><Sparkles size={14} className="text-amber-400 animate-pulse" /><span className="text-amber-300 text-xs font-bold tracking-[0.2em] uppercase">{t.tagline}</span></div><h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-medium text-white mb-8 leading-tight animate-fade-in-up delay-100 tracking-tighter"><span className="block opacity-90">{t.titleStart}</span><span className="text-gold italic relative inline-block">{t.titleEnd}<span className="absolute -bottom-4 left-0 w-full h-1 bg-amber-500/50 rounded-full blur-sm"></span></span></h1><p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up delay-200">{t.subtitle}</p><div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in-up delay-300"><button onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })} className="group relative px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-widest uppercase text-sm transition-all rounded-sm overflow-hidden"><div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" /><span className="relative flex items-center gap-2">{t.ctaDiagnosis} <Mic size={16} /></span></button></div></div>
+      <div className="absolute bottom-10 left-0 w-full overflow-hidden py-4 border-t border-white/5 bg-black/50 backdrop-blur-sm"><div className="flex animate-marquee whitespace-nowrap gap-12 text-zinc-500 text-xs font-bold tracking-[0.3em] uppercase"><span>{tickerContent}</span><span>✦</span><span>{tickerContent}</span></div></div>
+    </section>
   );
 };
 
-const Footer: React.FC<{ t: any, handleNavClick: (view: any) => void }> = ({ t, handleNavClick }) => (
-    <footer className="bg-black text-zinc-400 py-20 border-t border-zinc-900">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="space-y-6">
-           <h3 className="text-2xl font-serif text-white">MA Fashion LLC</h3>
-           <p className="text-sm font-light leading-relaxed">{t.footer.about}</p>
-        </div>
-        <div>
-           <h4 className="text-white font-medium mb-6 uppercase tracking-wider text-xs">{t.footer.links}</h4>
-           <ul className="space-y-4 text-sm font-light">
-             <li><button onClick={() => handleNavClick('home')} className="hover:text-white transition-colors text-left">{t.nav.home}</button></li>
-             <li><button onClick={() => handleNavClick('sweet')} className="hover:text-white transition-colors text-left">{t.nav.sweet}</button></li>
-             <li><button onClick={() => handleNavClick('sprofessional')} className="hover:text-white transition-colors text-left">{t.nav.s}</button></li>
-             <li><button onClick={() => handleNavClick('education')} className="hover:text-white transition-colors text-left">{t.nav.edu}</button></li>
-             <li><button onClick={() => handleNavClick('about')} className="hover:text-white transition-colors text-left">{t.nav.about}</button></li>
-           </ul>
-        </div>
-        <div>
-           <h4 className="text-white font-medium mb-6 uppercase tracking-wider text-xs">{t.footer.legal}</h4>
-           <ul className="space-y-4 text-sm font-light">
-             <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-             <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-             <li><a href="#" className="hover:text-white transition-colors">Distributor Login</a></li>
-           </ul>
-        </div>
-        <div>
-           <h4 className="text-white font-medium mb-6 uppercase tracking-wider text-xs">{t.footer.contact}</h4>
-           <ul className="space-y-4 text-sm font-light">
-             <li className="flex items-start gap-3">
-               <MapPin size={16} className="mt-1 text-[#bf953f]" />
-               <span>United States<br/>Florida, USA</span>
-             </li>
-             <li className="flex items-center gap-3">
-               <div className="text-[#bf953f] mt-1">
-                 <Users size={16} />
-               </div>
-               <div className="flex flex-col">
-                 <span className="text-white font-medium">Ernesto Aramburu</span>
-                 <span className="text-white font-medium">Alejandra Mendez</span>
-               </div>
-             </li>
-              <li className="flex items-center gap-3">
-                 <div className="text-[#bf953f]">📞</div>
-                 <a href="tel:+14072181294" className="hover:text-white transition-colors">+1 (407) 218-1294</a>
-             </li>
-              <li className="flex items-center gap-3">
-                 <div className="text-[#bf953f]">✉️</div>
-                 <a href="mailto:s.professional.usa@gmail.com" className="hover:text-white transition-colors">s.professional.usa@gmail.com</a>
-             </li>
-             <li className="flex gap-4 pt-4">
-               <a href="https://www.facebook.com/share/17RRNbbb3u/" target="_blank" rel="noopener noreferrer" className="hover:text-[#bf953f] transition-colors"><Facebook size={20} /></a>
-               <a href="https://www.instagram.com/shairprof_usa/" target="_blank" rel="noopener noreferrer" className="hover:text-[#bf953f] transition-colors"><Instagram size={20} /></a>
-               <a href="#" className="hover:text-[#bf953f] transition-colors"><Linkedin size={20} /></a>
-             </li>
-           </ul>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-zinc-900 text-center text-xs font-light tracking-widest uppercase">
-         {t.footer.rights}
-      </div>
-    </footer>
-);
+const PromotionsSection = ({ t, handleNav }: any) => {
+    const slides = [ { id: 1, title: t.promos.items[0].title, desc: t.promos.items[0].desc, cta: t.promos.items[0].cta, image: "https://i.ibb.co/d0MmCQ2q/Gemini-Generated-Image-116iz116iz116iz1.png", position: "object-[center_25%]", action: () => handleNav('partner') }, { id: 2, title: t.promos.items[1].title, desc: t.promos.items[1].desc, cta: t.promos.items[1].cta, image: "https://i.ibb.co/mV6ttdbp/photo-5127480036008507208-y.jpg", position: "object-[center_20%]", action: () => handleNav('sp-mycrown') }, { id: 3, title: t.promos.items[2].title, desc: t.promos.items[2].desc, cta: t.promos.items[2].cta, image: "https://i.ibb.co/zh2n4KB5/IMG-20251209-123203-654.jpg", position: "object-[center_20%]", action: () => handleNav('education') } ];
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const DURATION = 8000;
+    const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+    const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    useEffect(() => { const interval = setInterval(nextSlide, DURATION); return () => clearInterval(interval); }, []);
+    const nextSlideIndex = (currentSlide + 1) % slides.length;
+    return (
+        <section className="bg-black pt-28 md:pt-32 pb-0 border-b border-zinc-900 relative">
+            <style>{`@keyframes countdown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 125.6; } } @keyframes slideProgress { from { width: 0%; } to { width: 100%; } }`}</style>
+            <div className="w-full h-[600px] relative overflow-hidden group">{slides.map((slide, index) => (<div key={slide.id} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}><div className="absolute inset-0 overflow-hidden"><img src={slide.image} className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${slide.position} ${index === currentSlide ? 'scale-110' : 'scale-100'}`} /><div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" /></div><div className="absolute inset-0 flex items-center"><div className="max-w-7xl mx-auto px-6 w-full"><div className="max-w-xl space-y-6"><div className="inline-block px-3 py-1 bg-amber-500 text-black text-xs font-bold tracking-widest uppercase mb-2 animate-fade-in">{t.common.maNews}</div><h2 className="text-5xl md:text-6xl font-serif text-white leading-tight animate-fade-in-up tracking-tighter">{slide.title}</h2><p className="text-zinc-300 text-lg leading-relaxed animate-fade-in-up delay-100">{slide.desc}</p><button onClick={slide.action} className="mt-8 px-8 py-3 border-b border-amber-500 text-amber-500 hover:text-amber-400 font-bold tracking-widest uppercase text-sm transition-all flex items-center gap-2 animate-fade-in-up delay-200">{slide.cta} <ArrowRight size={16} /></button></div></div></div></div>))}<div className="absolute bottom-0 left-0 w-full z-20"><div className="max-w-7xl mx-auto px-6 mb-8 flex justify-end items-end gap-8"><div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10"><div className="relative w-10 h-10 flex items-center justify-center"><svg className="w-full h-full -rotate-90 transform"><circle cx="20" cy="20" r="16" className="stroke-white/10 fill-none" strokeWidth="2" /><circle key={currentSlide} cx="20" cy="20" r="16" className="stroke-amber-500 fill-none" strokeWidth="2" strokeDasharray="100.5" strokeDashoffset="0" style={{ animation: `countdown ${DURATION}ms linear forwards` }} /></svg><div className="absolute text-white animate-pulse"><Clock size={12} /></div></div><div className="flex flex-col"><span className="text-[9px] text-zinc-400 uppercase tracking-widest font-bold">{t.promos.comingUp}</span><span className="text-xs text-white font-serif italic truncate max-w-[120px] md:max-w-[200px]">{slides[nextSlideIndex].title}</span></div></div><div className="flex gap-2"><button onClick={prevSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronLeft size={20} /></button><button onClick={nextSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronRight size={20} /></button></div></div><div className="flex w-full h-1 bg-black">{slides.map((_, idx) => (<div key={idx} className="flex-1 bg-zinc-900/50 relative overflow-hidden border-r border-black/50">{idx === currentSlide && (<div className="absolute inset-0 bg-amber-500 shadow-[0_0_15px_#f59e0b]" style={{ animation: `slideProgress ${DURATION}ms linear forwards` }} />)}{idx < currentSlide && <div className="absolute inset-0 bg-amber-500/30" />}</div>))}</div></div></div>
+        </section>
+    );
+};
+
+const HomeSection = ({ t, handleNav }: any) => {
+    const [rotate, setRotate] = useState({ x: 0, y: 0 });
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const card = e.currentTarget; const box = card.getBoundingClientRect();
+        const x = e.clientX - box.left; const y = e.clientY - box.top;
+        const centerX = box.width / 2; const centerY = box.height / 2;
+        setRotate({ x: ((y - centerY) / centerY) * -10, y: ((x - centerX) / centerX) * 10 });
+    };
+    return (
+        <>
+            <PromotionsSection t={t} handleNav={handleNav} />
+            <HeroSection t={t} handleNav={handleNav} />
+            <section className="py-32 bg-zinc-950 relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div><div className="max-w-7xl mx-auto px-6 relative z-10"><div className="flex flex-col md:flex-row justify-between items-end mb-20"><div><span className="text-amber-500 text-xs font-bold tracking-[0.2em] uppercase block mb-4">{t.common.collection}</span><h2 className="font-serif text-5xl md:text-6xl text-white tracking-tighter">{t.collectionTitle}</h2></div><div className="text-right mt-6 md:mt-0"><p className="text-zinc-500 text-sm tracking-widest uppercase mb-4">{t.collectionSub}</p></div></div><div className="grid grid-cols-1 md:grid-cols-2 gap-12"><div className="relative group cursor-pointer" onMouseMove={handleMouseMove} onMouseLeave={() => setRotate({ x: 0, y: 0 })} onClick={() => handleNav('sprofessional')}><div className="relative aspect-[3/4] rounded-sm bg-black border border-white/10 transition-transform duration-100 ease-linear shadow-2xl" style={{ transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)` }}><div className="absolute inset-0 overflow-hidden rounded-sm"><img src="https://i.ibb.co/WNNyvZBc/grok-image-Genera-una-fotograf-a-editorial-de-alta-costura-basada-en-la-imagen-adjunta-para-una-re.jpg" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" /></div><div className="absolute bottom-8 left-8 z-30"><h3 className="text-5xl font-serif text-white mb-2 italic">{t.nav.s}</h3><span className="text-amber-400 text-xs tracking-[0.3em] uppercase mt-2 block">{t.common.theLuxury}</span></div></div></div><div className="relative group cursor-pointer" onClick={() => handleNav('sweet')}><div className="relative z-10 aspect-[3/4] bg-black overflow-hidden rounded-sm border border-white/10"><img src="https://i.ibb.co/k27CNTnc/portada-sweet.png" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" /><div className="absolute bottom-0 right-0 w-full p-8 text-right"><h3 className="text-5xl font-serif text-white mb-2 italic">{t.nav.sweet}</h3><span className="text-xs text-white/50 tracking-[0.2em] uppercase">{t.common.theInnovation}</span></div></div></div></div></div></section>
+        </>
+    );
+};
+
+const SProfessionalSection = ({ t, handleNav }: any) => {
+    const treatments = [
+        { id: 'sp-nutrology', title: t.sprofessional.lines.nutrology, img: "https://i.ibb.co/3mCLQfnG/Nutrology-Catalogo.jpg", desc: t.sprofessional.details.nutrology.headline },
+        { id: 'sp-hidratherapy', title: t.sprofessional.lines.hidratherapy, img: "https://i.ibb.co/b5K9vjdt/Hidratherapy-Catalogo.jpg", desc: t.sprofessional.details.hidratherapy.headline },
+        { id: 'sp-profusion', title: t.sprofessional.lines.profusion, img: "https://i.ibb.co/G4ygrnym/Profusion-catalogo.jpg", desc: t.sprofessional.details.profusion.headline },
+        { id: 'sp-brushing', title: t.sprofessional.lines.brushing, img: "https://i.ibb.co/ycD8KZgr/Brushing-catalolgo-1.jpg", desc: t.sprofessional.details.brushing.headline },
+        { id: 'sp-mycrown', title: t.sprofessional.lines.mycrown, img: "https://i.ibb.co/7xw4wc49/My-Crown-Catalogo.jpg", desc: t.sprofessional.details.mycrown.headline }
+    ];
+    return (
+        <section className="min-h-screen bg-black relative"><div className="h-[50vh] flex items-center justify-center bg-radial-gradient from-zinc-900 to-black relative overflow-hidden"><div className="absolute inset-0 bg-grid-white opacity-10 animate-scan"></div><div className="text-center z-10 px-6 max-w-4xl mx-auto animate-fade-in"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-6">{t.common.luxury}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-6 tracking-tighter">{t.sprofessional.title}</h2><p className="text-xl text-zinc-300 font-light">{t.sprofessional.commonDesc}</p></div></div><div className="max-w-7xl mx-auto px-6 py-20 space-y-32">{treatments.map((item, i) => (<div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 reveal-on-scroll is-visible`}><div className="w-full md:w-1/2 relative group cursor-pointer" onClick={() => handleNav(item.id)}><div className="relative overflow-hidden rounded-sm shadow-2xl aspect-[4/3] border border-white/5"><img src={item.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" /><div className="absolute inset-6 border border-white/10 group-hover:border-amber-500/30 transition-colors duration-500"></div></div></div><div className="w-full md:w-1/2 space-y-6 text-center md:text-left"><h3 className="text-4xl md:text-5xl font-serif text-white leading-tight italic">{item.title.split(' - ')[0]}</h3><p className="text-amber-500 text-sm tracking-[0.2em] uppercase">{item.title.split(' - ')[1]}</p><p className="text-zinc-400 text-lg font-light leading-relaxed">{item.desc}</p><button onClick={() => handleNav(item.id)} className="text-white border-b border-white/20 pb-1 hover:text-amber-400 hover:border-amber-400 transition-all uppercase text-xs tracking-widest mt-4">{t.common.discover}</button></div></div>))}</div></section>
+    );
+};
+
+const SweetSection = ({ t }: any) => (<section className="min-h-screen bg-zinc-950 pt-32 pb-20 relative"><div className="max-w-7xl mx-auto px-6"><div className="mb-20 text-center"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-4">{t.common.innovation}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-8 tracking-tighter">{t.sweet.title}</h2><p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light">{t.sweet.desc}</p></div><div className="grid grid-cols-1 md:grid-cols-3 gap-8">{[{ id: 'thefirst', title: t.sweet.lines.thefirst, desc: t.sweet.lineDescs.thefirst, img: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=1972&auto=format&fit=crop" }, { id: 'cronology', title: t.sweet.lines.cronology, desc: t.sweet.lineDescs.cronology, img: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1974&auto=format&fit=crop" }, { id: 'sos', title: t.sweet.lines.sos, desc: t.sweet.lineDescs.sos, img: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=1978&auto=format&fit=crop" }].map((item) => (<div key={item.id} className="group relative aspect-[9/16] bg-zinc-900 border border-white/5 overflow-hidden transition-all hover:border-amber-500/30"><img src={item.img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 duration-700" /><div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" /><div className="absolute bottom-0 left-0 w-full p-8"><h3 className="text-3xl font-serif text-white mb-2 italic">{item.title}</h3><p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p></div></div>))}</div></div></section>);
+
+const EducationSection = ({ t }: any) => (<section className="min-h-screen bg-zinc-950 pt-32 pb-20"><div className="max-w-7xl mx-auto px-6"><div className="text-center mb-24"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-4">{t.education.title}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-8 tracking-tighter">{t.education.subtitle}</h2></div><p className="text-center text-zinc-400 max-w-2xl mx-auto text-lg font-light mb-20">{t.education.desc}</p><div className="flex items-center justify-center h-40 bg-zinc-900/50 rounded-3xl border border-white/5"><span className="text-zinc-500 font-serif italic text-2xl tracking-widest">{t.common.resultsTitle}</span></div></div></section>);
+
+const CountUp = ({ end }: { end: number }) => { const [count, setCount] = useState(0); useEffect(() => { let start = 0; const duration = 2000; const timer = setInterval(() => { start += end/100; if (start >= end) { setCount(end); clearInterval(timer); } else { setCount(Math.floor(start)); } }, duration/100); return () => clearInterval(timer); }, [end]); return <span>{count}</span>; };
+
+const AboutSection = ({ t }: any) => {
+    const ambassadorImages = ["https://i.ibb.co/M5h85W16/Whats-App-Image-2025-12-10-at-9-44-21-PM.jpg", "https://i.ibb.co/Lz3J4KHR/Whats-App-Image-2025-12-11-at-6-51-05-PM.jpg", "https://i.ibb.co/N6pWP5M5/Whats-App-Image-2025-12-13-at-11-01-10-PM.jpg", "https://i.ibb.co/sv4mqWvw/JPG-NALDO-HEADSHOT-06.jpg"];
+    const leadership = [{ name: "Ernesto Aramburu", role: t.about.roles.ceo, image: "https://i.ibb.co/tPJq9rPS/Ernesto.jpg" }, { name: "Alejandra Mendez", role: t.about.roles.techAmb, image: "https://i.ibb.co/7NRw8gzw/ALejnadra.jpg" }, { name: "Luisana Muñoz", role: t.about.roles.marketingDir, image: "https://i.ibb.co/4w4n2R65/Luisana.jpg" }, { name: "Ernesto Aramburu Jr.", role: t.about.roles.opsDir, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" }];
+    return (<section className="bg-black text-white pt-20"><div className="px-8 max-w-7xl mx-auto mb-20 text-center"><h2 className="text-5xl lg:text-7xl font-serif mb-8">{t.about.title}</h2><p className="text-xl text-zinc-400 font-light max-w-4xl mx-auto">{t.about.desc}</p><div className="grid grid-cols-3 gap-8 mt-12 border-t border-amber-500/20 pt-12"><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={15} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.years}</span></div><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={5000} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.salons}</span></div><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={20} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.countries}</span></div></div></div><div className="max-w-7xl mx-auto px-6 py-20"><h3 className="text-center text-amber-500 text-xs tracking-widest uppercase mb-12">{t.about.repsTitle}</h3><div className="grid grid-cols-1 md:grid-cols-4 gap-8">{leadership.map((person, i) => (<div key={i} className="text-center"><div className="aspect-[3/4] mb-4 overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all"><img src={person.image} className="w-full h-full object-cover" /></div><h4 className="text-xl font-serif text-white">{person.name}</h4><p className="text-amber-500 text-[10px] uppercase">{person.role}</p></div>))}</div></div><div className="bg-zinc-950 py-32 border-t border-white/5"><div className="max-w-7xl mx-auto px-6"><h3 className="text-4xl md:text-6xl font-serif text-white mb-4 text-center">{t.about.ambassadorsTitle}</h3><p className="text-center text-zinc-500 mb-16 max-w-xl mx-auto">{t.about.ambassadorsDesc}</p><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">{t.about.ambassadorList.map((amb: any, i: number) => (<div key={i} className="group relative cursor-pointer"><div className="aspect-[3/4] overflow-hidden rounded-sm border border-white/10 group-hover:border-amber-500 transition-all"><img src={ambassadorImages[i]} className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0" /><div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent"><h4 className="text-2xl font-serif text-white italic">{amb.name}</h4><p className="text-zinc-300 text-[10px] uppercase">{amb.role}</p></div></div></div>))}</div></div></div></section>);
+};
+
+const PartnerAccessSection = ({ t }: any) => { const [step, setStep] = useState(1); const handleSubmit = (e: any) => { e.preventDefault(); setStep(3); }; return (<section className="min-h-screen bg-black pt-32 pb-20 flex items-center justify-center"><div className="max-w-6xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"><div className="space-y-8 animate-fade-in-up"><h2 className="text-5xl lg:text-7xl font-serif text-white leading-tight">{t.partner.title}</h2><p className="text-xl text-zinc-400 font-light border-l-2 border-amber-500 pl-6">{t.partner.subtitle}</p></div><div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-12 relative overflow-hidden">{step === 3 ? (<div className="text-center py-12 animate-fade-in-up"><Check size={40} className="text-green-500 mx-auto mb-6" /><h3 className="text-3xl font-serif text-white mb-4">{t.partner.success}</h3><p className="text-zinc-400">{t.partner.successMsg}</p></div>) : (<form onSubmit={handleSubmit} className="space-y-6"><input type="text" placeholder={t.partner.labels.name} required className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" /><input type="email" placeholder={t.partner.labels.email} required className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" /><button type="submit" className="w-full bg-amber-500 text-black font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-amber-400 transition-all">{t.partner.labels.submit}</button></form>)}</div></div></section>); };
+
+const Footer = ({ t, handleNav }: any) => (<footer className="bg-black border-t border-white/10 pt-20 pb-10"><div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16"><div className="space-y-6"><h3 className="text-2xl font-serif text-white font-bold">MA FASHION LLC</h3><p className="text-zinc-500 text-sm">{t.footer.about}</p></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.links}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><button onClick={() => handleNav('home')}>{t.nav.home}</button></li><li><button onClick={() => handleNav('sprofessional')}>{t.nav.s}</button></li><li><button onClick={() => handleNav('sweet')}>{t.nav.sweet}</button></li><li><button onClick={() => handleNav('about')}>{t.nav.about}</button></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.legal}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><a href="#">{t.common.privacy}</a></li><li><a href="#">{t.common.terms}</a></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.contact}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li>{t.common.address}</li><li>{t.common.phoneNum}</li></ul></div></div><div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex justify-between text-zinc-600 text-xs"><p>{t.footer.rights}</p><p>{t.common.unitedStates}</p></div></footer>);
 
 const App = () => {
-  const [currentView, setCurrentView] = useState<'home' | 'sprofessional' | 'sweet' | 'education' | 'about'>('home');
-  const [language, setLanguage] = useState<Language>('en');
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showWhatsApp, setShowWhatsApp] = useState(false);
-  const { connect, disconnect, status, isMuted, isVideoActive, toggleMute, toggleVideo, volumeLevel, videoRef, canvasRef } = useLiveAPI();
-  
-  const t = translations[language];
+    const [activeTab, setActiveTab] = useState('home');
+    const [lang, setLang] = useState<Language>('en'); 
+    const [showWhatsApp, setShowWhatsApp] = useState(false);
+    const t = translations[lang];
+    const { connect, disconnect, status, isMuted, isVideoActive, toggleMute, toggleVideo, volumeLevel, videoRef, canvasRef } = useLiveAPI();
+    
+    const handleNavigation = (tab: string) => { 
+        setActiveTab(tab); 
+        window.scrollTo({ top: 0, behavior: 'smooth' }); 
+    };
 
-  // Scroll to top on view change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentView]);
+    useEffect(() => { 
+        const handleScroll = () => setShowWhatsApp(window.scrollY > 300); 
+        window.addEventListener('scroll', handleScroll); 
+        return () => window.removeEventListener('scroll', handleScroll); 
+    }, []);
 
-  // Global Scroll Animation Observer
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, [currentView]); // Re-run when view changes to capture new elements
-
-  // Show/Hide WhatsApp button on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-        if (window.scrollY > 100) {
-            setShowWhatsApp(true);
-        } else {
-            setShowWhatsApp(false);
+    const renderContent = () => {
+        if (activeTab.startsWith('sp-')) return <TreatmentDetail id={activeTab} t={t} handleNav={handleNavigation} />;
+        switch (activeTab) {
+            case 'home': return <HomeSection t={t} handleNav={handleNavigation} />;
+            case 'sweet': return <SweetSection t={t} />;
+            case 'sprofessional': return <SProfessionalSection t={t} handleNav={handleNavigation} />;
+            case 'education': return <EducationSection t={t} />;
+            case 'about': return <AboutSection t={t} />;
+            case 'partner': return <PartnerAccessSection t={t} />;
+            default: return <HomeSection t={t} handleNav={handleNavigation} />;
         }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  const handleConnect = () => {
-    setIsOverlayOpen(true);
-    connect();
-  };
-
-  const handleDisconnect = () => {
-    disconnect();
-    setIsOverlayOpen(false);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleNavClick = (view: 'home' | 'sprofessional' | 'sweet' | 'education' | 'about') => {
-    setCurrentView(view);
-    setIsMobileMenuOpen(false);
-    scrollToTop();
-  };
-
-  return (
-    <div className="min-h-screen bg-black text-zinc-100 font-sans selection:bg-[#bf953f] selection:text-black">
-      
-      {/* Floating WhatsApp Button */}
-      <div className={`fixed bottom-8 right-8 z-50 transition-all duration-700 ease-out flex items-center gap-4 ${showWhatsApp ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
-          <div className="bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-sm font-serif italic text-white/90 shadow-lg">
-              {t.waHelp}
-          </div>
-          <a 
-            href="https://wa.me/14072181294" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="group relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-full shadow-[0_0_20px_rgba(37,211,102,0.6)] hover:shadow-[0_0_30px_rgba(37,211,102,0.8)] transition-all duration-500 hover:scale-110 overflow-hidden"
-          >
-             {/* Ping Effect */}
-             <div className="absolute inset-0 rounded-full border border-white/50 animate-ping opacity-75"></div>
-             <div className="absolute inset-0 rounded-full border border-white/30 animate-ping opacity-50 delay-75"></div>
-             
-             {/* Glass Shine */}
-             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-             
-             {/* WhatsApp SVG Icon */}
-             <svg viewBox="0 0 24 24" className="w-6 h-6 text-white relative z-10 fill-current" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-             </svg>
-          </a>
-      </div>
-
-      {/* Warning if API Key Missing */}
-      {!hasApiKey() && (
-          <div className="fixed bottom-4 left-4 bg-red-900/80 text-white px-4 py-2 rounded-md text-xs border border-red-500 z-50 backdrop-blur-md">
-              API Key Missing. AI features disabled.
-          </div>
-      )}
-
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/5 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <button onClick={() => handleNavClick('home')} className="text-2xl font-serif text-white tracking-tighter hover:opacity-80 transition-opacity">
-              MA FASHION<span className="text-[#bf953f]">.</span>
-            </button>
-            <div className="hidden md:flex gap-8 text-sm font-light tracking-wide">
-               <button onClick={() => handleNavClick('home')} className={`hover:text-[#bf953f] transition-colors ${currentView === 'home' ? 'text-[#bf953f]' : 'text-zinc-400'}`}>{t.nav.home}</button>
-               <button onClick={() => handleNavClick('sprofessional')} className={`hover:text-[#bf953f] transition-colors ${currentView === 'sprofessional' ? 'text-[#bf953f]' : 'text-zinc-400'}`}>{t.nav.s}</button>
-               <button onClick={() => handleNavClick('sweet')} className={`hover:text-[#bf953f] transition-colors ${currentView === 'sweet' ? 'text-[#bf953f]' : 'text-zinc-400'}`}>{t.nav.sweet}</button>
-               <button onClick={() => handleNavClick('education')} className={`hover:text-[#bf953f] transition-colors ${currentView === 'education' ? 'text-[#bf953f]' : 'text-zinc-400'}`}>{t.nav.edu}</button>
-               <button onClick={() => handleNavClick('about')} className={`hover:text-[#bf953f] transition-colors ${currentView === 'about' ? 'text-[#bf953f]' : 'text-zinc-400'}`}>{t.nav.about}</button>
+    return (
+        <div className="min-h-screen bg-black text-zinc-100 selection:bg-amber-500/30 font-sans flex flex-col w-full">
+            <Navigation activeTab={activeTab} setActiveTab={handleNavigation} lang={lang} setLang={setLang} t={t} />
+            <main className="flex-grow w-full">{renderContent()}</main>
+            <Footer t={t} handleNav={handleNavigation} />
+             <div className={`fixed bottom-32 right-6 z-40 transition-all duration-500 transform ${showWhatsApp ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}><a href={`https://wa.me/${t.common.phoneNum.replace(/\D/g,'')}`} target="_blank" className="block transition-transform hover:scale-110"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-14 h-14 drop-shadow-2xl" /></a></div>
+            <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+                {status === LiveStatus.CONNECTED && <div className="mb-4 animate-fade-in-up"><Visualizer volume={volumeLevel} isActive={true} /></div>}
+                {status === LiveStatus.DISCONNECTED ? (
+                  <button onClick={connect} disabled={!hasApiKey()} className="group relative flex items-center gap-3 pl-6 pr-2 py-2 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 rounded-full shadow-lg hover:scale-105 transition-all">
+                    <span className="text-black font-bold text-sm tracking-widest uppercase">{t.common.aiAssistant}</span>
+                    <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                      <Mic size={20} className="text-amber-400" />
+                    </div>
+                  </button>
+                ) : (
+                  <ControlTray status={status} isMuted={isMuted} isVideoActive={isVideoActive} onConnect={connect} onDisconnect={disconnect} onToggleMute={toggleMute} onToggleVideo={toggleVideo} />
+                )}
+                <video ref={videoRef} className="hidden" autoPlay playsInline muted /><canvas ref={canvasRef} className="hidden" />
             </div>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-4 border-r border-white/10 pr-6">
-               <button onClick={() => setLanguage('en')} className={`text-xs font-medium ${language === 'en' ? 'text-white' : 'text-zinc-600'}`}>EN</button>
-               <button onClick={() => setLanguage('es')} className={`text-xs font-medium ${language === 'es' ? 'text-white' : 'text-zinc-600'}`}>ES</button>
-               <button onClick={() => setLanguage('pt')} className={`text-xs font-medium ${language === 'pt' ? 'text-white' : 'text-zinc-600'}`}>PT</button>
-               <button onClick={() => setLanguage('jp')} className={`text-xs font-medium ${language === 'jp' ? 'text-white' : 'text-zinc-600'}`}>JP</button>
-               <button onClick={() => setLanguage('it')} className={`text-xs font-medium ${language === 'it' ? 'text-white' : 'text-zinc-600'}`}>IT</button>
-               <button onClick={() => setLanguage('ar')} className={`text-xs font-medium ${language === 'ar' ? 'text-white' : 'text-zinc-600'}`}>AR</button>
-               <button onClick={() => setLanguage('cn')} className={`text-xs font-medium ${language === 'cn' ? 'text-white' : 'text-zinc-600'}`}>CN</button>
-            </div>
-            
-            <button className="relative p-2 text-zinc-400 hover:text-white transition-colors">
-              <ShoppingBag size={20} />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-[#bf953f] rounded-full"></span>
-            </button>
-            
-            <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(true)}>
-              <Menu size={24} />
-            </button>
-          </div>
         </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-2xl flex flex-col justify-center px-8 transition-all duration-500">
-             <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors">
-                 <X size={32} />
-             </button>
-             
-             <div className="space-y-8">
-                <button onClick={() => handleNavClick('home')} className="block text-4xl font-serif text-white animate-fade-in-up" style={{animationDelay: '0.1s'}}>{t.nav.home}</button>
-                <button onClick={() => handleNavClick('sprofessional')} className="block text-4xl font-serif text-zinc-400 hover:text-[#bf953f] animate-fade-in-up transition-colors text-left" style={{animationDelay: '0.2s'}}>{t.nav.s}</button>
-                <button onClick={() => handleNavClick('sweet')} className="block text-4xl font-serif text-zinc-400 hover:text-[#bf953f] animate-fade-in-up transition-colors text-left" style={{animationDelay: '0.3s'}}>{t.nav.sweet}</button>
-                <button onClick={() => handleNavClick('education')} className="block text-4xl font-serif text-zinc-400 hover:text-[#bf953f] animate-fade-in-up transition-colors text-left" style={{animationDelay: '0.4s'}}>{t.nav.edu}</button>
-                <button onClick={() => handleNavClick('about')} className="block text-4xl font-serif text-zinc-400 hover:text-[#bf953f] animate-fade-in-up transition-colors text-left" style={{animationDelay: '0.5s'}}>{t.nav.about}</button>
-             </div>
-
-             <div className="mt-12 pt-12 border-t border-white/10 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                 <div className="flex gap-6 mb-8 overflow-x-auto pb-4">
-                   {(['en', 'es', 'pt', 'jp', 'it', 'ar', 'cn'] as Language[]).map(lang => (
-                       <button key={lang} onClick={() => setLanguage(lang)} className={`text-lg font-medium ${language === lang ? 'text-[#bf953f]' : 'text-zinc-600'}`}>
-                           {lang.toUpperCase()}
-                       </button>
-                   ))}
-                 </div>
-                 <div className="flex gap-6 text-zinc-500">
-                     <a href="https://www.facebook.com/share/17RRNbbb3u/" target="_blank" rel="noopener noreferrer"><Facebook size={24} /></a>
-                     <a href="https://www.instagram.com/shairprof_usa/" target="_blank" rel="noopener noreferrer"><Instagram size={24} /></a>
-                     <Linkedin size={24} />
-                 </div>
-             </div>
-          </div>
-      )}
-
-      {/* Main Content Router */}
-      {currentView === 'home' ? (
-        <>
-            {/* Hero Section */}
-            <div className="relative h-screen flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                  <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-[100px] animate-pulse"></div>
-                  <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[100px] animate-pulse" style={{animationDelay: '2s'}}></div>
-                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1887&auto=format&fit=crop')] opacity-[0.03] bg-cover bg-center"></div>
-                </div>
-
-                <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-                    <span className="inline-block py-1 px-3 rounded-full border border-white/10 bg-white/5 text-xs tracking-widest uppercase mb-8 animate-fade-in backdrop-blur-md text-[#bf953f]">
-                    {t.tagline}
-                    </span>
-                    <h1 className="text-6xl md:text-9xl font-serif text-white mb-8 tracking-tighter leading-none animate-fade-in-up">
-                    {t.titleStart} <span className="italic text-zinc-500">{t.titleEnd}</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                    {t.subtitle}
-                    </p>
-                    
-                    {/* FUTURISTIC VIDEO CALL INTERFACE CTA */}
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                        
-                        <div onClick={handleConnect} className="group cursor-pointer relative">
-                             {/* Camera/Viewfinder Frame Effect */}
-                             <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-top-4 group-hover:-left-4 transition-all duration-500"></div>
-                             <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-top-4 group-hover:-right-4 transition-all duration-500"></div>
-                             <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-bottom-4 group-hover:-left-4 transition-all duration-500"></div>
-                             <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-[#bf953f] opacity-50 group-hover:opacity-100 group-hover:-bottom-4 group-hover:-right-4 transition-all duration-500"></div>
-                             
-                             {/* Main Action Card */}
-                             <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 px-10 py-6 flex items-center gap-6 overflow-hidden">
-                                 {/* Scanning Line Animation */}
-                                 <div className="absolute top-0 left-0 w-[2px] h-full bg-[#bf953f]/50 animate-[marquee_2s_linear_infinite] opacity-0 group-hover:opacity-100"></div>
-
-                                 {/* Icon Container with Pulse */}
-                                 <div className="relative w-16 h-16 flex items-center justify-center bg-white/5 rounded-full border border-white/10 group-hover:border-[#bf953f]/50 transition-colors">
-                                     <span className="absolute inset-0 rounded-full border border-[#bf953f] animate-ping opacity-20"></span>
-                                     <Video size={32} className="text-white relative z-10" />
-                                     <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse border-2 border-black"></div>
-                                 </div>
-
-                                 {/* Text Content */}
-                                 <div className="text-left">
-                                     <div className="flex items-center gap-2 mb-1">
-                                         <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                                         <span className="text-[#bf953f] text-[10px] uppercase tracking-[0.2em] font-bold">Live Cam Link</span>
-                                     </div>
-                                     <div className="text-2xl font-serif text-white leading-none mb-1 group-hover:text-[#bf953f] transition-colors">{t.ctaDiagnosis}</div>
-                                     <div className="text-zinc-500 text-xs tracking-wide flex items-center gap-2">
-                                         <Scan size={12} /> Video & Voice Enabled
-                                     </div>
-                                 </div>
-                             </div>
-                        </div>
-
-                        {/* Secondary Button */}
-                        <button className="px-8 py-4 border-b border-white/20 text-zinc-400 font-medium text-sm uppercase tracking-widest hover:text-white hover:border-white transition-all">
-                            {t.ctaShop}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Promotions Section */}
-            <PromotionsSection t={t} />
-
-            {/* Products Preview */}
-            <div className="py-32 bg-zinc-950 relative reveal-on-scroll">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex justify-between items-end mb-16">
-                    <div>
-                        <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">{t.collectionTitle}</h2>
-                        <p className="text-zinc-500 font-light">{t.collectionSub}</p>
-                    </div>
-                    <button className="hidden md:flex items-center gap-2 text-xs uppercase tracking-widest text-[#bf953f] hover:text-white transition-colors">
-                        {t.viewAll} <ArrowRight size={16} />
-                    </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[
-                        { 
-                          img: "https://images.unsplash.com/photo-1631729371254-42c2a89ddf17?q=80&w=2080&auto=format&fit=crop",
-                          data: t.products.p1
-                        },
-                        { 
-                          img: "https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=2080&auto=format&fit=crop",
-                          data: t.products.p2
-                        },
-                        { 
-                          img: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=2080&auto=format&fit=crop",
-                          data: t.products.p3
-                        }
-                    ].map((item, i) => (
-                        <div key={i} className="group cursor-pointer">
-                        <div className="relative aspect-[3/4] bg-zinc-900 mb-6 overflow-hidden">
-                            <img 
-                            src={item.img} 
-                            alt="Product" 
-                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
-                            />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                        </div>
-                        <h3 className="text-xl font-serif text-white mb-1 group-hover:text-[#bf953f] transition-colors">{item.data.title}</h3>
-                        <p className="text-sm text-zinc-500 mb-2">{item.data.desc}</p>
-                        <span className="text-sm font-medium text-white">{item.data.price}</span>
-                        </div>
-                    ))}
-                    </div>
-                </div>
-            </div>
-        </>
-      ) : currentView === 'sprofessional' ? (
-        <SProfessionalPage language={language} t={t} />
-      ) : currentView === 'sweet' ? (
-        <SweetProfessionalPage language={language} t={t} />
-      ) : currentView === 'education' ? (
-        <EducationPage language={language} t={t} />
-      ) : (
-        <AboutPage language={language} t={t} />
-      )}
-      
-      {/* Footer */}
-      <Footer t={t} handleNavClick={handleNavClick} />
-
-      {/* AI Overlay */}
-      {isOverlayOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center animate-fade-in">
-          <div className="absolute top-8 right-8 z-10">
-             <button 
-                onClick={handleDisconnect}
-                className="p-4 rounded-full bg-white/5 hover:bg-white/10 text-white transition-all"
-             >
-               <X size={24} />
-             </button>
-          </div>
-          
-          <div className="w-full max-w-4xl px-6 flex flex-col items-center gap-12">
-             <div className="flex flex-col items-center gap-4 animate-fade-in-up">
-               <div className="px-4 py-1.5 rounded-full border border-[#bf953f]/30 bg-[#bf953f]/10 text-[#bf953f] text-xs font-medium uppercase tracking-widest flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-[#bf953f] animate-pulse" />
-                 {status === LiveStatus.CONNECTED ? t.consultantActive : t.connecting}
-               </div>
-               
-               {status === LiveStatus.CONNECTED && (
-                 <div className="flex items-center gap-2 text-zinc-500 text-xs">
-                    <Database size={12} />
-                    <span>{t.kbActive}</span>
-                 </div>
-               )}
-             </div>
-
-             <div className="relative">
-                <Visualizer volume={volumeLevel} isActive={status === LiveStatus.CONNECTED} />
-             </div>
-
-             <div className="text-center max-w-lg animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                <p className="text-2xl font-serif text-white leading-relaxed">
-                  {status === LiveStatus.CONNECTED 
-                    ? t.listening
-                    : "Initializing secure connection to MA Fashion Neural Network..."}
-                </p>
-             </div>
-
-             <div className="animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                <ControlTray 
-                    status={status}
-                    isMuted={isMuted}
-                    isVideoActive={isVideoActive}
-                    onConnect={connect}
-                    onDisconnect={handleDisconnect}
-                    onToggleMute={toggleMute}
-                    onToggleVideo={toggleVideo}
-                />
-             </div>
-          </div>
-          
-          {/* Video Preview - Visible when active */}
-          <video 
-            ref={videoRef} 
-            className={`absolute bottom-32 right-8 w-48 aspect-video rounded-xl border-2 border-[#bf953f] shadow-[0_0_20px_rgba(191,149,63,0.3)] object-cover transition-all duration-500 ${isVideoActive ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`} 
-            autoPlay 
-            playsInline 
-            muted 
-          />
-          <canvas ref={canvasRef} className="hidden" />
-        </div>
-      )}
-    </div>
-  );
+    );
 };
-
 export default App;

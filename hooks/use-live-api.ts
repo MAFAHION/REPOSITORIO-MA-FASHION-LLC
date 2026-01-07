@@ -1,80 +1,82 @@
+
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { LiveStatus } from '../types';
 import { createPcmBlob, decodeAudioData, base64ToArrayBuffer, blobToBase64 } from '../utils/audio-utils';
 
-// Helper to safely get API Key without crashing if process is undefined (browser environments)
-const getApiKey = () => {
-  try {
-    if (typeof process !== 'undefined' && process.env) {
-      return process.env.API_KEY || '';
-    }
-    // If you are using Vite, you might use import.meta.env.VITE_API_KEY
-    // return import.meta.env.VITE_API_KEY || '';
-  } catch (e) {
-    console.warn("Environment variables not accessible");
-  }
-  return ''; // Return empty string if not found, don't crash
-};
-
-const API_KEY = getApiKey();
-
-const MODEL_NAME = 'gemini-2.5-flash-native-audio-preview-09-2025';
+// Update to the latest recommended model for Live API
+const MODEL_NAME = 'gemini-2.5-flash-native-audio-preview-12-2025';
 const VOICE_NAME = 'Fenrir'; // Using a deeper, more professional voice
 
 // Product Database injected into AI context
-const PRODUCT_CONTEXT = `
+export const PRODUCT_CONTEXT = `
 CONTEXTO PRINCIPAL:
-Eres el Consultor Experto Senior de "MA Fashion LLC", distribuidor exclusivo de las marcas "Sweet Professional" y "S Professional".
-Tu misión es elevar la experiencia del salón, vender soluciones técnicas y educar.
+Eres el **DIRECTOR COMERCIAL Y EDUCATIVO** de "MA Fashion LLC".
+Tu objetivo es **RENTABILIZAR EL NEGOCIO DEL ESTILISTA** a través de la educación y la venta de productos de alto rendimiento.
 
-REGLAS CRÍTICAS DE COMPORTAMIENTO (NO ROMPER):
-1. **IDIOMA**: ESCUCHA atentamente el idioma del usuario. RESPONDE SIEMPRE EN EL MISMO IDIOMA en el que te hablen (Español, Inglés, Portugués, Italiano, Árabe, Japonés, Chino).
-2. **VERACIDAD**: NO INVENTES INFORMACIÓN. Basa tus respuestas ÚNICAMENTE en este contexto y en los archivos adjuntos (Base de Conocimientos). Si no sabes un dato técnico específico, NO lo adivines.
-3. **ESCALAMIENTO HUMANO**: Si te hacen una pregunta técnica o comercial que NO puedes responder con la información provista, o si hay una duda compleja, indica al usuario que se comunique con:
-   - **Ernesto Aramburu** (Director)
-   - **Alejandra Mendez** (Técnica de la Marca y Embajadora Internacional de S Professional y Sweet Professional).
-   **IMPORTANTE: DILE AL USUARIO QUE PUEDE ENCONTRAR LOS DATOS DE CONTACTO EN LA PARTE INFERIOR (PIE DE PÁGINA) DE ESTE SITIO WEB.**
+--- PROTOCOLO DE IDIOMA ---
+1. Detecta el idioma del usuario (Español, Inglés, Portugués).
+2. Responde SIEMPRE en el mismo idioma.
 
-FUENTE DE VERDAD (RAG / DOCUMENTOS):
-Tienes acceso a una "Base de Conocimientos Técnica" mediante la herramienta [fileSearch]. Úsala para responder preguntas sobre ingredientes, pH y tiempos de pausa.
+--- FILOSOFÍA DE VENTA: "EL TIEMPO ES DINERO" ---
+1. **RENTABILIDAD MÁXIMA:** Tu argumento principal es que nuestras líneas permiten facturar MÁS SERVICIOS por día gracias a su rapidez.
+2. **TIEMPOS EXACTOS (CRUCIAL):** Siempre indica los tiempos de exposición EXACTOS del manual.
+   - **DILE AL CLIENTE:** "No hace falta dejarlo más tiempo. Dejarlo más tiempo es perder tiempo y dinero. Sigue el manual para facturar más rápido."
+   - La eficiencia es la clave de la ganancia.
 
-PROTOCOLOS TÉCNICOS S PROFESSIONAL (RESUMEN):
+--- ESTRATEGIA DE PRIORIDAD DE MARCAS ---
+**REGLA DE ORO:**
+1. **OFRECE PRIMERO SIEMPRE LA LÍNEA "S PROFESSIONAL"**. (Es la evolución, el lujo, el sistema completo).
+2. **LA LÍNEA "SWEET PROFESSIONAL" ES LA ÚLTIMA OPCIÓN.** Solo ofrécela si el cliente pregunta específicamente por ella o si S Professional no cubre la necesidad (ej. rescate extremo SOS).
 
-1. **LÍNEA NUTROLOGY (Nutrición Intensa / Cronología)**:
-   - *Objetivo*: Nutrición, reposición de aceites y carbono. Biotecnología.
-   - *Activos*: Clorofila, Xantofila, Manteca de Karité, D-Pantenol.
-   - *Protocolo*: Lavar con Nutri Shampoo (2 veces). Aplicar Renew Ultraconditioner (10 min). Enjuagar.
+--- GUÍA TÉCNICA MAESTRA (PRIORIDAD S PROFESSIONAL) ---
 
-2. **LÍNEA HIDRATHERAPY (Hidratación / Ozonoterapia)**:
-   - *Objetivo*: Hidratación profunda, desintoxicación del cuero cabelludo.
-   - *Activos*: Agua ozonizada, Jengibre, Citronela, Romero.
-   - *Protocolo*: Lavar con Purifying Shampoo. Aplicar Power Dose (ampolla). Opcional ozono (10 min). Aplicar Recovery Conditioner (3 min).
+### 1. S PROFESSIONAL - LÍNEA "BRUSHING+" (Alineación Térmica - TU RECOMENDACIÓN #1)
+**Beneficio:** Alisado orgánico rápido, sin humo, rentabilidad pura.
+**Paso a Paso (Estricto):**
+1. Lavar con Champú Deep Clean S Professional.
+2. Secar el cabello al 80%.
+3. Aplicar Brushing+ mecha a mecha (respetando 0.5cm de raíz).
+4. **Pausa:** 45 a 60 minutos MÁXIMO (dependiendo del rizo). ¡No exceder!
+5. Enjuagar el 50% del producto (solo quitar exceso).
+6. Brushing liso (cepillado) y planchar mechas finas 15 veces a 450°F (230°C).
 
-3. **LÍNEA BRUSHING+ (Alisado Térmico / Anti-Frizz)**:
-   - *Tecnología*: Enlaces de moléculas ácidas. Libre de formol.
-   - *Protocolo*:
-     1. Deep Shampoo (Lavar, 2da vez dejar 5-10 min).
-     2. Secar 80%.
-     3. Brushing Shampoo (Aplicar sin frotar cuero cabelludo, dejar 15 min). Enjuagar.
-     4. Secar 80%.
-     5. Hair Plus (Aplicar, dejar 20 min). Enjuagar.
-     6. Secar 100%. Planchar (230°C sano / 180°C dañado).
+### 2. S PROFESSIONAL - LÍNEA "HIDRATHERAPY" (Hidratación Ozono - TU RECOMENDACIÓN #2)
+**Beneficio:** Hidratación profunda con tecnología de ozono. Servicio rápido de alto valor.
+**Paso a Paso:**
+1. Lavar con Champú Hidrante.
+2. Aplicar Máscara Hidratherapy.
+3. Masajear (enluvado) durante 5-10 minutos.
+4. Enjuagar completamente.
 
-4. **LÍNEA PRO FUSION (Reconstrucción Enzimática)**:
-   - *Objetivo*: Reposición de masa, pH ácido, para cabellos "chiclosos".
-   - *Protocolo SOS*:
-     1. Lavar con Fusion Shampoo.
-     2. Aplicar Inner (10 min).
-     3. SIN ENJUAGAR, aplicar Redress Ultraconditioner encima (10 min).
-     4. Enjuagar. Finalizar con Save Home y Serum.
+### 3. S PROFESSIONAL - LÍNEA "PRO FUSION" (Reconstrucción - TU RECOMENDACIÓN #3)
+**Beneficio:** Reconstrucción enzimática para cabello dañado.
+**Paso a Paso:**
+1. Lavar con champú preparador.
+2. Aplicar fluido de proteínas/enzimas. Usar calor 10 minutos.
+3. Aplicar sellador de cutícula. Enjuagar.
 
-5. **LÍNEA MY CROWN (Rizos y Curvas)**:
-   - *Objetivo*: Definición, memoria de rizo.
-   - *Tecnología*: Curvelini y Plantcol.
-   - *Uso*: Shampoo Low Poo, Mascarilla hidratante y Finalizador con memoria.
+### 4. S PROFESSIONAL - LÍNEA "NUTROLOGY" (Nutrición)
+**Paso a Paso:** Lavar con champú nutrición, aplicar máscara 10 min, enjuagar.
 
-RECUERDA: Tu tono es profesional, lujoso y experto. Vende la "Ciencia de la Belleza".
+### --- OPCIONES SECUNDARIAS (SWEET PROFESSIONAL) ---
+*(Solo ofrecer si el cliente insiste o pregunta específicamente)*
+
+### 5. SWEET PROFESSIONAL - "THE FIRST" (Champú que Alisa)
+**Paso a Paso:**
+1. Lavar con The First (lograr espuma densa).
+2. **Pausa:** 20 MINUTOS EXACTOS. (Cronometrados. Más tiempo no mejora el resultado, solo pierdes dinero).
+3. Enjuagar 100%.
+4. Secar 100%.
+5. Planchar mechas finas a temperatura constante (230°C/450°F).
+
+### 6. SWEET PROFESSIONAL - "S.O.S" (Solo para emergencias "Cabello Chicle")
+**Paso a Paso:**
+1. Impact Shock (Paso 1) sobre cabello húmedo. Pausa 10 min. NO ENJUAGAR.
+2. Regeneration (Paso 2) encima. Pausa 10 min.
+3. Enjuagar.
+
+SI TE PREGUNTAN ALGO QUE NO ESTÁ AQUÍ, DI: "Para ese detalle técnico específico, prefiero conectarte con un técnico humano o consultar la ficha técnica actualizada. ¿Quieres que agende una llamada?"
 `;
 
 export const useLiveAPI = () => {
@@ -82,6 +84,9 @@ export const useLiveAPI = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoActive, setIsVideoActive] = useState(false);
   const [volumeLevel, setVolumeLevel] = useState(0); // For visualizer (0-1)
+
+  // Use a Ref to track mute state in real-time inside the audio processor callback
+  const isMutedRef = useRef(false);
 
   // Audio Contexts
   const inputAudioContextRef = useRef<AudioContext | null>(null);
@@ -96,8 +101,8 @@ export const useLiveAPI = () => {
 
   // Video Streaming
   const videoIntervalRef = useRef<number | null>(null);
-  const videoElementRef = useRef<HTMLVideoElement | null>(null);
-  const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Gemini Session
   const sessionPromiseRef = useRef<Promise<any> | null>(null);
@@ -112,8 +117,17 @@ export const useLiveAPI = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sync state with ref for the audio processor
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
+
   const connect = useCallback(async () => {
-    if (!API_KEY) {
+    // Prevent multiple connection attempts
+    if (status === LiveStatus.CONNECTED || status === LiveStatus.CONNECTING) return;
+
+    // Use process.env.API_KEY directly as per guidelines
+    if (!process.env.API_KEY) {
       console.error("API Key not found");
       setStatus(LiveStatus.ERROR);
       return;
@@ -122,17 +136,22 @@ export const useLiveAPI = () => {
     try {
       setStatus(LiveStatus.CONNECTING);
       
-      // Init Audio Contexts
+      // Init Audio Contexts with Resume logic for browser policies
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      
       inputAudioContextRef.current = new AudioContext({ sampleRate: 16000 });
       outputAudioContextRef.current = new AudioContext({ sampleRate: 24000 });
+
+      // Vital: Resume contexts to prevent "suspended" state
+      await inputAudioContextRef.current.resume();
+      await outputAudioContextRef.current.resume();
 
       // Init Microphone
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      // Init GenAI
-      const ai = new GoogleGenAI({ apiKey: API_KEY });
+      // Init GenAI using process.env.API_KEY directly
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       genAiRef.current = ai;
 
       const sessionPromise = ai.live.connect({
@@ -143,19 +162,7 @@ export const useLiveAPI = () => {
             voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE_NAME } },
           },
           systemInstruction: PRODUCT_CONTEXT,
-          tools: [
-            {
-              // @ts-ignore - FileSearch tool configuration for RAG
-              fileSearch: {
-                fileSearchStoreNames: [
-                  "fileSearchStores/filesearchstore-1-0hxqp07lpl9v",
-                  "fileSearchStores/filesearchstore-1-f1r3hcc52pdp",
-                  "fileSearchStores/filesearchstore-1-ledx8gp448sc",
-                  "fileSearchStores/filesearchstore-1-qc5zr6io1ok8"
-                ]
-              }
-            }
-          ]
+          // Removed unsupported fileSearch tool to comply with available tools in GenAI SDK
         },
         callbacks: {
           onopen: () => {
@@ -184,8 +191,9 @@ export const useLiveAPI = () => {
     } catch (error) {
       console.error("Connection failed:", error);
       setStatus(LiveStatus.ERROR);
+      disconnect(); // Ensure cleanup on failure
     }
-  }, []);
+  }, [status]); // Add status to dependency array to prevent race conditions
 
   const disconnect = useCallback(() => {
     // Close Session
@@ -200,9 +208,12 @@ export const useLiveAPI = () => {
     stopAudioInput();
     stopVideoInput();
 
-    // Close Contexts
-    inputAudioContextRef.current?.close();
-    outputAudioContextRef.current?.close();
+    // Close Contexts safely
+    try {
+        if (inputAudioContextRef.current?.state !== 'closed') inputAudioContextRef.current?.close();
+        if (outputAudioContextRef.current?.state !== 'closed') outputAudioContextRef.current?.close();
+    } catch(e) { console.log("Context already closed"); }
+
     inputAudioContextRef.current = null;
     outputAudioContextRef.current = null;
 
@@ -219,7 +230,11 @@ export const useLiveAPI = () => {
     const processor = ctx.createScriptProcessor(4096, 1, 1);
     
     processor.onaudioprocess = (e) => {
-      if (isMuted) return;
+      // CRITICAL: Check the Ref, not the state variable.
+      if (isMutedRef.current) {
+          setVolumeLevel(0); // Force visualizer to 0
+          return; // Do not process or send audio
+      }
 
       const inputData = e.inputBuffer.getChannelData(0);
       
@@ -248,10 +263,18 @@ export const useLiveAPI = () => {
   };
 
   const stopAudioInput = () => {
-    processorRef.current?.disconnect();
-    sourceRef.current?.disconnect();
-    streamRef.current?.getTracks().forEach(t => t.stop());
-    streamRef.current = null;
+    if (processorRef.current) {
+        processorRef.current.disconnect();
+        processorRef.current = null;
+    }
+    if (sourceRef.current) {
+        sourceRef.current.disconnect();
+        sourceRef.current = null;
+    }
+    if (streamRef.current) {
+        streamRef.current.getTracks().forEach(t => t.stop());
+        streamRef.current = null;
+    }
   };
 
   const handleServerMessage = async (message: LiveServerMessage) => {
@@ -265,7 +288,9 @@ export const useLiveAPI = () => {
     }
 
     if (serverContent?.interrupted) {
-        audioSourcesRef.current.forEach(source => source.stop());
+        audioSourcesRef.current.forEach(source => {
+            try { source.stop(); } catch(e) {}
+        });
         audioSourcesRef.current.clear();
         nextStartTimeRef.current = 0;
     }
@@ -305,11 +330,11 @@ export const useLiveAPI = () => {
   };
 
   const startVideoInput = useCallback(() => {
-    if (!videoElementRef.current || !canvasElementRef.current) return;
+    if (!videoRef.current || !canvasRef.current) return;
     setIsVideoActive(true);
 
-    const videoEl = videoElementRef.current;
-    const canvasEl = canvasElementRef.current;
+    const videoEl = videoRef.current;
+    const canvasEl = canvasRef.current;
     const ctx = canvasEl.getContext('2d');
 
     navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } })
@@ -352,7 +377,7 @@ export const useLiveAPI = () => {
         clearInterval(videoIntervalRef.current);
         videoIntervalRef.current = null;
     }
-    const videoEl = videoElementRef.current;
+    const videoEl = videoRef.current;
     if (videoEl && videoEl.srcObject) {
         const stream = videoEl.srcObject as MediaStream;
         stream.getTracks().forEach(track => track.stop());
@@ -379,7 +404,7 @@ export const useLiveAPI = () => {
     toggleMute,
     toggleVideo,
     volumeLevel,
-    videoRef: videoElementRef,
-    canvasRef: canvasElementRef
+    videoRef,
+    canvasRef
   };
 };
