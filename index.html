@@ -1,27 +1,34 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="58yGkvesAcKBx5AIvm-pOQjahOatsF_0rFn77vLATM0" />
     
-    <!-- SEO & Metadata -->
-    <title>MA Fashion LLC | S Professional & Sweet Professional USA</title>
-    <meta name="description" content="Official distributor of S Professional and Sweet Professional in the USA. Advanced hair biotechnology, thermal alignment (Brushing+), ozone therapy (Hidratherapy), and curl definition (My Crown). Servicing salons in Florida and nationwide.">
-    <meta name="keywords" content="MA Fashion LLC, S Professional, Sweet Professional, Brushing, Brushing+, Brushing Plus, Pro Fusion, Profusion, Hidroterapia, Hidratherapy, Hidroterapya, My Crown, Nutrology, Rizos, Curls, Alisados, Hair Straightening, Hair Botox, Keratin Free, Biotecnología Capilar, Salones de Belleza, Beauty Salons, Florida, Miami, Orlando, Tampa, USA, Ernesto Aramburu, Alejandra Mendez, Hair Care Distributor, Professional Hair Products">
+    <!-- SEO & Metadata Primario -->
+    <title>MA Fashion LLC | S Professional & Sweet Professional USA Official</title>
+    <meta name="description" content="Official USA distributor of S Professional and Sweet Professional. Advanced hair biotechnology: Brushing+, Hidratherapy, My Crown, and The First Shampoo. Professional salon solutions.">
+    <meta name="keywords" content="MA Fashion LLC, S Professional USA, Sweet Professional USA, hair biotechnology, thermal alignment, Brushing+, hair botox, salon exclusive products, Ernesto Aramburu, Alejandra Mendez, professional hair care Florida">
     <meta name="author" content="MA Fashion LLC">
     <meta name="robots" content="index, follow">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook (Para compartir en redes) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mafashionllc.com/">
     <meta property="og:title" content="MA Fashion LLC | The Science of Beauty">
-    <meta property="og:description" content="Discover S Professional & Sweet Professional. High-performance hair biotechnology for salons. Thermal alignment, reconstruction, and hydration.">
+    <meta property="og:description" content="Revolutionizing professional hair care with patented biotechnology. Discover S Professional and Sweet Professional.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1974&auto=format&fit=crop">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mafashionllc.com/">
     <meta property="twitter:title" content="MA Fashion LLC | Global Hair Biotechnology">
-    <meta property="twitter:description" content="Leading the revolution in professional hair care with S Professional and Sweet Professional.">
+    <meta property="twitter:description" content="High-performance hair biotechnology for professionals. Brushing+, Hidratherapy, and more.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1974&auto=format&fit=crop">
+
+    <!-- Favicon (Icono de la pestaña) -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/60BvHwYV/favicon.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -29,10 +36,10 @@
       html {
         background-color: #000000;
         height: 100%;
-        overscroll-behavior-y: none; /* Prevents white bounce on scroll edges */
+        overscroll-behavior-y: none;
       }
       body {
-        background-color: #000000; /* Pure black to match footer */
+        background-color: #000000;
         color: #e4e4e7;
         font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         overflow-x: hidden;
@@ -47,12 +54,7 @@
         flex-direction: column;
         flex: 1;
       }
-      
-      .font-serif {
-        font-family: 'Playfair Display', serif;
-      }
-
-      /* Cinematic Noise Texture */
+      .font-serif { font-family: 'Playfair Display', serif; }
       .bg-noise::before {
         content: "";
         position: fixed;
@@ -65,99 +67,24 @@
         opacity: 0.04;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3e");
       }
-
-      /* Animation Utilities */
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-      }
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-
       @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
       }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0; /* Start hidden */
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
-      }
-      
-      /* Scroll Reveal Animation System */
-      .reveal-on-scroll {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: transform, opacity;
-      }
-      
-      .reveal-on-scroll.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      
-      /* Marquee Animation for News Ticker */
+      .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
       @keyframes marquee {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
       }
-      .animate-marquee {
-        animation: marquee 40s linear infinite;
-      }
-      
-      /* Gold Gradient Text */
+      .animate-marquee { animation: marquee 40s linear infinite; }
       .text-gold {
         background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
       }
-      
-      .bg-gold-gradient {
-        background: linear-gradient(to right, #bf953f, #b38728);
-      }
-
-      /* Tech Background Patterns */
       .bg-grid-white {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgba(255, 255, 255, 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
-      }
-
-      @keyframes scan {
-        0% { background-position: 0% 0%; }
-        100% { background-position: 0% 100%; }
-      }
-      
-      .animate-scan {
-        background: linear-gradient(to bottom, transparent 0%, rgba(191, 149, 63, 0.1) 50%, transparent 100%);
-        background-size: 100% 200%;
-        animation: scan 4s linear infinite;
-      }
-
-      /* Outline Text Effect */
-      .text-stroke {
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
-        color: transparent;
-      }
-      
-      /* Orbital Animations */
-      @keyframes spin-slow {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-      .animate-spin-slow {
-        animation: spin-slow 20s linear infinite;
-      }
-      .animate-spin-reverse-slow {
-        animation: spin-slow 25s linear reverse infinite;
       }
     </style>
   <script type="importmap">
