@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useLiveAPI } from './hooks/use-live-api';
 import Visualizer from './components/Visualizer';
@@ -184,7 +185,7 @@ const ptTranslation = {
       ]
   },
   footer: { about: "A MA Fashion LLC lidera o mercado global em biotecnologia capilar, fornecendo soluções de alto desempenho.", links: "Links Rápidos", legal: "Jurídico", contact: "Contato", rights: "© 2024 MA Fashion LLC. Todos os direitos reservados." },
-  sweet: { title: "Sweet Professional", desc: "A marca que revolucionou o mercado com o primeiro alisador térmico em champô. Inovação e segurança.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "O primeiro champô alisador do mundo. 5 patentes.", cronology: "Mapeamento biotecnológico para tratamentos personalizados.", sos: "Resgate de emergência para cabelos danificados." } },
+  sweet: { title: "Sweet Professional", desc: "A marca que revolucionou o mercado con o primeiro alisador térmico em champô. Inovação e segurança.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "O primeiro champô alisador do mundo. 5 patentes.", cronology: "Mapeamento biotecnológico para tratamentos personalizados.", sos: "Resgate de emergência para cabelos danificados." } },
   sprofessional: {
     title: "S Professional", subtitle: "Sistemas de Terapia Capilar", desc: "Um ecossistema completo de tratamentos para o estilista moderno.", commonDesc: "Experimente a transformação capilar suprema com nossa biotecnologia patenteada.",
     lines: { nutrology: "Nutrology - Nutrição Profunda", hidratherapy: "Hidratherapy - Hidratação Ozono", brushing: "Brushing+ - Alinhamento Térmico", profusion: "Pro Fusion - Reconstrução Enzimática", mycrown: "My Crown - Definição de Cachos" },
@@ -204,7 +205,7 @@ const ptTranslation = {
     }
   },
   education: { title: "Academia MA", subtitle: "Domine a Arte", desc: "Mergulhe em eventos globais onde a ciência encontra a arte. Nossa educação técnica eleva os padrões." },
-  about: { title: "Quem Somos", subtitle: "Liderança Global", desc: "Somos os arquitetos da transformação capilar. MA Fashion LLC une ciência e arte.", ambassadorsTitle: "Rede de Embaixadores Artísticos", ambassadorsDesc: "Nossa equipe de elite de artistas oficiais nos EUA.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educadora", location: "EUA" }, { name: "Fernando Mendez", role: "Master Stylist", location: "EUA" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "EUA" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "EUA" }], repsTitle: "Conselho Executivo", stats: { years: "Anos de Excelência", salons: "Salões Parceiros", countries: "Presença Global" }, roles: { techAmb: "Fundadora, Embaixadora & Técnica Intl", ceo: "CEO & Fundador", marketingDir: "Diretora de Marketing", opsDir: "Diretor de Operações", stylist: "Elite Stylist & Educadora" } }
+  about: { title: "Quem Somos", subtitle: "Liderança Global", desc: "Somos os arquitetos da transformação capilar. MA Fashion LLC une ciência e arte.", ambassadorsTitle: "Rede de Embaixadores Artísticos", ambassadorsDesc: "Nossa equipe de elite de artistas oficiais nos EUA.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educadora", location: "EUA" }, { name: "Fernando Mendez", role: "Master Stylist", location: "EUA" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "EUA" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "EUA" }], repsTitle: "Conselho Executivo", stats: { years: "Anos de Excelência", salons: "Salões Parceiros", countries: "Presenza Global" }, roles: { techAmb: "Fundadora, Embaixadora & Técnica Intl", ceo: "CEO & Fundador", marketingDir: "Diretora de Marketing", opsDir: "Diretor de Operações", stylist: "Elite Stylist & Educadora" } }
 };
 
 const itTranslation = {
@@ -246,7 +247,7 @@ const itTranslation = {
       hidratherapy: { headline: "Tecnologia Ozono e Idratazione Estrema", benefits: ["Idratazione cellulare profonda", "Effetto ozono protettivo"], assets: ["Ozono Attivo O3", "Acido Ialuronico"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
       profusion: { headline: "Ricostruzione Enzimatica ad Alte Prestazioni", benefits: ["Inverte il danno chimico", "Ripristina elasticità"], assets: ["Enzimi Proteolitici", "Bio-Cheratina"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
       brushing: { headline: "Allineamento Termico Organico Veloce", benefits: ["100% Senza Formaldeide", "Applicazione ultra-veloce"], assets: ["Base Taninoplastia", "Acidi Organici"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
-      mycrown: { headline: "La Rivoluzione della Memoria di Curvatura", benefits: ["Definisce tutti i tipi di ricci", "Memorizza curvatura"], assets: ["Tecnologia Curl Memory", "Olio di Lino"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+      mycrown: { headline: "La Rivoluzione della Memoria di Curvatura", benefits: ["Definisce tutti i tipi di ricci", "Memorizza curvatura"], assets: ["Tecnologia Curl Memory", "Burro di Murumuru", "Olio di Lino"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
     }
   },
   education: { title: "MA Academy", subtitle: "Domina l'Arte", desc: "Immergiti negli eventi globali dove la scienza incontra l'arte. La nostra formazione eleva gli standard." },
@@ -287,12 +288,12 @@ const frTranslation = {
           benefits: ["Remplacement lipidique instantané", "Brillance diamant", "Protection anti-frizz", "Mouvement léger"],
           assets: ["Nano-Particules Lipidiques", "Complexe d'Acides Aminés", "Beurre de Karité Bio"],
           intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
-          functions: [{ title: "Technologie Nutrology", desc: "Nutrition Intense avec haute perméation dans le cortex." }, { title: "Fonctions Clés", desc: "Nutrition pour cheveux secs et protection antioxydante." }]
+          functions: [{ title: "Tecnologia Nutrology", desc: "Nutrition Intense avec haute perméation dans le cortex." }, { title: "Fonctions Clés", desc: "Nutrition pour cheveux secs et protection antioxydante." }]
       },
       hidratherapy: { headline: "Technologie Ozone et Hydratation Extrême", benefits: ["Hydratation cellulaire profonde", "Protection effet ozone"], assets: ["Ozone Actif O3", "Acide Hyaluronique"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
       profusion: { headline: "Reconstruction Enzymatique Haute Performance", benefits: ["Inverse les dommages chimiques", "Restaure l'élasticité"], assets: ["Enzymes Protéolytiques", "Bio-Kératine"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
-      brushing: { headline: "Alignement Thermique Organique Rapide", benefits: ["100% Sans Formaldéhyde", "Application ultra-rapide"], assets: ["Base Taninoplastie", "Acides Organiques"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
-      mycrown: { headline: "La Révolution de la Mémoire de Courbure", benefits: ["Définit tous types de boucles", "Mémorise la courbure"], assets: ["Technologie Curl Memory", "Huile de Lin"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+      brushing: { headline: "Alignement Thermique Organique Rapide", benefits: ["100% Sans Formaldéhyde", "Application ultra-rapide"], assets: ["Base Taninoplastia", "Acides Organiques"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
+      mycrown: { headline: "La Révolution de la Mémoire de Courbure", benefits: ["Définit tous types de boucles", "Mémorise la courbure"], assets: ["Tecnologia Curl Memory", "Beurre de Murumuru", "Huile de Lin"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
     }
   },
   education: { title: "Académie MA", subtitle: "Maîtriser l'Art", desc: "Plongez dans des événements mondiaux où la science rencontre l'art. Notre éducation technique élève les standards." },
@@ -434,7 +435,13 @@ const TreatmentDetail = ({ id, t, handleNav }: any) => {
     const labels = t.sprofessional.lines;
     const commonLabels = t.common;
     const icons: any = { nutrology: <Droplets className="text-amber-500" />, hidratherapy: <Wind className="text-blue-400" />, profusion: <Zap className="text-yellow-400" />, brushing: <Flame className="text-orange-500" />, mycrown: <Crown className="text-amber-300" /> };
-    const treatmentImages: any = { nutrology: "https://sprofessional.com.br/wp-content/uploads/2023/02/Modelo-Nutrology.jpg", hidratherapy: "https://i.ibb.co/b5K9vjdt/Hidratherapy-Catalogo.jpg", profusion: "https://i.ibb.co/G4ygrnym/Profusion-catalogo.jpg", brushing: "https://i.ibb.co/ycD8KZgr/Brushing-catalolgo-1.jpg", mycrown: "https://i.ibb.co/7xw4wc49/My-Crown-Catalogo.jpg" };
+    const treatmentImages: any = { 
+        nutrology: "https://i.ibb.co/Q7z3zz8B/Nutrology-Catalogo.jpg", 
+        hidratherapy: "https://i.ibb.co/9jYjSB5/photo-4916101335045221055-y.jpg", 
+        profusion: "https://i.ibb.co/1ft38jgy/photo-5037476668448550284-y.jpg", 
+        brushing: "https://i.ibb.co/23H15Zwt/photo-5159078333743475458-y.jpg", 
+        mycrown: "https://i.ibb.co/C3j7Zk2q/photo-5071613163006438225-w.jpg" 
+    };
     const type = key as keyof typeof treatmentImages;
 
     return (
@@ -556,11 +563,11 @@ const HomeSection = ({ t, handleNav }: any) => {
 
 const SProfessionalSection = ({ t, handleNav }: any) => {
     const treatments = [
-        { id: 'sp-nutrology', title: t.sprofessional.lines.nutrology, img: "https://i.ibb.co/3mCLQfnG/Nutrology-Catalogo.jpg", desc: t.sprofessional.details.nutrology.headline },
-        { id: 'sp-hidratherapy', title: t.sprofessional.lines.hidratherapy, img: "https://i.ibb.co/b5K9vjdt/Hidratherapy-Catalogo.jpg", desc: t.sprofessional.details.hidratherapy.headline },
-        { id: 'sp-profusion', title: t.sprofessional.lines.profusion, img: "https://i.ibb.co/G4ygrnym/Profusion-catalogo.jpg", desc: t.sprofessional.details.profusion.headline },
-        { id: 'sp-brushing', title: t.sprofessional.lines.brushing, img: "https://i.ibb.co/ycD8KZgr/Brushing-catalolgo-1.jpg", desc: t.sprofessional.details.brushing.headline },
-        { id: 'sp-mycrown', title: t.sprofessional.lines.mycrown, img: "https://i.ibb.co/7xw4wc49/My-Crown-Catalogo.jpg", desc: t.sprofessional.details.mycrown.headline }
+        { id: 'sp-nutrology', title: t.sprofessional.lines.nutrology, img: "https://i.ibb.co/Q7z3zz8B/Nutrology-Catalogo.jpg", desc: t.sprofessional.details.nutrology.headline },
+        { id: 'sp-hidratherapy', title: t.sprofessional.lines.hidratherapy, img: "https://i.ibb.co/9jYjSB5/photo-4916101335045221055-y.jpg", desc: t.sprofessional.details.hidratherapy.headline },
+        { id: 'sp-profusion', title: t.sprofessional.lines.profusion, img: "https://i.ibb.co/1ft38jgy/photo-5037476668448550284-y.jpg", desc: t.sprofessional.details.profusion.headline },
+        { id: 'sp-brushing', title: t.sprofessional.lines.brushing, img: "https://i.ibb.co/23H15Zwt/photo-5159078333743475458-y.jpg", desc: t.sprofessional.details.brushing.headline },
+        { id: 'sp-mycrown', title: t.sprofessional.lines.mycrown, img: "https://i.ibb.co/C3j7Zk2q/photo-5071613163006438225-w.jpg", desc: t.sprofessional.details.mycrown.headline }
     ];
     return (
         <section className="min-h-screen bg-black relative"><div className="h-[50vh] flex items-center justify-center bg-radial-gradient from-zinc-900 to-black relative overflow-hidden"><div className="absolute inset-0 bg-grid-white opacity-10 animate-scan"></div><div className="text-center z-10 px-6 max-w-4xl mx-auto animate-fade-in"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-6">{t.common.luxury}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-6 tracking-tighter">{t.sprofessional.title}</h2><p className="text-xl text-zinc-300 font-light">{t.sprofessional.commonDesc}</p></div></div><div className="max-w-7xl mx-auto px-6 py-20 space-y-32">{treatments.map((item, i) => (<div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 reveal-on-scroll is-visible`}><div className="w-full md:w-1/2 relative group cursor-pointer" onClick={() => handleNav(item.id)}><div className="relative overflow-hidden rounded-sm shadow-2xl aspect-[4/3] border border-white/5"><img src={item.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" /><div className="absolute inset-6 border border-white/10 group-hover:border-amber-500/30 transition-colors duration-500"></div></div></div><div className="w-full md:w-1/2 space-y-6 text-center md:text-left"><h3 className="text-4xl md:text-5xl font-serif text-white leading-tight italic">{item.title.split(' - ')[0]}</h3><p className="text-amber-500 text-sm tracking-[0.2em] uppercase">{item.title.split(' - ')[1]}</p><p className="text-zinc-400 text-lg font-light leading-relaxed">{item.desc}</p><button onClick={() => handleNav(item.id)} className="text-white border-b border-white/20 pb-1 hover:text-amber-400 hover:border-amber-400 transition-all uppercase text-xs tracking-widest mt-4">{t.common.discover}</button></div></div>))}</div></section>
