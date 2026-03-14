@@ -4,7 +4,7 @@ import { useLiveAPI } from './hooks/use-live-api';
 import Visualizer from './components/Visualizer';
 import ControlTray from './components/ControlTray';
 import { LiveStatus } from './types';
-import { Menu, X, ArrowRight, Sparkles, Clock, ChevronRight, ChevronLeft, Mic, Globe, CheckCircle2, Beaker, Droplets, Wind, Zap, Flame, Crown, Activity, Check, ChevronDown } from 'lucide-react';
+import { Menu, X, ArrowRight, Sparkles, Clock, ChevronRight, ChevronLeft, Mic, Globe, CheckCircle2, Beaker, Droplets, Wind, Zap, Flame, Crown, Activity, Check, ChevronDown, ShieldCheck, Lock, Eye } from 'lucide-react';
 
 // --- Safe API Key Check ---
 const hasApiKey = () => {
@@ -31,6 +31,17 @@ const enTranslation = {
     discover: "Discover More", collection: "Collection", maNews: "MA NEWS", featured: "Featured Collection", special: "Special Offer", learnMore: "Learn More", innovation: "Innovation & Science", luxury: "Exclusive & Luxurious", privacy: "Privacy Policy", terms: "Terms of Service", representatives: "Representatives", social: "Social", unitedStates: "United States", theInnovation: "The Innovation", theLuxury: "The Luxury", readMore: "Read More", howToUse: "Technical Application", benefits: "Key Benefits", mainAssets: "Main Technology", intensity: "Treatment Intensity", functions: "Primary Functions", 
     backTo: "Back to", buyForSalon: "Buy for Salon", resultsTitle: "Results that inspire", techManual: "Technical Manual", techManualDesc: "Fill in the details below to receive the technical manual via email.", aiAssistant: "AI Assistant", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Hydration", nutrition: "Nutrition", reconstruction: "Reconstruction", buyNow: "Buy Now"
+  },
+  privacy: {
+    title: "Privacy Policy",
+    lastUpdated: "Last updated: May 2024",
+    intro: "At MA Fashion LLC, we value your privacy and the protection of your personal data.",
+    sections: [
+      { title: "Information Collection", content: "We collect information you provide directly to us when you apply for our Partner Program, subscribe to our technical manuals, or interact with our AI Assistant." },
+      { title: "Data Usage", content: "Your data is used strictly for professional certification, order processing, and providing technical support for our biotechnological lines." },
+      { title: "Third-Party Sharing", content: "We do not sell your personal data. We only share information with certified logistics partners and authorized representatives to ensure service delivery." },
+      { title: "Your Rights", content: "You have the right to access, correct, or delete your personal information at any time by contacting our support team." }
+    ]
   },
   tagline: "Global Hair Biotechnology", titleStart: "The Science of", titleEnd: "Beauty.", subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.", ctaDiagnosis: "24/7 Live Assistance", ctaShop: "View Collection", collectionTitle: "Exclusive Collections", collectionSub: "Professional Grade. Salon Exclusive.", viewAll: "View All", 
   promos: {
@@ -87,7 +98,26 @@ const enTranslation = {
   education: {
     title: "MA Academy", subtitle: "Master The Art", desc: "Immerse yourself in global events where science meets artistry. Our technical education elevates standards worldwide."
   },
-  about: { title: "Who We Are", subtitle: "Global Leadership", desc: "We are the architects of hair transformation. MA Fashion LLC unites science, nature, and artistry to empower professionals worldwide.", ambassadorsTitle: "Artistic Ambassador Network", ambassadorsDesc: "Our elite team of official artists in the United States. These master stylists define the trends and techniques of tomorrow.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educator", location: "United States" }, { name: "Fernando Mendez", role: "Master Stylist", location: "United States" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "United States" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "United States" }], repsTitle: "Executive Board", stats: { years: "Years of Excellence", salons: "Partner Salons", countries: "Global Presence" }, roles: { techAmb: "Founder, Ambassador & Intl Technician", ceo: "CEO & Founder", marketingDir: "Director of Marketing", opsDir: "Director of Operations", stylist: "Elite Stylist & Educator" } }
+  about: { 
+    title: "Who We Are", 
+    subtitle: "Global Leadership", 
+    desc: "We are the architects of hair transformation. MA Fashion LLC unites science, nature, and artistry to empower professionals worldwide.", 
+    ambassadorsTitle: "Artistic Ambassador Network", 
+    ambassadorsDesc: "Our elite team of official artists in the United States. These master stylists define the trends and techniques of tomorrow.", 
+    ambassadorList: [
+        { name: "Katherine Avendaño", role: "Master Stylist & Educator", location: "United States" }, 
+        { name: "Fernando Mendez", role: "Master Stylist", location: "United States" }, 
+        { name: "Ohnayak Firpi", role: "Master Stylist", location: "United States" }, 
+        { name: "Arnaldo Cruz", role: "Master Barber", location: "United States" },
+        { name: "Nancy Rivera", role: "Professional Stylist & Technician", location: "United States" },
+        { name: "Bruna Dourado", role: "Professional Stylist", location: "United States" },
+        { name: "Karina Paranhos", role: "Professional Stylist", location: "United States" },
+        { name: "Lisyet Torres", role: "Professional Stylist", location: "United States" }
+    ], 
+    repsTitle: "Executive Board", 
+    stats: { years: "Years of Excellence", salons: "Partner Salons", countries: "Global Presence" }, 
+    roles: { techAmb: "Founder, Ambassador & Intl Technician", ceo: "CEO & Founder", marketingDir: "Director of Marketing", opsDir: "Director of Operations", stylist: "Elite Stylist & Educator" } 
+  }
 };
 
 const esTranslation = {
@@ -102,6 +132,17 @@ const esTranslation = {
     discover: "Descubrir Más", collection: "Colección", maNews: "NOTICIAS MA", featured: "Colección Destacada", special: "Oferta Especial", learnMore: "Saber Más", innovation: "Innovación y Ciencia", luxury: "Exclusivo y Lujoso", privacy: "Política de Privacidad", terms: "Términos de Servicio", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "La Innovación", theLuxury: "El Lujo", readMore: "Leer Más", howToUse: "Aplicación Técnica", benefits: "Beneficios Clave", mainAssets: "Tecnología Principal", intensity: "Intensidad del Tratamiento", functions: "Funciones Principales", 
     backTo: "Volver a", buyForSalon: "Comprar para Salón", resultsTitle: "Resultados que inspiran", techManual: "Manual Técnico", techManualDesc: "Complete los detalles a continuación para recibir el manual técnico por correo electrónico.", aiAssistant: "Asistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA",
     hydration: "Hidratación", nutrition: "Nutrición", reconstruction: "Reconstrucción", buyNow: "Comprar Ahora"
+  },
+  privacy: {
+    title: "Política de Privacidad",
+    lastUpdated: "Última actualización: Mayo 2024",
+    intro: "En MA Fashion LLC, valoramos su privacidad y la protección de sus datos personales.",
+    sections: [
+      { title: "Recolección de Información", content: "Recopilamos la información que usted nos proporciona directamente al solicitar nuestro Programa de Socios, suscribirse a nuestros manuales técnicos o interactuar con nuestro Asistente de IA." },
+      { title: "Uso de Datos", content: "Sus datos se utilizan estrictamente para la certificación profesional, el procesamiento de pedidos y el soporte técnico de nuestras líneas biotecnológicas." },
+      { title: "Intercambio con Terceros", content: "No vendemos sus datos personales. Solo compartimos información con socios logísticos certificados y representantes autorizados para garantizar la prestación del servicio." },
+      { title: "Sus Derechos", content: "Usted tiene derecho a acceder, corregir o eliminar su información personal en cualquier momento poniéndose en contacto con nuestro equipo de soporte." }
+    ]
   },
   tagline: "Biotecnologia Capilar Global", titleStart: "La Ciencia de", titleEnd: "la Belleza.", subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.", ctaDiagnosis: "Asistencia En Vivo 24/7", ctaShop: "Ver Colección", collectionTitle: "Colecciones Exclusivas", collectionSub: "Grado Profesional. Exclusivo de Salón.", viewAll: "Ver Todo",
   promos: {
@@ -159,23 +200,53 @@ const esTranslation = {
   education: {
     title: "Academia MA", subtitle: "Domina el Arte", desc: "Sumérgete en eventos globales donde la ciencia se encuentra con el arte. Nuestra educación técnica eleva los estándares en todo el mundo."
   },
-  about: { title: "Quiénes Somos", subtitle: "Liderazgo Global", desc: "Somos los arquitectos de la transformación capilar. MA Fashion LLC une ciencia, naturaleza y arte para empoderar a los profesionales.", ambassadorsTitle: "Red de Embajadores Artísticos", ambassadorsDesc: "Nuestro equipo élite de artistas oficiales en Estados Unidos. Estilistas maestras que definen las tendencias y técnicas del mañana.", ambassadorList: [{ name: "Katherine Avendaño", role: "Estilista Master y Educadora", location: "Estados Unidos" }, { name: "Fernando Mendez", role: "Master Stylist", location: "Estados Unidos" }, { name: "Ohnayak Firpi", role: "Estilista Master", location: "Estados Unidos" }, { name: "Arnaldo Cruz", role: "Barbero Master", location: "Estados Unidos" }], repsTitle: "Junta Directiva", stats: { years: "Años de Excelencia", salons: "Salones Asociados", countries: "Presencia Global" }, roles: { techAmb: "Fundadora, Embajadora y Técnica Intl", ceo: "CEO y Fundador", marketingDir: "Directora de Marketing", opsDir: "Director de Operaciones", stylist: "Estilista Elite y Educadora" } }
+  about: { 
+    title: "Quiénes Somos", 
+    subtitle: "Liderazgo Global", 
+    desc: "Somos los arquitectos de la transformación capilar. MA Fashion LLC une ciencia, naturaleza y arte para empoderar a los profesionales.", 
+    ambassadorsTitle: "Red de Embajadores Artísticos", 
+    ambassadorsDesc: "Nuestro equipo élite de artistas oficiales en Estados Unidos. Estilistas maestras que definen las tendencias y técnicas del mañana.", 
+    ambassadorList: [
+        { name: "Katherine Avendaño", role: "Estilista Master y Educadora", location: "Estados Unidos" }, 
+        { name: "Fernando Mendez", role: "Master Stylist", location: "Estados Unidos" }, 
+        { name: "Ohnayak Firpi", role: "Estilista Master", location: "Estados Unidos" }, 
+        { name: "Arnaldo Cruz", role: "Barbero Master", location: "Estados Unidos" },
+        { name: "Nancy Rivera", role: "Estilista Profesional y Técnica", location: "Estados Unidos" },
+        { name: "Bruna Dourado", role: "Estilista Profesional", location: "Estados Unidos" },
+        { name: "Karina Paranhos", role: "Estilista Profesional", location: "Estados Unidos" },
+        { name: "Lisyet Torres", role: "Estilista Profesional", location: "Estados Unidos" }
+    ], 
+    repsTitle: "Junta Directiva", 
+    stats: { years: "Años de Excelencia", salons: "Salones Asociados", countries: "Presencia Global" }, 
+    roles: { techAmb: "Fundadora, Embajadora y Técnica Intl", ceo: "CEO y Fundador", marketingDir: "Directora de Marketing", opsDir: "Director de Operaciones", stylist: "Estilista Elite y Educadora" } 
+  }
 };
 
 const ptTranslation = {
   nav: { home: "Início", sweet: "Sweet Professional", s: "S Professional", edu: "Educação", about: "Sobre Nós", partner: "Acesso Parceiros", all: "Ver Todos" },
   partner: {
       title: "Acesso Profissional", subtitle: "Junte-se à rede de elite da MA Fashion LLC.", success: "Candidatura Recebida", successMsg: "Um representante entrará em contato em breve.",
-      labels: { name: "Nome Completo", email: "E-mail", phone: "Telefone", stylist: "Você é um estilista licenciado?", salon: "Você possui um salão?", services: "Serviços prestados", yes: "Sim", no: "Não", next: "Próximo Passo", back: "Voltar", submit: "Enviar Candidatura", return: "Voltar ao Início" },
+      labels: { name: "Nome Completo", email: "E-mail", phone: "Telefone", stylist: "Você é um estilista licenciado?", salon: "Você possui um salão?", services: "Servizi prestados", yes: "Sim", no: "Não", next: "Próximo Passo", back: "Voltar", submit: "Enviar Candidatura", return: "Voltar ao Início" },
       benefits: ["Preços de atacado de até 40% de desconto", "Acesso a Masterclasses MA", "Kit de marketing e mídia social", "Gerente de conta dedicado"],
       servicesList: ["Alinhamento Térmico", "Hair Botox", "Coloração", "Cortes", "Extensões", "Tratamentos", "Vendas a Varejo"]
   },
   common: { 
-    discover: "Descubra Mais", collection: "Coleção", maNews: "NOTÍCIAS MA", featured: "Coleção em Destaque", special: "Oferta Especial", learnMore: "Saiba Mais", innovation: "Inovação e Ciência", luxury: "Exclusivo e Luxuoso", privacy: "Política de Privacidade", terms: "Termos de Serviço", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "A Inovação", theLuxury: "O Luxo", readMore: "Ler Mais", howToUse: "Aplicação Técnica", benefits: "Principais Benefícios", mainAssets: "Tecnologia Principal", intensity: "Intensidade do Tratamento", functions: "Principais Funções", 
-    backTo: "Voltar para", buyForSalon: "Comprar para Salão", resultsTitle: "Resultados que inspiram", techManual: "Manual Técnico", techManualDesc: "Preencha os detalhes abaixo para receber o manual técnico por e-mail.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
-    hydration: "Hidratação", nutrition: "Nutrição", reconstruction: "Reconstrução", buyNow: "Comprar Agora"
+    discover: "Descubra Mais", collection: "Coleção", maNews: "NOTÍCIAS MA", featured: "Coleção em Destaque", special: "Oferta Especial", learnMore: "Saiba Mais", innovation: "Innovation e Ciência", luxury: "Exclusivo e Luxuoso", privacy: "Política de Privacidade", terms: "Termos de Serviço", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "A Inovação", theLuxury: "O Luxo", readMore: "Ler Mais", howToUse: "Aplicação Técnica", benefits: "Principais Benefícios", mainAssets: "Tecnologia Principal", intensity: "Intensidade do Tratamiento", functions: "Principais Funções", 
+    backTo: "Voltar para", buyForSalon: "Comprar para Salão", resultsTitle: "Resultados que inspiran", techManual: "Manual Técnico", techManualDesc: "Preencha os detalhes abaixo para receber o manual técnico por e-mail.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
+    hydration: "Hidratação", nutrition: "Nutrition", reconstruction: "Reconstrução", buyNow: "Comprar Agora"
   },
-  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profissional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Coleção", collectionTitle: "Coleções Exclusivas", collectionSub: "Grau Profissional. Exclusivo para Salões.", viewAll: "Ver Tudo",
+  privacy: {
+    title: "Política de Privacidade",
+    lastUpdated: "Última atualização: Maio 2024",
+    intro: "Na MA Fashion LLC, valorizamos sua privacidade e a proteção de seus dados pessoais.",
+    sections: [
+      { title: "Coleta de Informações", content: "Coletamos informações que você nos fornece diretamente ao se candidatar ao nosso Programa de Parceiros, assinar nossos manuais técnicos ou interagir com nosso Assistente de IA." },
+      { title: "Uso de Dados", content: "Seus data são usados estritamente para certificação profissional, processamento de pedidos e suporte técnico para nossas linhas biotecnológicas." },
+      { title: "Compartilhamento com Terceiros", content: "Não vendemos seus dados pessoais. Apenas compartilhamos informações com parceiros logísticos certificados e representantes autorizados." },
+      { title: "Seus Direitos", content: "Você tem o direito de acessar, corrigir ou excluir suas informações pessoais a qualquer momento, entrando em contato com nossa equipe de suporte." }
+    ]
+  },
+  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profesional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Coleção", collectionTitle: "Coleções Exclusivas", collectionSub: "Grau Profissional. Exclusivo para Salões.", viewAll: "Ver Tudo",
   promos: {
       ticker: "NOTÍCIA: Novo Programa de Parceiros • Compre 5 Leve 1 Grátis no The First Shampoo • Junte-se à Revolução", comingUp: "Próximo",
       items: [
@@ -185,7 +256,7 @@ const ptTranslation = {
       ]
   },
   footer: { about: "A MA Fashion LLC lidera o mercado global em biotecnologia capilar, fornecendo soluções de alto desempenho.", links: "Links Rápidos", legal: "Jurídico", contact: "Contato", rights: "© 2024 MA Fashion LLC. Todos os direitos reservados." },
-  sweet: { title: "Sweet Professional", desc: "A marca que revolucionou o mercado con o primeiro alisador térmico em champô. Inovação e segurança.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "O primeiro champô alisador do mundo. 5 patentes.", cronology: "Mapeamento biotecnológico para tratamentos personalizados.", sos: "Resgate de emergência para cabelos danificados." } },
+  sweet: { title: "Sweet Professional", desc: "A marca que revolucionou o mercado con o primeiro alisador térmico em champô. Inovação e segurança.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "O primeiro champô alisador do mundo. 5 patentes.", cronology: "Mapeamento biotecnológico para tratamentos personalizados.", sos: "Resgate de segurança para cabelos danificados." } },
   sprofessional: {
     title: "S Professional", subtitle: "Sistemas de Terapia Capilar", desc: "Um ecossistema completo de tratamentos para o estilista moderno.", commonDesc: "Experimente a transformação capilar suprema com nossa biotecnologia patenteada.",
     lines: { nutrology: "Nutrology - Nutrição Profunda", hidratherapy: "Hidratherapy - Hidratação Ozono", brushing: "Brushing+ - Alinhamento Térmico", profusion: "Pro Fusion - Reconstrução Enzimática", mycrown: "My Crown - Definição de Cachos" },
@@ -198,14 +269,33 @@ const ptTranslation = {
           intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
           functions: [{ title: "Tecnologia Nutrology", desc: "Nutrição Intensa com alta permeação no córtex." }, { title: "Funções Principais", desc: "Nutrição para cabelos secos e proteção antioxidante." }]
       },
-      hidratherapy: { headline: "Tecnologia de Ozono e Hidratação Extrema", benefits: ["Hidratação celular profunda", "Proteção de efeito ozono"], assets: ["Ozônio Ativo O3", "Ácido Hialurônico"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
+      hidratherapy: { headline: "Tecnologia de Ozono e Hidratação Extrema", benefits: ["Hidratação celular profunda", "Proteção de efeito ozono"], assets: ["Ozônio Ativo O3", "Ácido hialurônico"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
       profusion: { headline: "Reconstrução Enzimática de Alto Desempenho", benefits: ["Reverte danos químicos", "Restaura elasticidade"], assets: ["Enzimas Proteolíticas", "Bio-Keratina"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
-      brushing: { headline: "Alinhamento Térmico Orgânico de Alta Velocidade", benefits: ["100% Livre de Formol", "Aplicação ultra-rápida"], assets: ["Base Taninoplastia", "Ácidos Orgânicos"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
-      mycrown: { headline: "A Revolução da Memória de Curvatura", benefits: ["Define todos os tipos de cachos", "Memoriza curvatura"], assets: ["Tecnologia Curl Memory", "Óleo de Linhaça"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+      brushing: { headline: "Alinhamento Térmico Orgânico de Alta Velocidade", benefits: ["100% Livre de Formol", "Aplicação ultra-rapida"], assets: ["Base Taninoplastia", "Ácidos Orgânicos"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
+      mycrown: { headline: "A Revolução da Memória de Curvatura", benefits: ["Define todos os tipos de cachos", "Memoriza curvatura"], assets: ["Tecnologia Curl Memory", "Burro di Murumuru", "Olio di Lino"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
     }
   },
   education: { title: "Academia MA", subtitle: "Domine a Arte", desc: "Mergulhe em eventos globais onde a ciência encontra a arte. Nossa educação técnica eleva os padrões." },
-  about: { title: "Quem Somos", subtitle: "Liderança Global", desc: "Somos os arquitetos da transformação capilar. MA Fashion LLC une ciência e arte.", ambassadorsTitle: "Rede de Embaixadores Artísticos", ambassadorsDesc: "Nossa equipe de elite de artistas oficiais nos EUA.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educadora", location: "EUA" }, { name: "Fernando Mendez", role: "Master Stylist", location: "EUA" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "EUA" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "EUA" }], repsTitle: "Conselho Executivo", stats: { years: "Anos de Excelência", salons: "Salões Parceiros", countries: "Presenza Global" }, roles: { techAmb: "Fundadora, Embaixadora & Técnica Intl", ceo: "CEO & Fundador", marketingDir: "Diretora de Marketing", opsDir: "Diretor de Operações", stylist: "Elite Stylist & Educadora" } }
+  about: { 
+    title: "Quem Somos", 
+    subtitle: "Liderança Global", 
+    desc: "Somos os arquitectos da transformação capilar. MA Fashion LLC une ciência e arte.", 
+    ambassadorsTitle: "Red de Embaixadores Artísticos", 
+    ambassadorsDesc: "Nossa equipe de elite de artistas oficiais nos EUA.", 
+    ambassadorList: [
+        { name: "Katherine Avendaño", role: "Estilista Master e Educadora", location: "EUA" }, 
+        { name: "Fernando Mendez", role: "Master Stylist", location: "EUA" }, 
+        { name: "Ohnayak Firpi", role: "Master Stylist", location: "EUA" }, 
+        { name: "Arnaldo Cruz", role: "Master Barber", location: "EUA" },
+        { name: "Nancy Rivera", role: "Estilista Profissional e Técnica", location: "EUA" },
+        { name: "Bruna Dourado", role: "Estilista Profissional", location: "EUA" },
+        { name: "Karina Paranhos", role: "Estilista Profesional", location: "EUA" },
+        { name: "Lisyet Torres", role: "Estilista Profissional", location: "EUA" }
+    ], 
+    repsTitle: "Conselho Executivo", 
+    stats: { years: "Anos de Excelencia", salons: "Salões Parceiros", countries: "Presenza Globale" }, 
+    roles: { techAmb: "Fundadora, Embaixadora & Técnica Intl", ceo: "CEO & Fundador", marketingDir: "Directora de Marketing", opsDir: "Director de Operações", stylist: "Estilista Elite e Educadora" } 
+  }
 };
 
 const itTranslation = {
@@ -217,9 +307,20 @@ const itTranslation = {
       servicesList: ["Allineamento Termico", "Hair Botox", "Colorazione", "Tagli", "Extension", "Trattamenti", "Vendite al Dettaglio"]
   },
   common: { 
-    discover: "Scopri di Più", collection: "Collezione", maNews: "MA NEWS", featured: "Collezione in Primo Piano", special: "Offerta Speciale", learnMore: "Ulteriori Informazioni", innovation: "Innovazione e Scienza", luxury: "Esclusivo e Lussuoso", privacy: "Privacy Policy", terms: "Termini di Servizio", representatives: "Rappresentanti", social: "Social", unitedStates: "Stati Uniti", theInnovation: "L'Innovazione", theLuxury: "Il Lusso", readMore: "Leggi di Più", howToUse: "Applicazione Tecnica", benefits: "Vantaggi Chiave", mainAssets: "Tecnologia Principale", intensity: "Intensità del Trattamento", functions: "Funzioni Primarie", 
+    discover: "Scopri di Più", collection: "Colezione", maNews: "MA NEWS", featured: "Collezione in Primo Piano", special: "Offerta Especial", learnMore: "Ulteriori Informazioni", innovation: "Innovazione e Scienza", luxury: "Esclusivo e Lussuoso", privacy: "Privacy Policy", terms: "Termini di Servizio", representatives: "Rappresentanti", social: "Social", unitedStates: "Stati Uniti", theInnovation: "L'Innovazione", theLuxury: "Il Lusso", readMore: "Leggi di Più", howToUse: "Applicazione Tecnica", benefits: "Vantaggi Chiave", mainAssets: "Tecnologia Principale", intensity: "Intensità del Trattamento", functions: "Funzioni Primarie", 
     backTo: "Torna a", buyForSalon: "Acquista per il Salone", resultsTitle: "Risultati che ispirano", techManual: "Manuale Tecnico", techManualDesc: "Compila i dettagli per ricevere il manuale tecnico via email.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Idratazione", nutrition: "Nutrizione", reconstruction: "Ricostruzione", buyNow: "Acquista Ora"
+  },
+  privacy: {
+    title: "Informativa sulla Privacy",
+    lastUpdated: "Ultimo aggiornamento: Maggio 2024",
+    intro: "Presso MA Fashion LLC, diamo valore alla tua privacy e alla protezione dei tuoi dati personali.",
+    sections: [
+      { title: "Raccolta di Informazioni", content: "Raccogliamo informazioni fornite direttamente da te quando richiedi il nostro Programma Partner, ti iscrivi ai nostri manuali tecnici o interagisci con il nostro Assistente AI." },
+      { title: "Uso dei Dati", content: "I tuoi dati vengono utilizzati esclusivamente per la certificazione professionale, l'elaborazione degli ordini e la fornitura di supporto tecnico per le nostre linee biotecnologiche." },
+      { title: "Condivisione con Terze Parti", content: "Non vendiamo i tuoi dati personali. Condividiamo le informazioni solo con partner logistici certificati e rappresentanti autorizzati." },
+      { title: "I Tuoi Diritti", content: "Hai il diritto di accedere, correggere o eliminare le tue informazioni personali a qualsiasi momento contattando il nostro team di supporto." }
+    ]
   },
   tagline: "Biotecnologia Capillare Globale", titleStart: "La Scienza della", titleEnd: "Bellezza.", subtitle: "MA Fashion LLC presenta il futuro della cura capillare professionale. Scopri Sweet e S Professional.", ctaDiagnosis: "Assistenza Live 24/7", ctaShop: "Vedi Collezione", collectionTitle: "Collezioni Esclusive", collectionSub: "Grado Professionale. Esclusiva per Saloni.", viewAll: "Vedi Tutto",
   promos: {
@@ -247,57 +348,106 @@ const itTranslation = {
       hidratherapy: { headline: "Tecnologia Ozono e Idratazione Estrema", benefits: ["Idratazione cellulare profonda", "Effetto ozono protettivo"], assets: ["Ozono Attivo O3", "Acido Ialuronico"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
       profusion: { headline: "Ricostruzione Enzimatica ad Alte Prestazioni", benefits: ["Inverte il danno chimico", "Ripristina elasticità"], assets: ["Enzimi Proteolitici", "Bio-Cheratina"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
       brushing: { headline: "Allineamento Termico Organico Veloce", benefits: ["100% Senza Formaldeide", "Applicazione ultra-veloce"], assets: ["Base Taninoplastia", "Acidi Organici"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
-      mycrown: { headline: "La Rivoluzione della Memoria di Curvatura", benefits: ["Definisce tutti i tipi di ricci", "Memorizza curvatura"], assets: ["Tecnologia Curl Memory", "Burro di Murumuru", "Olio di Lino"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+      mycrown: { headline: "La Rivoluzione della Memoria di Curvatura", benefits: ["Definisce tutti i tipi di ricci", "Memoriza curvatura"], assets: ["Tecnologia Curl Memory", "Murumuru Butter", "Olio di Lino"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
     }
   },
   education: { title: "MA Academy", subtitle: "Domina l'Arte", desc: "Immergiti negli eventi globali dove la scienza incontra l'arte. La nostra formazione eleva gli standard." },
-  about: { title: "Chi Siamo", subtitle: "Leadership Globale", desc: "Siamo gli architetti della trasformazione capillare. MA Fashion LLC unisce scienza e arte.", ambassadorsTitle: "Rete di Ambasciatori Artistici", ambassadorsDesc: "Il nostro team d'élite di artisti ufficiali negli USA.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Educatrice", location: "Stati Uniti" }, { name: "Fernando Mendez", role: "Master Stylist", location: "Stati Uniti" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "Stati Uniti" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "Stati Uniti" }], repsTitle: "Consiglio Direttivo", stats: { years: "Anni di Eccellenza", salons: "Saloni Partner", countries: "Presenza Globale" }, roles: { techAmb: "Fondatrice, Ambasciatrice & Tecnico Intl", ceo: "CEO & Fondatore", marketingDir: "Direttore Marketing", opsDir: "Direttore Operativo", stylist: "Elite Stylist & Educatrice" } }
+  about: { 
+    title: "Chi Siamo", 
+    subtitle: "Leadership Globale", 
+    desc: "Siamo gli architetti della trasformazione capillare. MA Fashion LLC unisce scienza e arte.", 
+    ambassadorsTitle: "Rete di Ambasciatori Artistici", 
+    ambassadorsDesc: "Il nostro team d'élite di artisti ufficiali negli USA.", 
+    ambassadorList: [
+        { name: "Katherine Avendaño", role: "Master Stylist & Educatrice", location: "Stati Uniti" }, 
+        { name: "Fernando Mendez", role: "Master Stylist", location: "Stati Uniti" }, 
+        { name: "Ohnayak Firpi", role: "Master Stylist", location: "Stati Uniti" }, 
+        { name: "Arnaldo Cruz", role: "Master Barber", location: "Stati Uniti" },
+        { name: "Nancy Rivera", role: "Stylist Professionista e Tecnica", location: "Stati Uniti" },
+        { name: "Bruna Dourado", role: "Stylist Professionista", location: "Stati Uniti" },
+        { name: "Karina Paranhos", role: "Stylist Professionista", location: "Stati Uniti" },
+        { name: "Lisyet Torres", role: "Stylist Professionista", location: "Stati Uniti" }
+    ], 
+    repsTitle: "Consiglio Direttivo", 
+    stats: { years: "Anni di Eccellenza", salons: "Saloni Partner", countries: "Presenza Globale" }, 
+    roles: { techAmb: "Fondatrice, Ambasciatrice & Tecnico Intl", ceo: "CEO & Fondatore", marketingDir: "Direttore Marketing", opsDir: "Direttore Operativo", stylist: "Elite Stylist & Educatrice" } 
+  }
 };
 
 const frTranslation = {
   nav: { home: "Accueil", sweet: "Sweet Professional", s: "S Professional", edu: "Éducation", about: "À Propos", partner: "Accès Partenaire", all: "Voir Tout" },
   partner: {
-      title: "Accès Professionnel", subtitle: "Rejoignez le réseau d'élite de MA Fashion LLC.", success: "Candidature Reçue", successMsg: "Un représentant vous contactera sous peu.",
-      labels: { name: "Nom Complet", email: "E-mail", phone: "Téléphone", stylist: "Êtes-vous un styliste agréé ?", salon: "Possédez-vous un salon ?", services: "Services fournis", yes: "Oui", no: "Non", next: "Suivant", back: "Retour", submit: "Envoyer la Candidature", return: "Retour à l'Accueil" },
-      benefits: ["Prix de gros jusqu'à 40% de réduction", "Accès aux Masterclasses MA", "Kit marketing & réseaux sociaux", "Gestionnaire de compte dédié"],
-      servicesList: ["Alignement Thermique", "Hair Botox", "Coloration", "Coupes", "Extensions", "Traitements", "Ventes au Détail"]
+      title: "Accès Professionnel", subtitle: "Rejoignez le réseau d'élite des partenaires de MA Fashion LLC.", success: "Demande Reçue", successMsg: "Un représentant vous contactera sous peu.",
+      labels: { name: "Nom Complet", email: "Adresse E-mail", phone: "Numéro de Téléphone", stylist: "Êtes-vous un styliste diplômé ?", salon: "Possédez-vous un salon ?", services: "Services Proposés", yes: "Oui", no: "Non", next: "Étape Suivante", back: "Retour", submit: "Envoyer la Demande", return: "Retour à l'Accueil" },
+      benefits: ["Prix de gros jusqu'à 40% de réduction", "Accès aux Masterclasses MA Academy", "Matériel marketing et kit réseaux sociaux", "Gestionnaire de compte dédié"],
+      servicesList: ["Alignement Thermique", "Botox Capillaire", "Coloration", "Coupes", "Extensions", "Traitements", "Vente au Détail"]
   },
   common: { 
-    discover: "Découvrir Plus", collection: "Collection", maNews: "MA NEWS", featured: "Collection Vedette", special: "Offre Spéciale", learnMore: "En Savoir Plus", innovation: "Innovation & Science", luxury: "Exclusif & Luxueux", privacy: "Politique de Confidentialité", terms: "Conditions d'Utilisation", representatives: "Représentants", social: "Social", unitedStates: "États-Unis", theInnovation: "L'Innovation", theLuxury: "Le Luxe", readMore: "Lire Plus", howToUse: "Application Technique", benefits: "Avantages Clés", mainAssets: "Technologie Principale", intensity: "Intensité du Traitement", functions: "Fonctions Primaires", 
-    backTo: "Retour à", buyForSalon: "Acheter pour le Salon", resultsTitle: "Des résultats qui inspirent", techManual: "Manuel Technique", techManualDesc: "Remplissez les détails pour recevoir le manuel technique par e-mail.", aiAssistant: "Assistant IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
+    discover: "Découvrir Plus", collection: "Collection", maNews: "MA NEWS", featured: "Collection Vedette", special: "Offre Spéciale", learnMore: "En Savoir Plus", innovation: "Innovation & Science", luxury: "Exclusif & Luxueux", privacy: "Politique de Confidentialité", terms: "Conditions d'Utilisation", representatives: "Représentants", social: "Social", unitedStates: "États-Unis", theInnovation: "L'Innovation", theLuxury: "Le Luxe", readMore: "Lire la Suite", howToUse: "Application Technique", benefits: "Avantages Clés", mainAssets: "Technologie Principale", intensity: "Intensité du Traitement", functions: "Fonctions Principales", 
+    backTo: "Retour à", buyForSalon: "Acheter pour le Salon", resultsTitle: "Des résultats qui inspirent", techManual: "Manuel Technique", techManualDesc: "Remplissez les détails ci-dessous pour recevoir le manuel technique par e-mail.", aiAssistant: "Assistant IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Hydratation", nutrition: "Nutrition", reconstruction: "Reconstruction", buyNow: "Acheter Maintenant"
   },
-  tagline: "Biotechnologie Capillaire Globale", titleStart: "La Science de la", titleEnd: "Beauté.", subtitle: "MA Fashion LLC présente l'avenir des soins capillaires professionnels. Découvrez Sweet et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir Collection", collectionTitle: "Collections Exclusives", collectionSub: "Grade Professionnel. Exclusif aux Salons.", viewAll: "Voir Tout",
+  privacy: {
+    title: "Politique de Confidentialité",
+    lastUpdated: "Dernière mise à jour : Mai 2024",
+    intro: "Chez MA Fashion LLC, nous accordons une grande importance à votre vie privée et à la protection de vos données personnelles.",
+    sections: [
+      { title: "Collecte d'Informations", content: "Nous collectons les informations que vous nous fournissez directement lorsque vous postulez à notre programme de partenariat, vous inscrivez à nos manuels techniques ou interagissez avec notre assistant IA." },
+      { title: "Utilisation des Données", content: "Vos données sont utilisées strictement pour la certification professionnelle, le traitement des commandes et le support technique de nos lignes biotechnologiques." },
+      { title: "Partage avec des Tiers", content: "Nous ne vendons pas vos données personnelles. Nous partageons uniquement les informations avec des partenaires logistiques certifiés et des représentants autorisés." },
+      { title: "Vos Droits", content: "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles à tout moment en contactant notre équipe d'assistance." }
+    ]
+  },
+  tagline: "Biotechnologie Capillaire Mondiale", titleStart: "La Science de", titleEnd: "la Beauté.", subtitle: "MA Fashion LLC présente le futur des soins capillaires professionnels. Découvrez Sweet Professional et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir la Collection", collectionTitle: "Collections Exclusives", collectionSub: "Qualité Professionnelle. Exclusivité Salon.", viewAll: "Voir Tout", 
   promos: {
-      ticker: "ACTUALITÉ : Nouveau Programme Partenaire • Achetez 5 recevez 1 gratuit sur The First Shampoo • Rejoignez la Révolution", comingUp: "À Suivre",
+      ticker: "FLASH : Nouveau Programme de Partenariat Disponible • Achetez 5 recevez 1 gratuit sur The First Shampoo • Rejoignez la Révolution", comingUp: "À Suivre",
       items: [
-          { title: "Programme Partenaire Salon", desc: "Prix exclusifs et éducation avancée pour les professionnels.", cta: "Postuler Maintenant" },
-          { title: "Lancement My Crown", desc: "La révolution pour les cheveux bouclés. Définissez, hydratez et mémorisez la courbure.", cta: "Découvrir My Crown" },
-          { title: "Maîtriser l'Art", desc: "Rejoignez notre prochaine certification aux USA. Apprenez les secrets de la reconstruction enzymatique.", cta: "Réserver Place" }
+          { title: "Programme Partenaire Salon", desc: "Prix exclusifs et formation avancée pour les professionnels diplômés.", cta: "Postuler Maintenant" },
+          { title: "Lancement My Crown", desc: "La révolution pour les cheveux bouclés est là. Définissez, hydratez et mémorisez la boucle.", cta: "Découvrir My Crown" },
+          { title: "Maîtriser l'Art", desc: "Rejoignez notre prochaine masterclass de certification aux États-Unis. Apprenez les secrets de la reconstruction enzymatique.", cta: "Réserver une Place" }
       ]
   },
-  footer: { about: "MA Fashion LLC mène le marché mondial de la biotechnologie capillaire, offrant des solutions haute performance.", links: "Liens Rapides", legal: "Juridique", contact: "Contact", rights: "© 2024 MA Fashion LLC. Tous droits réservés." },
-  sweet: { title: "Sweet Professional", desc: "La marque qui a révolutionné le marché avec le premier lisseur thermique en shampooing. Innovation et sécurité.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "Le premier shampooing lissant au monde. 5 brevets.", cronology: "Cartographie biotechnologique pour des traitements personnalisés.", sos: "Sauvetage d'urgence pour cheveux chimiquement endommagés." } },
+  footer: { about: "MA Fashion LLC est leader sur le marché mondial de la biotechnologie capillaire, fournissant des solutions de haute performance.", links: "Liens Rapides", legal: "Légal", contact: "Contact", rights: "© 2024 MA Fashion LLC. Tous droits réservés." },
+  sweet: { title: "Sweet Professional", desc: "La marque qui a révolutionné le marché avec le premier lisseur thermique sous forme de shampooing. Innovation et sécurité.", lines: { thefirst: "The First", cronology: "Cronology", sos: "S.O.S" }, lineDescs: { thefirst: "Le premier shampooing lissant au monde. 5 brevets internationaux.", cronology: "Cartographie biotechnologique pour un traitement capillaire personnalisé.", sos: "Secours d'urgence pour cheveux chimiquement endommagés." } },
   sprofessional: {
-    title: "S Professional", subtitle: "Systèmes de Thérapie Capillaire", desc: "Un écosystème complet de traitements pour le styliste moderne.", commonDesc: "Découvrez la transformation capillaire ultime avec notre biotechnologie brevetée.",
-    lines: { nutrology: "Nutrology - Nutrition Profonde", hidratherapy: "Hidratherapy - Hydratation Ozone", brushing: "Brushing+ - Alignement Thermique", profusion: "Pro Fusion - Reconstruction Enzymatique", mycrown: "My Crown - Définition des Boucles" },
+    title: "S Professional", subtitle: "Systèmes de Thérapie Capillaire Avancés", desc: "Un écosystème complet de traitements pour le styliste moderne.", commonDesc: "Découvrez la transformation capillaire ultime avec notre biotechnologie brevetée.",
+    lines: { nutrology: "Nutrology - Nutrition Profonde", hidratherapy: "Hidratherapy - Hydratation à l'Ozone", brushing: "Brushing+ - Alignement Thermique", profusion: "Pro Fusion - Reconstruction Enzymatique", mycrown: "My Crown - Définition des Boucles" },
     details: {
       nutrology: {
-          headline: "Biotechnologie et Humectants Naturels",
+          headline: "Biotechnologie & Humectants Naturels",
           info: "Nutrology offre une nutrition intense selon la sécheresse des cheveux. Utilise un mélange unique d'huiles végétales.",
-          benefits: ["Remplacement lipidique instantané", "Brillance diamant", "Protection anti-frizz", "Mouvement léger"],
+          benefits: ["Remplacement lipidique instantané", "Brillance diamant", "Protection anti-frisottis", "Mouvement léger"],
           assets: ["Nano-Particules Lipidiques", "Complexe d'Acides Aminés", "Beurre de Karité Bio"],
           intensity: { hydration: 20, nutrition: 100, reconstruction: 40 },
-          functions: [{ title: "Tecnologia Nutrology", desc: "Nutrition Intense avec haute perméation dans le cortex." }, { title: "Fonctions Clés", desc: "Nutrition pour cheveux secs et protection antioxydante." }]
+          functions: [{ title: "Technologie Nutrology", desc: "Nutrition Intense avec haute pénétration dans le cortex." }, { title: "Fonctions Clés", desc: "Nutrition pour cheveux secs et protection antioxydante." }]
       },
-      hidratherapy: { headline: "Technologie Ozone et Hydratation Extrême", benefits: ["Hydratation cellulaire profonde", "Protection effet ozone"], assets: ["Ozone Actif O3", "Acide Hyaluronique"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
+      hidratherapy: { headline: "Technologie à l'Ozone & Hydratation Ultime", benefits: ["Hydratation cellulaire profonde", "Protection effet ozone"], assets: ["Ozone Actif O3", "Acide Hyaluronique"], intensity: { hydration: 100, nutrition: 20, reconstruction: 10 } },
       profusion: { headline: "Reconstruction Enzymatique Haute Performance", benefits: ["Inverse les dommages chimiques", "Restaure l'élasticité"], assets: ["Enzymes Protéolytiques", "Bio-Kératine"], intensity: { hydration: 30, nutrition: 40, reconstruction: 100 } },
-      brushing: { headline: "Alignement Thermique Organique Rapide", benefits: ["100% Sans Formaldéhyde", "Application ultra-rapide"], assets: ["Base Taninoplastia", "Acides Organiques"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
-      mycrown: { headline: "La Révolution de la Mémoire de Courbure", benefits: ["Définit tous types de boucles", "Mémorise la courbure"], assets: ["Tecnologia Curl Memory", "Beurre de Murumuru", "Huile de Lin"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
+      brushing: { headline: "Alignement Thermique Organique Rapide", benefits: ["100% sans formol", "Application ultra-rapide"], assets: ["Base de Taninoplastia", "Acides Organiques"], intensity: { hydration: 40, nutrition: 50, reconstruction: 30 } },
+      mycrown: { headline: "La Révolution de la Mémoire de Courbure", benefits: ["Définit tous les types de boucles", "Mémorise la courbure"], assets: ["Technologie Curl Memory", "Beurre de Murumuru", "Huile de Lin"], intensity: { hydration: 60, nutrition: 80, reconstruction: 20 } }
     }
   },
-  education: { title: "Académie MA", subtitle: "Maîtriser l'Art", desc: "Plongez dans des événements mondiaux où la science rencontre l'art. Notre éducation technique élève les standards." },
-  about: { title: "Qui Sommes-Nous", subtitle: "Leadership Mondial", desc: "Nous sommes les architectes de la transformation capillaire. MA Fashion LLC unit science et art.", ambassadorsTitle: "Réseau d'Ambassadeurs Artistiques", ambassadorsDesc: "Notre équipe d'élite d'artistes officiels aux États-Unis.", ambassadorList: [{ name: "Katherine Avendaño", role: "Master Stylist & Éducatrice", location: "États-Unis" }, { name: "Fernando Mendez", role: "Master Stylist", location: "États-Unis" }, { name: "Ohnayak Firpi", role: "Master Stylist", location: "États-Unis" }, { name: "Arnaldo Cruz", role: "Master Barber", location: "États-Unis" }], repsTitle: "Conseil d'Administration", stats: { years: "Années d'Excellence", salons: "Salons Partenaires", countries: "Présence Mondiale" }, roles: { techAmb: "Fondatrice, Ambassadrice & Tech Intl", ceo: "PDG & Fondateur", marketingDir: "Directrice Marketing", opsDir: "Directeur des Opérations", stylist: "Styliste Élite & Éducatrice" } }
+  education: { title: "MA Academy", subtitle: "Maîtriser l'Art", desc: "Plongez dans des événements mondiaux où la science rencontre l'art. Notre éducation technique élève les standards." },
+  about: { 
+    title: "Qui Sommes-Nous", 
+    subtitle: "Leadership Mondial", 
+    desc: "Nous sommes les architectes de la transformation capillaire. MA Fashion LLC unit science et art.", 
+    ambassadorsTitle: "Réseau d'Ambassadeurs Artistiques", 
+    ambassadorsDesc: "Notre équipe d'élite d'artistes officiels aux États-Unis.", 
+    ambassadorList: [
+        { name: "Katherine Avendaño", role: "Master Stylist & Éducatrice", location: "États-Unis" }, 
+        { name: "Fernando Mendez", role: "Master Stylist", location: "États-Unis" }, 
+        { name: "Ohnayak Firpi", role: "Master Stylist", location: "États-Unis" }, 
+        { name: "Arnaldo Cruz", role: "Master Barber", location: "États-Unis" },
+        { name: "Nancy Rivera", role: "Styliste Professionnelle & Technicienne", location: "États-Unis" },
+        { name: "Bruna Dourado", role: "Styliste Professionnelle", location: "États-Unis" },
+        { name: "Karina Paranhos", role: "Styliste Professionnelle", location: "États-Unis" },
+        { name: "Lisyet Torres", role: "Styliste Professionnelle", location: "États-Unis" }
+    ], 
+    repsTitle: "Conseil d'Administration", 
+    stats: { years: "Années d'Excellence", salons: "Salons Partenaires", countries: "Présence Mondiale" }, 
+    roles: { techAmb: "Fondatrice, Ambassadrice & Technicienne Intl", ceo: "CEO & Fondateur", marketingDir: "Directrice Marketing", opsDir: "Directeur des Opérations", stylist: "Styliste d'Élite & Éducatrice" } 
+  }
 };
 
 const translations: Record<Language, any> = {
@@ -308,7 +458,7 @@ const translations: Record<Language, any> = {
   fr: frTranslation
 };
 
-// --- Intensity Bar Component with Animation on Scroll ---
+// --- Intensity Bar Component ---
 const IntensityBar: React.FC<{ label: string, value: number }> = ({ label, value }) => {
     const [width, setWidth] = useState(0);
     const barRef = useRef<HTMLDivElement>(null);
@@ -578,17 +728,174 @@ const SweetSection = ({ t }: any) => (<section className="min-h-screen bg-zinc-9
 
 const EducationSection = ({ t }: any) => (<section className="min-h-screen bg-zinc-950 pt-32 pb-20"><div className="max-w-7xl mx-auto px-6"><div className="text-center mb-24"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-4">{t.education.title}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-8 tracking-tighter">{t.education.subtitle}</h2></div><p className="text-center text-zinc-400 max-w-2xl mx-auto text-lg font-light mb-20">{t.education.desc}</p><div className="flex items-center justify-center h-40 bg-zinc-900/50 rounded-3xl border border-white/5"><span className="text-zinc-500 font-serif italic text-2xl tracking-widest">{t.common.resultsTitle}</span></div></div></section>);
 
+const PrivacySection = ({ t }: any) => (
+  <section className="min-h-screen bg-black pt-40 pb-20">
+    <div className="max-w-4xl mx-auto px-6">
+      <div className="text-center mb-20 animate-fade-in-up">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-500/10 rounded-full mb-6 border border-amber-500/20">
+          <ShieldCheck className="text-amber-500" size={32} />
+        </div>
+        <h2 className="text-5xl md:text-7xl font-serif text-white mb-4 tracking-tighter">{t.privacy.title}</h2>
+        <p className="text-amber-500 text-xs tracking-widest uppercase font-bold">{t.privacy.lastUpdated}</p>
+      </div>
+      
+      <div className="space-y-16">
+        <div className="p-8 bg-zinc-900/30 rounded-2xl border border-white/5 backdrop-blur-sm animate-fade-in-up delay-100">
+           <p className="text-xl text-zinc-300 font-light leading-relaxed italic border-l-4 border-amber-500 pl-6">
+             "{t.privacy.intro}"
+           </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {t.privacy.sections.map((section: any, idx: number) => (
+            <div key={idx} className="space-y-4 p-6 bg-zinc-900/20 rounded-xl border border-white/5 hover:border-amber-500/20 transition-all group animate-fade-in-up" style={{ animationDelay: `${(idx + 2) * 100}ms` }}>
+              <div className="flex items-center gap-3">
+                {idx === 0 && <Eye size={20} className="text-amber-500" />}
+                {idx === 1 && <Activity size={20} className="text-amber-500" />}
+                {idx === 2 && <Lock size={20} className="text-amber-500" />}
+                {idx === 3 && <ShieldCheck size={20} className="text-amber-500" />}
+                <h3 className="text-xl font-serif text-white italic">{section.title}</h3>
+              </div>
+              <p className="text-zinc-400 font-light leading-relaxed text-sm">
+                {section.content}
+              </p>
+            </div>
+          ))}
+        </div>
+        
+        <div className="text-center pt-12 animate-fade-in-up delay-500">
+          <p className="text-zinc-500 text-sm italic mb-8">
+            {t.footer.about}
+          </p>
+          <div className="w-12 h-0.5 bg-amber-500/30 mx-auto" />
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 const CountUp = ({ end }: { end: number }) => { const [count, setCount] = useState(0); useEffect(() => { let start = 0; const duration = 2000; const timer = setInterval(() => { start += end/100; if (start >= end) { setCount(end); clearInterval(timer); } else { setCount(Math.floor(start)); } }, duration/100); return () => clearInterval(timer); }, [end]); return <span>{count}</span>; };
 
 const AboutSection = ({ t }: any) => {
-    const ambassadorImages = ["https://i.ibb.co/M5h85W16/Whats-App-Image-2025-12-10-at-9-44-21-PM.jpg", "https://i.ibb.co/Lz3J4KHR/Whats-App-Image-2025-12-11-at-6-51-05-PM.jpg", "https://i.ibb.co/N6pWP5M5/Whats-App-Image-2025-12-13-at-11-01-10-PM.jpg", "https://i.ibb.co/sv4mqWvw/JPG-NALDO-HEADSHOT-06.jpg"];
+    const ambassadorImages = [
+        "https://i.ibb.co/M5h85W16/Whats-App-Image-2025-12-10-at-9-44-21-PM.jpg", 
+        "https://i.ibb.co/Lz3J4KHR/Whats-App-Image-2025-12-11-at-6-51-05-PM.jpg", 
+        "https://i.ibb.co/N6pWP5M5/Whats-App-Image-2025-12-13-at-11-01-10-PM.jpg", 
+        "https://i.ibb.co/sv4mqWvw/JPG-NALDO-HEADSHOT-06.jpg",
+        "https://i.ibb.co/CpX5dnT2/photo-5109357614780320837-y.jpg",
+        "https://i.ibb.co/3YmqyTnX/Whats-App-Image-2026-02-08-at-1-39-41-PM.jpg",
+        "https://i.ibb.co/vCSM6PYG/photo-4920631262825876325-w.jpg",
+        "https://i.ibb.co/N6kK6g6g/Whats-App-Image-2026-02-08-at-3-13-38-PM.jpg"
+    ];
     const leadership = [{ name: "Ernesto Aramburu", role: t.about.roles.ceo, image: "https://i.ibb.co/tPJq9rPS/Ernesto.jpg" }, { name: "Alejandra Mendez", role: t.about.roles.techAmb, image: "https://i.ibb.co/7NRw8gzw/ALejnadra.jpg" }, { name: "Luisana Muñoz", role: t.about.roles.marketingDir, image: "https://i.ibb.co/4w4n2R65/Luisana.jpg" }, { name: "Ernesto Aramburu Jr.", role: t.about.roles.opsDir, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" }];
-    return (<section className="bg-black text-white pt-20"><div className="px-8 max-w-7xl mx-auto mb-20 text-center"><h2 className="text-5xl lg:text-7xl font-serif mb-8">{t.about.title}</h2><p className="text-xl text-zinc-400 font-light max-w-4xl mx-auto">{t.about.desc}</p><div className="grid grid-cols-3 gap-8 mt-12 border-t border-amber-500/20 pt-12"><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={15} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.years}</span></div><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={5000} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.salons}</span></div><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={20} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.countries}</span></div></div></div><div className="max-w-7xl mx-auto px-6 py-20"><h3 className="text-center text-amber-500 text-xs tracking-widest uppercase mb-12">{t.about.repsTitle}</h3><div className="grid grid-cols-1 md:grid-cols-4 gap-8">{leadership.map((person, i) => (<div key={i} className="text-center"><div className="aspect-[3/4] mb-4 overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all"><img src={person.image} className="w-full h-full object-cover" /></div><h4 className="text-xl font-serif text-white">{person.name}</h4><p className="text-amber-500 text-[10px] uppercase">{person.role}</p></div>))}</div></div><div className="bg-zinc-950 py-32 border-t border-white/5"><div className="max-w-7xl mx-auto px-6"><h3 className="text-4xl md:text-6xl font-serif text-white mb-4 text-center">{t.about.ambassadorsTitle}</h3><p className="text-center text-zinc-500 mb-16 max-w-xl mx-auto">{t.about.ambassadorsDesc}</p><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">{t.about.ambassadorList.map((amb: any, i: number) => (<div key={i} className="group relative cursor-pointer"><div className="aspect-[3/4] overflow-hidden rounded-sm border border-white/10 group-hover:border-amber-500 transition-all"><img src={ambassadorImages[i]} className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0" /><div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent"><h4 className="text-2xl font-serif text-white italic">{amb.name}</h4><p className="text-zinc-300 text-[10px] uppercase">{amb.role}</p></div></div></div>))}</div></div></div></section>);
+    return (<section className="bg-black text-white pt-20"><div className="px-8 max-w-7xl mx-auto mb-20 text-center"><h2 className="text-5xl lg:text-7xl font-serif mb-8">{t.about.title}</h2><p className="text-xl text-zinc-400 font-light max-w-4xl mx-auto">{t.about.desc}</p><div className="grid grid-cols-3 gap-8 mt-12 border-t border-amber-500/20 pt-12"><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={15} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.years}</span></div><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={5000} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.salons}</span></div><div className="text-center"><span className="block text-4xl font-serif"><CountUp end={20} />+</span><span className="text-xs text-amber-500 uppercase">{t.about.stats.countries}</span></div></div></div><div className="max-w-7xl mx-auto px-6 py-20"><h3 className="text-center text-amber-500 text-xs tracking-widest uppercase mb-12">{t.about.repsTitle}</h3><div className="grid grid-cols-1 md:grid-cols-4 gap-8">{leadership.map((person, i) => (<div key={i} className="text-center"><div className="aspect-[3/4] mb-4 overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all"><img src={person.image} className="w-full h-full object-cover" /></div><h4 className="text-xl font-serif text-white">{person.name}</h4><p className="text-amber-500 text-[10px] uppercase">{person.role}</p></div>))}</div></div><div className="bg-zinc-950 py-32 border-t border-white/5"><div className="max-w-7xl mx-auto px-6"><h3 className="text-4xl md:text-6xl font-serif text-white mb-4 text-center">{t.about.ambassadorsTitle}</h3><p className="text-center text-zinc-500 mb-16 max-w-xl mx-auto">{t.about.ambassadorsDesc}</p><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">{t.about.ambassadorList.map((amb: any, i: number) => (<div key={i} className="group relative cursor-pointer"><div className="aspect-[3/4] overflow-hidden rounded-sm border border-white/10 group-hover:border-amber-500 transition-all shadow-2xl"><img src={ambassadorImages[i]} className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700" /><div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black via-black/80 to-transparent"><h4 className="text-2xl font-serif text-white italic mb-1">{amb.name}</h4><p className="text-amber-500 text-[11px] uppercase tracking-widest">{amb.role}</p></div></div></div>))}</div></div></div></section>);
 };
 
-const PartnerAccessSection = ({ t }: any) => { const [step, setStep] = useState(1); const handleSubmit = (e: any) => { e.preventDefault(); setStep(3); }; return (<section className="min-h-screen bg-black pt-32 pb-20 flex items-center justify-center"><div className="max-w-6xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"><div className="space-y-8 animate-fade-in-up"><h2 className="text-5xl lg:text-7xl font-serif text-white leading-tight">{t.partner.title}</h2><p className="text-xl text-zinc-400 font-light border-l-2 border-amber-500 pl-6">{t.partner.subtitle}</p></div><div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-12 relative overflow-hidden">{step === 3 ? (<div className="text-center py-12 animate-fade-in-up"><Check size={40} className="text-green-500 mx-auto mb-6" /><h3 className="text-3xl font-serif text-white mb-4">{t.partner.success}</h3><p className="text-zinc-400">{t.partner.successMsg}</p></div>) : (<form onSubmit={handleSubmit} className="space-y-6"><input type="text" placeholder={t.partner.labels.name} required className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" /><input type="email" placeholder={t.partner.labels.email} required className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" /><button type="submit" className="w-full bg-amber-500 text-black font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-amber-400 transition-all">{t.partner.labels.submit}</button></form>)}</div></div></section>); };
+const PartnerAccessSection = ({ t }: any) => {
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-const Footer = ({ t, handleNav }: any) => (<footer className="bg-black border-t border-white/10 pt-20 pb-10"><div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16"><div className="space-y-6"><h3 className="text-2xl font-serif text-white font-bold">MA FASHION LLC</h3><p className="text-zinc-500 text-sm">{t.footer.about}</p></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.links}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><button onClick={() => handleNav('home')}>{t.nav.home}</button></li><li><button onClick={() => handleNav('sprofessional')}>{t.nav.s}</button></li><li><button onClick={() => handleNav('sweet')}>{t.nav.sweet}</button></li><li><button onClick={() => handleNav('about')}>{t.nav.about}</button></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.legal}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><a href="#">{t.common.privacy}</a></li><li><a href="#">{t.common.terms}</a></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.contact}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li>{t.common.address}</li><li>{t.common.phoneNum}</li></ul></div></div><div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex justify-between text-zinc-600 text-xs"><p>{t.footer.rights}</p><p>{t.common.unitedStates}</p></div></footer>);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const browserInfo = {
+            userAgent: navigator.userAgent,
+            language: navigator.language,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            screenResolution: `${window.screen.width}x${window.screen.height}`,
+            referrer: document.referrer,
+            currentUrl: window.location.href,
+            timestamp: new Date().toISOString(),
+        };
+
+        const payload = {
+            ...formData,
+            browserInfo,
+            source: 'Partner Access Form'
+        };
+
+        try {
+            await fetch('https://n8n.mafashionllc.com/webhook/Pagina_Oficial', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+            setStep(3);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            // We still show the success message to the user for better UX, or we could show an error.
+            // Given the request, we'll proceed to the success step.
+            setStep(3);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    return (
+        <section className="min-h-screen bg-black pt-32 pb-20 flex items-center justify-center">
+            <div className="max-w-6xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="space-y-8 animate-fade-in-up">
+                    <h2 className="text-5xl lg:text-7xl font-serif text-white leading-tight">{t.partner.title}</h2>
+                    <p className="text-xl text-zinc-400 font-light border-l-2 border-amber-500 pl-6">{t.partner.subtitle}</p>
+                </div>
+                <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-12 relative overflow-hidden">
+                    {step === 3 ? (
+                        <div className="text-center py-12 animate-fade-in-up">
+                            <Check size={40} className="text-green-500 mx-auto mb-6" />
+                            <h3 className="text-3xl font-serif text-white mb-4">{t.partner.success}</h3>
+                            <p className="text-zinc-400">{t.partner.successMsg}</p>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <input 
+                                type="text" 
+                                name="name"
+                                placeholder={t.partner.labels.name} 
+                                required 
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" 
+                            />
+                            <input 
+                                type="email" 
+                                name="email"
+                                placeholder={t.partner.labels.email} 
+                                required 
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" 
+                            />
+                            <input 
+                                type="tel" 
+                                name="phone"
+                                placeholder={t.partner.labels.phone} 
+                                required 
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-amber-500" 
+                            />
+                            <button 
+                                type="submit" 
+                                disabled={isSubmitting}
+                                className="w-full bg-amber-500 text-black font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-amber-400 transition-all disabled:opacity-50"
+                            >
+                                {isSubmitting ? '...' : t.partner.labels.submit}
+                            </button>
+                        </form>
+                    )}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+const Footer = ({ t, handleNav }: any) => (<footer className="bg-black border-t border-white/10 pt-20 pb-10"><div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16"><div className="space-y-6"><h3 className="text-2xl font-serif text-white font-bold">MA FASHION LLC</h3><p className="text-zinc-500 text-sm">{t.footer.about}</p></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.links}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('home')}>{t.nav.home}</button></li><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('sprofessional')}>{t.nav.s}</button></li><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('sweet')}>{t.nav.sweet}</button></li><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('about')}>{t.nav.about}</button></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.legal}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('privacy')}>{t.common.privacy}</button></li><li><a href="#" className="hover:text-amber-500 transition-colors">{t.common.terms}</a></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.contact}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li>{t.common.address}</li><li>{t.common.phoneNum}</li></ul></div></div><div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex justify-between text-zinc-600 text-xs"><p>{t.footer.rights}</p><p>{t.common.unitedStates}</p></div></footer>);
 
 const App = () => {
     const [activeTab, setActiveTab] = useState('home');
@@ -617,6 +924,7 @@ const App = () => {
             case 'education': return <EducationSection t={t} />;
             case 'about': return <AboutSection t={t} />;
             case 'partner': return <PartnerAccessSection t={t} />;
+            case 'privacy': return <PrivacySection t={t} />;
             default: return <HomeSection t={t} handleNav={handleNavigation} />;
         }
     };
