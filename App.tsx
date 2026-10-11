@@ -1,10 +1,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowRight, Sparkles, Clock, ChevronRight, ChevronLeft, Globe, CheckCircle2, Beaker, Droplets, Wind, Zap, Flame, Crown, Activity, Check, ChevronDown, ShieldCheck, Lock, Eye } from 'lucide-react';
-
-// --- Translation Data Type ---
-type Language = 'en' | 'es' | 'pt' | 'it' | 'fr';
+import { Menu, X, ArrowRight, Sparkles, Clock, ChevronRight, ChevronLeft, Globe, CheckCircle2, Beaker, Droplets, Wind, Zap, Flame, Crown, Activity, Check, ChevronDown, ShieldCheck, Lock, Eye, ShoppingBag, FileText, Search } from 'lucide-react';
+import { MarketplaceHeader } from './components/MarketplaceHeader';
+import { CatalogSection } from './components/CatalogSection';
+import { CartDrawer } from './components/CartDrawer';
+import { ProductDetailModal } from './components/ProductDetailModal';
+import { QuoteReviewSection } from './components/QuoteReviewSection';
+import { ProductItem, CartItem, loadCartFromStorage, saveCartToStorage, MARKETPLACE_PRODUCTS, Language } from './data/marketplaceData';
+import { OptimizedImage } from './components/OptimizedImage';
+import { preloadCatalogImages, getOptimizedImageUrl } from './utils/imageOptimizer';
 
 const enTranslation = {
   nav: { home: "Home", sweet: "Sweet Professional", s: "S Professional", edu: "Education", about: "About Us", partner: "Partner Access", all: "View All" },
@@ -789,132 +794,8 @@ const IntensityBar: React.FC<{ label: string, value: number }> = ({ label, value
     );
 };
 
-const Navigation = ({ activeTab, setActiveTab, lang, setLang, t }: any) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSProfessionalOpen, setIsSProfessionalOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  useEffect(() => { const handleScroll = () => setIsScrolled(window.scrollY > 20); window.addEventListener('scroll', handleScroll); return () => window.removeEventListener('scroll', handleScroll); }, []);
-  const flags: Record<string, string> = { en: "🇺🇸", es: "🇪🇸", pt: "🇧🇷", it: "🇮🇹", fr: "🇫🇷" };
-  const handleNav = (tab: string) => { setActiveTab(tab); setIsMobileMenuOpen(false); setIsSProfessionalOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const sProfessionalTreatments = [
-      { id: 'sp-nutrology', label: t.sprofessional.lines.nutrology.split(' - ')[0] },
-      { id: 'sp-hidratherapy', label: t.sprofessional.lines.hidratherapy.split(' - ')[0] },
-      { id: 'sp-profusion', label: t.sprofessional.lines.profusion.split(' - ')[0] },
-      { id: 'sp-brushing', label: t.sprofessional.lines.brushing.split(' - ')[0] },
-      { id: 'sp-mycrown', label: t.sprofessional.lines.mycrown.split(' - ')[0] }
-  ];
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-black/90 backdrop-blur-xl border-b border-white/5 py-3' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div onClick={() => handleNav('home')} className="flex items-center gap-3 cursor-pointer group">
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-200 to-amber-600 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)] transition-transform group-hover:scale-110"><span className="text-black font-serif font-bold text-xl">MA</span></div>
-          <div className="flex flex-col"><span className="text-white font-serif font-bold text-lg tracking-widest leading-none">MA FASHION</span><span className="text-amber-400 text-[10px] tracking-[0.2em] uppercase opacity-80 group-hover:opacity-100 transition-opacity">Global Biotech</span></div>
-        </div>
-        <div className="hidden md:flex items-center gap-10">
-          <button onClick={() => handleNav('home')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'home' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.home}</button>
-          <div 
-            className="relative"
-            onMouseEnter={() => setIsSProfessionalOpen(true)}
-            onMouseLeave={() => setIsSProfessionalOpen(false)}
-          >
-              <div className="flex items-center gap-1 cursor-pointer py-2">
-                  <button onClick={() => handleNav('sprofessional')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab.startsWith('sp') ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.s}</button>
-                  <ChevronDown size={14} className={`text-zinc-500 transition-transform duration-300 ${isSProfessionalOpen ? 'rotate-180 text-amber-500' : ''}`} />
-              </div>
-              <AnimatePresence>
-                {isSProfessionalOpen && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64"
-                  >
-                    <div className="bg-zinc-900 border border-white/10 rounded-lg shadow-2xl overflow-hidden py-2">
-                        {sProfessionalTreatments.map((item) => (
-                            <button key={item.id} onClick={() => handleNav(item.id)} className="w-full text-left px-6 py-4 text-xs uppercase tracking-widest text-zinc-400 hover:text-amber-400 hover:bg-white/5 transition-all flex items-center justify-between group/sub">
-                                {item.label} <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all" />
-                            </button>
-                        ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-          </div>
-          <button onClick={() => handleNav('sweet')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'sweet' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.sweet}</button>
-          <button onClick={() => handleNav('education')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'education' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.edu}</button>
-          <button onClick={() => handleNav('about')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'about' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.about}</button>
-          <button onClick={() => handleNav('partner')} className={`text-sm uppercase tracking-widest hover:text-amber-400 transition-all ${activeTab === 'partner' ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>{t.nav.partner}</button>
-        </div>
-        <div className="hidden md:flex items-center gap-6">
-           <div 
-             className="relative"
-             onMouseEnter={() => setIsLangOpen(true)}
-             onMouseLeave={() => setIsLangOpen(false)}
-           >
-              <button className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm uppercase tracking-wider py-2">
-                  <Globe size={14} /> <span>{flags[lang]}</span>
-              </button>
-              <AnimatePresence>
-                {isLangOpen && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full right-0 pt-2 min-w-[120px]"
-                  >
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl overflow-hidden">
-                      {Object.keys(flags).map((code) => (
-                          <button 
-                            key={code} 
-                            onClick={() => {
-                              setLang(code as Language);
-                              setIsLangOpen(false);
-                            }} 
-                            className={`w-full text-left px-4 py-3 text-xs uppercase tracking-wider hover:bg-zinc-800 transition-colors flex items-center gap-3 ${lang === code ? 'text-amber-400 bg-zinc-800/50' : 'text-zinc-400'}`}
-                          >
-                              <span className="text-lg">{flags[code]}</span> <span>{code.toUpperCase()}</span>
-                          </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-           </div>
-        </div>
-        <button className="md:hidden text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-zinc-800 p-6 flex flex-col gap-4 animate-fade-in-up">
-           <button onClick={() => handleNav('home')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.home}</button>
-           <div className="space-y-4">
-               <button onClick={() => setIsSProfessionalOpen(!isSProfessionalOpen)} className="flex items-center justify-between w-full text-lg uppercase tracking-widest text-white">
-                   {t.nav.s} <ChevronDown className={isSProfessionalOpen ? 'rotate-180' : ''} />
-               </button>
-               {isSProfessionalOpen && (
-                   <div className="pl-6 flex flex-col gap-4 border-l border-amber-500/20">
-                       <button onClick={() => handleNav('sprofessional')} className="text-left text-sm uppercase tracking-widest text-zinc-400">{t.nav.all}</button>
-                       {sProfessionalTreatments.map(item => (
-                           <button key={item.id} onClick={() => handleNav(item.id)} className="text-left text-sm uppercase tracking-widest text-zinc-400">{item.label}</button>
-                       ))}
-                   </div>
-               )}
-           </div>
-           <button onClick={() => handleNav('sweet')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.sweet}</button>
-           <button onClick={() => handleNav('education')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.edu}</button>
-           <button onClick={() => handleNav('about')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.about}</button>
-           <button onClick={() => handleNav('partner')} className="text-left text-lg uppercase tracking-widest text-white">{t.nav.partner}</button>
-        </div>
-      )}
-    </nav>
-  );
-};
 
-const TreatmentDetail = ({ id, t, handleNav, lang }: any) => {
+const TreatmentDetail = ({ id, t, handleNav, lang, onAddToCart, onOpenCart }: any) => {
     const prefix = id.split('-')[0];
     const key = id.split('-')[1];
     const data = prefix === 'sp' ? t.sprofessional.details[key] : t.sweet.details[key];
@@ -926,6 +807,32 @@ const TreatmentDetail = ({ id, t, handleNav, lang }: any) => {
     const [isManualSubmitting, setIsManualSubmitting] = useState(false);
     const [manualSuccess, setManualSuccess] = useState(false);
     const [manualError, setManualError] = useState<string | null>(null);
+    const [addedTreatment, setAddedTreatment] = useState(false);
+    const [addedHomeCare, setAddedHomeCare] = useState(false);
+
+    // Find corresponding marketplace products
+    const matchedTreatmentProduct = MARKETPLACE_PRODUCTS.find(p => p.id === id);
+    const matchedHomeCareProduct = MARKETPLACE_PRODUCTS.find(p => p.id === `hc-${key}`);
+
+    const handleBuyTreatment = () => {
+        if (matchedTreatmentProduct && onAddToCart) {
+            onAddToCart(matchedTreatmentProduct, 1);
+            setAddedTreatment(true);
+            setTimeout(() => setAddedTreatment(false), 2000);
+        } else {
+            handleNav('catalog');
+        }
+    };
+
+    const handleBuyHomeCare = () => {
+        if (matchedHomeCareProduct && onAddToCart) {
+            onAddToCart(matchedHomeCareProduct, 1);
+            setAddedHomeCare(true);
+            setTimeout(() => setAddedHomeCare(false), 2000);
+        } else {
+            handleNav('catalog');
+        }
+    };
 
     const handleManualSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -1003,9 +910,27 @@ const TreatmentDetail = ({ id, t, handleNav, lang }: any) => {
                         <h1 className="text-6xl md:text-8xl font-serif text-white tracking-tighter italic">{labels[type].split(' - ')[0]}</h1>
                         <p className="text-2xl text-zinc-400 font-light border-l-2 border-amber-500 pl-6">{data.headline}</p>
                         {data.info && <p className="text-lg text-zinc-500 font-light leading-relaxed">{data.info}</p>}
-                        <div className="pt-6"><button onClick={() => handleNav('partner')} className="px-12 py-5 bg-amber-500 text-black font-bold uppercase tracking-widest text-sm hover:bg-amber-400 transition-all rounded-sm shadow-xl">{commonLabels.buyForSalon}</button></div>
+                        <div className="pt-6 flex flex-wrap gap-4">
+                            <button 
+                                onClick={handleBuyTreatment} 
+                                className={`px-10 py-4 font-bold uppercase tracking-widest text-xs rounded-sm shadow-xl flex items-center gap-2 transition-all ${
+                                    addedTreatment 
+                                        ? 'bg-emerald-500 text-black' 
+                                        : 'bg-amber-500 text-black hover:bg-amber-400'
+                                }`}
+                            >
+                                <ShoppingBag size={16} />
+                                <span>{addedTreatment ? (lang === 'es' ? '¡Agregado al Carrito!' : 'Added!') : commonLabels.buyForSalon}</span>
+                            </button>
+                            <button 
+                                onClick={() => handleNav('catalog')} 
+                                className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-bold uppercase tracking-widest text-xs rounded-sm border border-zinc-700 transition-all"
+                            >
+                                <span>{lang === 'es' ? 'Ver en Catálogo' : 'View in Catalog'}</span>
+                            </button>
+                        </div>
                     </div>
-                    <div className="relative group animate-fade-in"><div className="absolute -inset-4 bg-amber-500/10 rounded-2xl blur-3xl opacity-50"></div><div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10"><img src={treatmentImages[type]} className="w-full h-full object-cover" /></div></div>
+                    <div className="relative group animate-fade-in"><div className="absolute -inset-4 bg-amber-500/10 rounded-2xl blur-3xl opacity-50"></div><div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-4 sm:p-8 flex items-center justify-center"><OptimizedImage src={treatmentImages[type]} alt={data.title} width={700} quality={85} fit="contain" priority={true} className="w-full h-full object-contain drop-shadow-2xl" /></div></div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32">
@@ -1065,14 +990,27 @@ const TreatmentDetail = ({ id, t, handleNav, lang }: any) => {
                                 </div>
                                 <h2 className="text-5xl md:text-6xl font-serif text-white italic leading-tight">{data.homeCare.title}</h2>
                                 <p className="text-xl text-zinc-400 font-light leading-relaxed">{data.homeCare.desc}</p>
-                                <motion.button 
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => handleNav('partner')}
-                                    className="px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-amber-500 transition-all rounded-sm shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-                                >
-                                    {data.homeCare.cta}
-                                </motion.button>
+                                <div className="flex flex-wrap gap-4 pt-2">
+                                    <motion.button 
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={handleBuyHomeCare}
+                                        className={`px-10 py-4 font-bold uppercase tracking-widest text-xs rounded-sm shadow-[0_0_30px_rgba(255,255,255,0.1)] flex items-center gap-2 transition-all ${
+                                            addedHomeCare 
+                                                ? 'bg-emerald-500 text-black' 
+                                                : 'bg-white text-black hover:bg-amber-500'
+                                        }`}
+                                    >
+                                        <ShoppingBag size={16} />
+                                        <span>{addedHomeCare ? (lang === 'es' ? '¡Agregado!' : 'Added!') : data.homeCare.cta}</span>
+                                    </motion.button>
+                                    <button 
+                                        onClick={() => handleNav('catalog')} 
+                                        className="px-8 py-4 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 font-bold uppercase tracking-widest text-xs rounded-sm transition-all"
+                                    >
+                                        <span>{lang === 'es' ? 'Ver Catálogo' : 'View Catalog'}</span>
+                                    </button>
+                                </div>
                             </div>
                             <div className="relative group">
                                 <motion.div 
@@ -1088,9 +1026,12 @@ const TreatmentDetail = ({ id, t, handleNav, lang }: any) => {
                                     className="relative z-10"
                                 >
                                     <div className="absolute -inset-4 bg-amber-500/20 rounded-full blur-3xl opacity-30 group-hover:opacity-60 transition-opacity"></div>
-                                    <img 
+                                    <OptimizedImage 
                                         src={homeCareImages[type]} 
                                         alt={data.homeCare.title}
+                                        width={600}
+                                        quality={85}
+                                        fit="contain"
                                         className="w-full h-auto rounded-2xl shadow-2xl border border-white/10 relative z-10 transform group-hover:scale-105 transition-transform duration-700"
                                     />
                                     {/* Special Effects: Floating particles or glow */}
@@ -1167,11 +1108,16 @@ const HeroSection = ({ t, handleNav }: any) => {
   const tickerContent = t.promos.items.map((item: any) => `${item.title}: ${item.desc}`).join("  ✦  ").toUpperCase();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1620331313174-d73105a3f333?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 scale-105 animate-spin-reverse-slow duration-[100s]" /><div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" /><div className="absolute inset-0 bg-noise opacity-50 mix-blend-overlay"></div></div>
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center"><div className="inline-flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full mb-8 animate-fade-in-up backdrop-blur-md"><Sparkles size={14} className="text-amber-400 animate-pulse" /><span className="text-amber-300 text-xs font-bold tracking-[0.2em] uppercase">{t.tagline}</span></div><h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-medium text-white mb-8 leading-tight animate-fade-in-up delay-100 tracking-tighter"><span className="block opacity-90">{t.titleStart}</span><span className="text-gold italic relative inline-block">{t.titleEnd}<span className="absolute -bottom-4 left-0 w-full h-1 bg-amber-500/50 rounded-full blur-sm"></span></span></h1><p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up delay-200">{t.subtitle}</p><div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in-up delay-300">
-          <button onClick={() => handleNav('partner')} className="group relative px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-widest uppercase text-sm transition-all rounded-sm overflow-hidden">
+      <div className="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1620331313174-d73105a3f333?q=75&w=1280&auto=format&fit=crop" loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover opacity-40 scale-105 animate-spin-reverse-slow duration-[100s]" /><div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" /><div className="absolute inset-0 bg-noise opacity-50 mix-blend-overlay"></div></div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center"><div className="inline-flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full mb-8 animate-fade-in-up backdrop-blur-md"><Sparkles size={14} className="text-amber-400 animate-pulse" /><span className="text-amber-300 text-xs font-bold tracking-[0.2em] uppercase">{t.tagline}</span></div><h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-medium text-white mb-8 leading-tight animate-fade-in-up delay-100 tracking-tighter"><span className="block opacity-90">{t.titleStart}</span><span className="text-gold italic relative inline-block">{t.titleEnd}<span className="absolute -bottom-4 left-0 w-full h-1 bg-amber-500/50 rounded-full blur-sm"></span></span></h1><p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up delay-200">{t.subtitle}</p><div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300">
+          <button onClick={() => handleNav('catalog')} className="group relative px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-widest uppercase text-xs transition-all rounded-sm overflow-hidden flex items-center gap-2 shadow-2xl">
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            <span className="relative flex items-center gap-2">{t.ctaShop} <ArrowRight size={16} /></span>
+            <ShoppingBag size={16} />
+            <span className="relative">{t.ctaShop}</span>
+            <ArrowRight size={16} />
+          </button>
+          <button onClick={() => handleNav('partner')} className="px-8 py-4 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 font-bold tracking-widest uppercase text-xs transition-all rounded-sm">
+            <span>{t.nav.partner}</span>
           </button>
         </div></div>
       <div className="absolute bottom-10 left-0 w-full overflow-hidden py-4 border-t border-white/5 bg-black/50 backdrop-blur-sm"><div className="flex animate-marquee whitespace-nowrap gap-12 text-zinc-500 text-xs font-bold tracking-[0.3em] uppercase"><span>{tickerContent}</span><span>✦</span><span>{tickerContent}</span></div></div>
@@ -1190,7 +1136,7 @@ const PromotionsSection = ({ t, handleNav }: any) => {
     return (
         <section className="bg-black pt-28 md:pt-32 pb-0 border-b border-zinc-900 relative">
             <style>{`@keyframes countdown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 125.6; } } @keyframes slideProgress { from { width: 0%; } to { width: 100%; } }`}</style>
-            <div className="w-full h-[600px] relative overflow-hidden group">{slides.map((slide, index) => (<div key={slide.id} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}><div className="absolute inset-0 overflow-hidden"><img src={slide.image} className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${slide.position} ${index === currentSlide ? 'scale-110' : 'scale-100'}`} /><div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" /></div><div className="absolute inset-0 flex items-center"><div className="max-w-7xl mx-auto px-6 w-full"><div className="max-w-xl space-y-6"><div className="inline-block px-3 py-1 bg-amber-500 text-black text-xs font-bold tracking-widest uppercase mb-2 animate-fade-in">{t.common.maNews}</div><h2 className="text-5xl md:text-6xl font-serif text-white leading-tight animate-fade-in-up tracking-tighter">{slide.title}</h2><p className="text-zinc-300 text-lg leading-relaxed animate-fade-in-up delay-100">{slide.desc}</p><button onClick={slide.action} className="mt-8 px-8 py-3 border-b border-amber-500 text-amber-500 hover:text-amber-400 font-bold tracking-widest uppercase text-sm transition-all flex items-center gap-2 animate-fade-in-up delay-200">{slide.cta} <ArrowRight size={16} /></button></div></div></div></div>))}<div className="absolute bottom-0 left-0 w-full z-20"><div className="max-w-7xl mx-auto px-6 mb-8 flex justify-end items-end gap-8"><div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10"><div className="relative w-10 h-10 flex items-center justify-center"><svg className="w-full h-full -rotate-90 transform"><circle cx="20" cy="20" r="16" className="stroke-white/10 fill-none" strokeWidth="2" /><circle key={currentSlide} cx="20" cy="20" r="16" className="stroke-amber-500 fill-none" strokeWidth="2" strokeDasharray="100.5" strokeDashoffset="0" style={{ animation: `countdown ${DURATION}ms linear forwards` }} /></svg><div className="absolute text-white animate-pulse"><Clock size={12} /></div></div><div className="flex flex-col"><span className="text-[9px] text-zinc-400 uppercase tracking-widest font-bold">{t.promos.comingUp}</span><span className="text-xs text-white font-serif italic truncate max-w-[120px] md:max-w-[200px]">{slides[nextSlideIndex].title}</span></div></div><div className="flex gap-2"><button onClick={prevSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronLeft size={20} /></button><button onClick={nextSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronRight size={20} /></button></div></div><div className="flex w-full h-1 bg-black">{slides.map((_, idx) => (<div key={idx} className="flex-1 bg-zinc-900/50 relative overflow-hidden border-r border-black/50">{idx === currentSlide && (<div className="absolute inset-0 bg-amber-500 shadow-[0_0_15px_#f59e0b]" style={{ animation: `slideProgress ${DURATION}ms linear forwards` }} />)}{idx < currentSlide && <div className="absolute inset-0 bg-amber-500/30" />}</div>))}</div></div></div>
+            <div className="w-full h-[600px] relative overflow-hidden group">{slides.map((slide, index) => (<div key={slide.id} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}><div className="absolute inset-0 overflow-hidden"><img src={getOptimizedImageUrl(slide.image, { width: 1400, quality: 82, format: 'webp' })} alt={slide.title} loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} decoding="async" onError={(e) => { e.currentTarget.src = slide.image; }} className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${slide.position} ${index === currentSlide ? 'scale-110' : 'scale-100'}`} /><div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" /></div><div className="absolute inset-0 flex items-center"><div className="max-w-7xl mx-auto px-6 w-full"><div className="max-w-xl space-y-6"><div className="inline-block px-3 py-1 bg-amber-500 text-black text-xs font-bold tracking-widest uppercase mb-2 animate-fade-in">{t.common.maNews}</div><h2 className="text-5xl md:text-6xl font-serif text-white leading-tight animate-fade-in-up tracking-tighter">{slide.title}</h2><p className="text-zinc-300 text-lg leading-relaxed animate-fade-in-up delay-100">{slide.desc}</p><button onClick={slide.action} className="mt-8 px-8 py-3 border-b border-amber-500 text-amber-500 hover:text-amber-400 font-bold tracking-widest uppercase text-sm transition-all flex items-center gap-2 animate-fade-in-up delay-200">{slide.cta} <ArrowRight size={16} /></button></div></div></div></div>))}<div className="absolute bottom-0 left-0 w-full z-20"><div className="max-w-7xl mx-auto px-6 mb-8 flex justify-end items-end gap-8"><div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10"><div className="relative w-10 h-10 flex items-center justify-center"><svg className="w-full h-full -rotate-90 transform"><circle cx="20" cy="20" r="16" className="stroke-white/10 fill-none" strokeWidth="2" /><circle key={currentSlide} cx="20" cy="20" r="16" className="stroke-amber-500 fill-none" strokeWidth="2" strokeDasharray="100.5" strokeDashoffset="0" style={{ animation: `countdown ${DURATION}ms linear forwards` }} /></svg><div className="absolute text-white animate-pulse"><Clock size={12} /></div></div><div className="flex flex-col"><span className="text-[9px] text-zinc-400 uppercase tracking-widest font-bold">{t.promos.comingUp}</span><span className="text-xs text-white font-serif italic truncate max-w-[120px] md:max-w-[200px]">{slides[nextSlideIndex].title}</span></div></div><div className="flex gap-2"><button onClick={prevSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronLeft size={20} /></button><button onClick={nextSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronRight size={20} /></button></div></div><div className="flex w-full h-1 bg-black">{slides.map((_, idx) => (<div key={idx} className="flex-1 bg-zinc-900/50 relative overflow-hidden border-r border-black/50">{idx === currentSlide && (<div className="absolute inset-0 bg-amber-500 shadow-[0_0_15px_#f59e0b]" style={{ animation: `slideProgress ${DURATION}ms linear forwards` }} />)}{idx < currentSlide && <div className="absolute inset-0 bg-amber-500/30" />}</div>))}</div></div></div>
         </section>
     );
 };
@@ -1223,10 +1169,13 @@ const HomeSection = ({ t, handleNav }: any) => {
                         {/* S Professional Card - Floating Editorial Style */}
                         <div className="relative group cursor-pointer overflow-hidden rounded-sm border border-white/5 shadow-2xl" onClick={() => handleNav('sprofessional')}>
                             <div className="relative aspect-[4/5] md:aspect-square overflow-hidden">
-                                <img 
+                                <OptimizedImage 
                                     src="https://i.ibb.co/4w5HQC66/Gemini-Generated-Image-lv0f50lv0f50lv0f.png" 
+                                    alt="S Professional"
+                                    width={700}
+                                    quality={85}
+                                    fit="cover"
                                     className="w-full h-full object-cover object-[center_15%] scale-105 transition-transform duration-1000 group-hover:scale-115" 
-                                    referrerPolicy="no-referrer"
                                 />
                                 {/* Sophisticated Gradient Overlay - Focused on bottom for legibility */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-500"></div>
@@ -1264,10 +1213,13 @@ const HomeSection = ({ t, handleNav }: any) => {
                         {/* Sweet Professional Card - Floating Editorial Style */}
                         <div className="relative group cursor-pointer overflow-hidden rounded-sm border border-white/5 shadow-2xl" onClick={() => handleNav('sweet')}>
                             <div className="relative aspect-[4/5] md:aspect-square overflow-hidden">
-                                <img 
+                                <OptimizedImage 
                                     src="https://i.ibb.co/dJ1wrB5C/Gemini-Generated-Image-5womcu5womcu5wom.png" 
+                                    alt="Sweet Professional"
+                                    width={700}
+                                    quality={85}
+                                    fit="cover"
                                     className="w-full h-full object-cover object-[center_15%] scale-105 transition-transform duration-1000 group-hover:scale-115" 
-                                    referrerPolicy="no-referrer"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
@@ -1301,6 +1253,37 @@ const HomeSection = ({ t, handleNav }: any) => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Marketplace Feature Banner */}
+                    <div className="mt-20 p-8 sm:p-12 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 rounded-2xl border border-amber-500/30 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+                        <div className="space-y-3 max-w-2xl text-center lg:text-left z-10">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded text-[10px] uppercase font-mono tracking-widest text-amber-400 font-bold">
+                                <span>MA FASHION · DIGITAL MARKETPLACE</span>
+                            </div>
+                            <h3 className="text-3xl sm:text-4xl font-serif text-white tracking-tight">
+                                {t.marketplaceBannerTitle || 'Catálogo Oficial & Sistema de Presupuestos'}
+                            </h3>
+                            <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                                {t.marketplaceBannerDesc || 'Explore todas las líneas de S Professional, Sweet Professional y Home Care con códigos de producto, presentaciones completas y generación inmediata de presupuesto por WhatsApp.'}
+                            </p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 shrink-0 z-10 w-full sm:w-auto">
+                            <button
+                                onClick={() => handleNav('catalog')}
+                                className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider text-xs rounded-lg shadow-xl flex items-center justify-center gap-2 transition-all"
+                            >
+                                <ShoppingBag size={16} />
+                                <span>Ver Catálogo & Precios</span>
+                            </button>
+                            <button
+                                onClick={() => handleNav('quote')}
+                                className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 font-bold uppercase tracking-wider text-xs rounded-lg flex items-center justify-center gap-2 transition-all"
+                            >
+                                <FileText size={16} className="text-amber-400" />
+                                <span>Revisar Presupuesto</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </section>
         </>
@@ -1330,7 +1313,7 @@ const SProfessionalSection = ({ t, handleNav }: any) => {
                     <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 reveal-on-scroll is-visible`}>
                         <div className="w-full md:w-1/2 relative group cursor-pointer" onClick={() => handleNav(item.id)}>
                             <div className="relative overflow-hidden rounded-sm shadow-2xl aspect-[4/3] border border-white/5">
-                                <img src={item.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                                <OptimizedImage src={item.img} alt={item.title} width={700} quality={85} fit="cover" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                                 <div className="absolute inset-6 border border-white/10 group-hover:border-amber-500/30 transition-colors duration-500"></div>
                             </div>
                         </div>
@@ -1347,7 +1330,89 @@ const SProfessionalSection = ({ t, handleNav }: any) => {
     );
 };
 
-const SweetSection = ({ t, handleNav }: any) => (<section className="min-h-screen bg-zinc-950 pt-32 pb-20 relative"><div className="max-w-7xl mx-auto px-6"><div className="mb-20 text-center"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-4">{t.common.innovation}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-8 tracking-tighter">{t.sweet.title}</h2><p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light">{t.sweet.desc}</p></div><div className="grid grid-cols-1 md:grid-cols-3 gap-8">{[{ id: 'thefirst', title: t.sweet.lines.thefirst, desc: t.sweet.lineDescs.thefirst, img: "https://i.ibb.co/5Wm1sfhY/thefirst.webp" }, { id: 'cronology', title: t.sweet.lines.cronology, desc: t.sweet.lineDescs.cronology, img: "https://i.ibb.co/cc71zLK9/cronology.webp" }, { id: 'sos', title: t.sweet.lines.sos, desc: t.sweet.lineDescs.sos, img: "https://i.ibb.co/tTVkF43k/sos.webp" }].map((item) => (<div key={item.id} onClick={() => handleNav('sw-' + item.id)} className="group relative aspect-[9/16] bg-zinc-900 border border-white/5 overflow-hidden transition-all hover:border-amber-500/30 cursor-pointer"><img src={item.img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 duration-700" /><div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" /><div className="absolute bottom-0 left-0 w-full p-8"><h3 className="text-3xl font-serif text-white mb-2 italic">{item.title}</h3><p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p></div></div>))}</div></div></section>);
+const SweetSection = ({ t, handleNav }: any) => (
+  <section className="min-h-screen bg-zinc-950 pt-28 sm:pt-32 pb-20 relative text-zinc-100">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="mb-12 sm:mb-16 text-center max-w-3xl mx-auto">
+        <span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-3">
+          {t.common.innovation}
+        </span>
+        <h2 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white mb-6 tracking-tight">
+          {t.sweet.title}
+        </h2>
+        <p className="text-base sm:text-lg text-zinc-400 font-light leading-relaxed">
+          {t.sweet.desc}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        {[
+          {
+            id: 'thefirst',
+            title: t.sweet.lines.thefirst,
+            desc: t.sweet.lineDescs.thefirst,
+            img: "https://i.ibb.co/5Wm1sfhY/thefirst.webp",
+            tag: "The First Shampoo",
+          },
+          {
+            id: 'cronology',
+            title: t.sweet.lines.cronology,
+            desc: t.sweet.lineDescs.cronology,
+            img: "https://i.ibb.co/cc71zLK9/cronology.webp",
+            tag: "Cronology Biotecnología",
+          },
+          {
+            id: 'sos',
+            title: t.sweet.lines.sos,
+            desc: t.sweet.lineDescs.sos,
+            img: "https://i.ibb.co/tTVkF43k/sos.webp",
+            tag: "S.O.S Emergency",
+          },
+        ].map((item) => (
+          <div
+            key={item.id}
+            onClick={() => handleNav('sw-' + item.id)}
+            className="group relative bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 hover:border-amber-500/50 rounded-2xl overflow-hidden transition-all duration-300 shadow-xl cursor-pointer flex flex-col justify-between"
+          >
+            {/* Image box: Perfectly framed with object-contain to prevent clipping on mobile */}
+            <div className="relative aspect-[4/5] sm:aspect-square md:aspect-[3/4] p-6 sm:p-8 flex items-center justify-center bg-zinc-900/60 overflow-hidden">
+              <OptimizedImage
+                src={item.img}
+                alt={item.title}
+                width={600}
+                quality={85}
+                fit="contain"
+                className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute top-4 left-4">
+                <span className="text-[10px] font-mono uppercase bg-black/80 backdrop-blur-md text-amber-400 px-2.5 py-1 rounded-full border border-amber-500/30">
+                  {item.tag}
+                </span>
+              </div>
+            </div>
+
+            {/* Content box */}
+            <div className="p-6 bg-zinc-950/90 border-t border-zinc-800/80 space-y-2 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 className="text-2xl font-serif text-white group-hover:text-amber-400 transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-zinc-400 text-xs sm:text-sm mt-2 leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+
+              <div className="pt-4 flex items-center justify-between text-xs text-amber-400 font-semibold uppercase tracking-wider">
+                <span>Ver Tratamiento Completo</span>
+                <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 const EducationSection = ({ t }: any) => (<section className="min-h-screen bg-zinc-950 pt-32 pb-20"><div className="max-w-7xl mx-auto px-6"><div className="text-center mb-24"><span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block mb-4">{t.education.title}</span><h2 className="text-6xl md:text-8xl font-serif text-white mb-8 tracking-tighter">{t.education.subtitle}</h2></div><p className="text-center text-zinc-400 max-w-2xl mx-auto text-lg font-light mb-20">{t.education.desc}</p><div className="flex items-center justify-center h-40 bg-zinc-900/50 rounded-3xl border border-white/5"><span className="text-zinc-500 font-serif italic text-2xl tracking-widest">{t.common.resultsTitle}</span></div></div></section>);
 
@@ -1432,7 +1497,7 @@ const AboutSection = ({ t }: any) => {
                     {leadership.map((person, i) => (
                         <div key={i} className="text-center">
                             <div className="aspect-[3/4] mb-4 overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all">
-                                <img src={person.image} className="w-full h-full object-cover" />
+                                <OptimizedImage src={person.image} alt={person.name} width={400} quality={80} fit="cover" className="w-full h-full object-cover" />
                             </div>
                             <h4 className="text-xl font-serif text-white">{person.name}</h4>
                             <p className="text-amber-500 text-[10px] uppercase">{person.role}</p>
@@ -1448,7 +1513,7 @@ const AboutSection = ({ t }: any) => {
                         {t.about.ambassadorList.map((amb: any, i: number) => (
                             <div key={i} className="group relative cursor-pointer">
                                 <div className="aspect-[3/4] overflow-hidden rounded-sm border border-white/10 group-hover:border-amber-500 transition-all shadow-2xl">
-                                    <img src={ambassadorImages[i]} className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700" />
+                                    <OptimizedImage src={ambassadorImages[i]} alt={amb.name} width={400} quality={80} fit="cover" className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700" />
                                     <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black via-black/80 to-transparent">
                                         <h4 className="text-2xl font-serif text-white italic mb-1">{amb.name}</h4>
                                         <p className="text-amber-500 text-[11px] uppercase tracking-widest">{amb.role}</p>
@@ -1593,18 +1658,125 @@ const PartnerAccessSection = ({ t, lang }: any) => {
     );
 };
 
-const Footer = ({ t, handleNav }: any) => (<footer className="bg-black border-t border-white/10 pt-20 pb-10"><div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16"><div className="space-y-6"><h3 className="text-2xl font-serif text-white font-bold">MA FASHION LLC</h3><p className="text-zinc-500 text-sm">{t.footer.about}</p></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.links}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('home')}>{t.nav.home}</button></li><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('sprofessional')}>{t.nav.s}</button></li><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('sweet')}>{t.nav.sweet}</button></li><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('about')}>{t.nav.about}</button></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.legal}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('privacy')}>{t.common.privacy}</button></li><li><a href="#" className="hover:text-amber-500 transition-colors">{t.common.terms}</a></li></ul></div><div><h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.contact}</h4><ul className="space-y-4 text-zinc-500 text-sm"><li>{t.common.address}</li><li>{t.common.phoneNum}</li></ul></div></div><div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex justify-between text-zinc-600 text-xs"><p>{t.footer.rights}</p><p>{t.common.unitedStates}</p></div></footer>);
+const Footer = ({ t, handleNav, lang }: any) => {
+    const isEs = lang === 'es';
+    return (
+        <footer className="bg-black border-t border-white/10 pt-20 pb-10">
+            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div className="space-y-6">
+                    <h3 className="text-2xl font-serif text-white font-bold">MA FASHION LLC</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{t.footer.about}</p>
+                    <div className="pt-2">
+                        <button
+                            onClick={() => handleNav('catalog')}
+                            className="px-4 py-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold rounded hover:bg-amber-500/20 transition-colors uppercase tracking-wider"
+                        >
+                            {isEs ? 'Ver Catálogo Oficial' : 'View Official Catalog'}
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.links}</h4>
+                    <ul className="space-y-3 text-zinc-400 text-sm">
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('home')}>{t.nav.home}</button></li>
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('catalog')}>{isEs ? 'Catálogo & Marketplace' : 'Catalog & Store'}</button></li>
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('quote')}>{isEs ? 'Revisar Presupuesto' : 'Review Quote'}</button></li>
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('sprofessional')}>{t.nav.s}</button></li>
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('sweet')}>{t.nav.sweet}</button></li>
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('partner')}>{t.nav.partner}</button></li>
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('about')}>{t.nav.about}</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.legal}</h4>
+                    <ul className="space-y-3 text-zinc-400 text-sm">
+                        <li><button className="hover:text-amber-500 transition-colors" onClick={() => handleNav('privacy')}>{t.common.privacy}</button></li>
+                        <li><a href="#" className="hover:text-amber-500 transition-colors">{t.common.terms}</a></li>
+                        <li className="pt-2 text-xs text-zinc-500 leading-normal">
+                            {isEs ? 'Distribuidor exclusivo en Estados Unidos para salones profesionales.' : 'Exclusive USA distributor for professional salons.'}
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-8">{t.footer.contact}</h4>
+                    <ul className="space-y-3 text-zinc-400 text-sm">
+                        <li>{t.common.address}</li>
+                        <li>{t.common.phoneNum}</li>
+                        <li className="text-xs text-zinc-500">s.professional.usa@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-zinc-600 text-xs">
+                <p>{t.footer.rights}</p>
+                <p>{t.common.unitedStates} · High-Performance Hair Biotechnology</p>
+            </div>
+        </footer>
+    );
+};
 
 const App = () => {
     const [activeTab, setActiveTab] = useState('home');
-    const [lang, setLang] = useState<Language>('en'); 
+    const [lang, setLang] = useState<Language>('es'); 
     const [showWhatsApp, setShowWhatsApp] = useState(false);
+
+    // Marketplace state
+    const [cart, setCart] = useState<CartItem[]>(() => loadCartFromStorage());
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [selectedProductForModal, setSelectedProductForModal] = useState<ProductItem | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('all');
+
     const t = translations[lang];
-    
+
+    // Sync cart with localStorage
+    useEffect(() => {
+        saveCartToStorage(cart);
+    }, [cart]);
+
+    const handleAddToCart = (product: ProductItem, quantity: number = 1) => {
+        setCart((prevCart) => {
+            const existingIndex = prevCart.findIndex((item) => item.product.id === product.id);
+            if (existingIndex > -1) {
+                const updated = [...prevCart];
+                updated[existingIndex] = {
+                    ...updated[existingIndex],
+                    quantity: updated[existingIndex].quantity + quantity,
+                };
+                return updated;
+            } else {
+                return [...prevCart, { product, quantity }];
+            }
+        });
+    };
+
+    const handleUpdateQuantity = (productId: string, delta: number) => {
+        setCart((prevCart) => {
+            return prevCart
+                .map((item) => {
+                    if (item.product.id === productId) {
+                        const newQ = item.quantity + delta;
+                        return newQ > 0 ? { ...item, quantity: newQ } : null;
+                    }
+                    return item;
+                })
+                .filter(Boolean) as CartItem[];
+        });
+    };
+
+    const handleRemoveItem = (productId: string) => {
+        setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
+    };
+
+    const handleClearCart = () => {
+        setCart([]);
+    };
+
     const handleNavigation = (tab: string) => { 
         setActiveTab(tab); 
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
     };
+
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     useEffect(() => { 
         const handleScroll = () => setShowWhatsApp(window.scrollY > 300); 
@@ -1613,7 +1785,48 @@ const App = () => {
     }, []);
 
     const renderContent = () => {
-        if (activeTab.startsWith('sp-') || activeTab.startsWith('sw-')) return <TreatmentDetail id={activeTab} t={t} handleNav={handleNavigation} lang={lang} />;
+        if (activeTab === 'catalog') {
+            return (
+                <CatalogSection
+                    onSelectProduct={(p) => setSelectedProductForModal(p)}
+                    onAddToCart={handleAddToCart}
+                    onNavigateDetail={handleNavigation}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    lang={lang}
+                />
+            );
+        }
+
+        if (activeTab === 'quote') {
+            return (
+                <QuoteReviewSection
+                    cart={cart}
+                    onUpdateQuantity={handleUpdateQuantity}
+                    onRemoveItem={handleRemoveItem}
+                    onClearCart={handleClearCart}
+                    onContinueShopping={() => handleNavigation('catalog')}
+                    onOpenCartDrawer={() => setIsCartOpen(true)}
+                    lang={lang}
+                />
+            );
+        }
+
+        if (activeTab.startsWith('sp-') || activeTab.startsWith('sw-')) {
+            return (
+                <TreatmentDetail
+                    id={activeTab}
+                    t={t}
+                    handleNav={handleNavigation}
+                    lang={lang}
+                    onAddToCart={handleAddToCart}
+                    onOpenCart={() => setIsCartOpen(true)}
+                />
+            );
+        }
+
         switch (activeTab) {
             case 'home': return <HomeSection t={t} handleNav={handleNavigation} />;
             case 'sweet': return <SweetSection t={t} handleNav={handleNavigation} />;
@@ -1628,10 +1841,61 @@ const App = () => {
 
     return (
         <div className="min-h-screen bg-black text-zinc-100 selection:bg-amber-500/30 font-sans flex flex-col w-full">
-            <Navigation activeTab={activeTab} setActiveTab={handleNavigation} lang={lang} setLang={setLang} t={t} />
+            <MarketplaceHeader
+                activeTab={activeTab}
+                setActiveTab={handleNavigation}
+                lang={lang}
+                setLang={setLang}
+                cartCount={cartCount}
+                onOpenCart={() => setIsCartOpen(true)}
+                onOpenQuote={() => handleNavigation('quote')}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                t={t}
+            />
             <main className="flex-grow w-full">{renderContent()}</main>
-            <Footer t={t} handleNav={handleNavigation} />
-             <div className={`fixed bottom-32 right-6 z-40 transition-all duration-500 transform ${showWhatsApp ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}><a href={`https://wa.me/${t.common.phoneNum.replace(/\D/g,'')}`} target="_blank" className="block transition-transform hover:scale-110"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-14 h-14 drop-shadow-2xl" /></a></div>
+            <Footer t={t} handleNav={handleNavigation} lang={lang} />
+
+            {/* Cart Drawer Slide-Over */}
+            <CartDrawer
+                isOpen={isCartOpen}
+                onClose={() => setIsCartOpen(false)}
+                cart={cart}
+                onUpdateQuantity={handleUpdateQuantity}
+                onRemoveItem={handleRemoveItem}
+                onClearCart={handleClearCart}
+                onProceedToQuote={() => {
+                    setIsCartOpen(false);
+                    handleNavigation('quote');
+                }}
+                lang={lang}
+            />
+
+            {/* Product Quick View / Detail Modal */}
+            <ProductDetailModal
+                product={selectedProductForModal}
+                isOpen={!!selectedProductForModal}
+                onClose={() => setSelectedProductForModal(null)}
+                onAddToCart={handleAddToCart}
+                onViewQuote={() => {
+                    setSelectedProductForModal(null);
+                    handleNavigation('quote');
+                }}
+                lang={lang}
+            />
+
+            {/* Floating WhatsApp Quick Contact Button */}
+            <div className={`fixed bottom-8 right-6 z-30 transition-all duration-500 transform ${showWhatsApp ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}>
+                <a
+                    href={`https://wa.me/14072181294`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block transition-transform hover:scale-110 shadow-2xl rounded-full"
+                    title="WhatsApp MA Fashion LLC"
+                >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-14 h-14 drop-shadow-2xl" alt="WhatsApp" />
+                </a>
+            </div>
         </div>
     );
 };
