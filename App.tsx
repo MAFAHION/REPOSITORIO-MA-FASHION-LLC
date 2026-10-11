@@ -9,7 +9,7 @@ import { ProductDetailModal } from './components/ProductDetailModal';
 import { QuoteReviewSection } from './components/QuoteReviewSection';
 import { ProductItem, CartItem, loadCartFromStorage, saveCartToStorage, MARKETPLACE_PRODUCTS, Language } from './data/marketplaceData';
 import { OptimizedImage } from './components/OptimizedImage';
-import { preloadCatalogImages, getOptimizedImageUrl } from './utils/imageOptimizer';
+import { getOptimizedImageUrl } from './utils/imageOptimizer';
 
 const enTranslation = {
   nav: { home: "Home", sweet: "Sweet Professional", s: "S Professional", edu: "Education", about: "About Us", partner: "Partner Access", all: "View All" },
@@ -20,7 +20,7 @@ const enTranslation = {
       servicesList: ["Thermal Alignment", "Hair Botox", "Coloring", "Cuts", "Extensions", "Treatments", "Retail Sales"]
   },
   common: { 
-    discover: "Discover More", collection: "Collection", maNews: "MA NEWS", featured: "Featured Collection", special: "Special Offer", learnMore: "Learn More", innovation: "Innovation & Science", luxury: "Exclusive & Luxurious", privacy: "Privacy Policy", terms: "Terms of Service", representatives: "Representatives", social: "Social", unitedStates: "United States", theInnovation: "The Innovation", theLuxury: "The Luxury", readMore: "Read More", howToUse: "Technical Application", benefits: "Key Benefits", mainAssets: "Main Technology", intensity: "Treatment Intensity", functions: "Primary Functions", 
+    discover: "Discover More", collection: "Collection", maNews: "MA NEWS", featured: "Featured Collection", special: "Special Offer", learnMore: "Learn More", innovation: "Innovation & Science", luxury: "Exclusive & Luxurious", privacy: "Privacy Policy", terms: "Terms of Service", representatives: "Representatives", social: "Social", unitedStates: "United States", readMore: "Read More", howToUse: "Technical Application", benefits: "Key Benefits", mainAssets: "Main Technology", intensity: "Treatment Intensity", functions: "Primary Functions", 
     backTo: "Back to", buyForSalon: "Buy for Salon", resultsTitle: "Results that inspire", techManual: "Technical Manual", techManualDesc: "Fill in the details below to receive the technical manual via email.", aiAssistant: "AI Assistant", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Hydration", nutrition: "Nutrition", reconstruction: "Reconstruction", buyNow: "Buy Now", homeCare: "Home Care Maintenance"
   },
@@ -35,7 +35,7 @@ const enTranslation = {
       { title: "Your Rights", content: "You have the right to access, correct, or delete your personal information at any time by contacting our support team." }
     ]
   },
-  tagline: "Global Hair Biotechnology", titleStart: "The Science of", titleEnd: "Beauty.", subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.", ctaDiagnosis: "24/7 Live Assistance", ctaShop: "View Collection", collectionTitle: "Exclusive Collections", collectionSub: "Professional Grade. Salon Exclusive.", viewAll: "View All", 
+  tagline: "Global Hair Biotechnology", titleStart: "The Science of", titleEnd: "Beauty.", subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.", ctaDiagnosis: "24/7 Live Assistance", ctaShop: "View Collection", viewAll: "View All", 
   promos: {
       ticker: "BREAKING: New Partner Program Available • Buy 5 Get 1 Free on The First Shampoo • Join the Revolution", comingUp: "Coming Up",
       items: [
@@ -171,7 +171,7 @@ const esTranslation = {
       servicesList: ["Alineación Térmica", "Botox Capilar", "Coloración", "Cortes", "Extensiones", "Tratamientos", "Ventas al por menor"]
   },
   common: { 
-    discover: "Descubrir Más", collection: "Colección", maNews: "NOTICIAS MA", featured: "Colección Destacada", special: "Oferta Especial", learnMore: "Saber Más", innovation: "Innovación y Ciencia", luxury: "Exclusivo y Lujoso", privacy: "Política de Privacidad", terms: "Términos de Servicio", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "La Innovación", theLuxury: "El Lujo", readMore: "Leer Más", howToUse: "Aplicación Técnica", benefits: "Beneficios Clave", mainAssets: "Tecnología Principal", intensity: "Intensidad del Tratamiento", functions: "Funciones Principales", 
+    discover: "Descubrir Más", collection: "Colección", maNews: "NOTICIAS MA", featured: "Colección Destacada", special: "Oferta Especial", learnMore: "Saber Más", innovation: "Innovación y Ciencia", luxury: "Exclusivo y Lujoso", privacy: "Política de Privacidad", terms: "Términos de Servicio", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", readMore: "Leer Más", howToUse: "Aplicación Técnica", benefits: "Beneficios Clave", mainAssets: "Tecnología Principal", intensity: "Intensidad del Tratamiento", functions: "Funciones Principales", 
     backTo: "Volver a", buyForSalon: "Comprar para Salón", resultsTitle: "Resultados que inspiran", techManual: "Manual Técnico", techManualDesc: "Complete los detalles a continuación para recibir el manual técnico por correo electrónico.", aiAssistant: "Asistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA",
     hydration: "Hidratación", nutrition: "Nutrición", reconstruction: "Reconstrucción", buyNow: "Comprar Ahora", homeCare: "Mantenimiento Home Care"
   },
@@ -186,7 +186,7 @@ const esTranslation = {
       { title: "Sus Derechos", content: "Usted tiene derecho a acceder, corregir o eliminar su información personal en cualquier momento poniéndose en contacto con nuestro equipo de soporte." }
     ]
   },
-  tagline: "Biotecnologia Capilar Global", titleStart: "La Ciencia de", titleEnd: "la Belleza.", subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.", ctaDiagnosis: "Asistencia En Vivo 24/7", ctaShop: "Ver Colección", collectionTitle: "Colecciones Exclusivas", collectionSub: "Grado Profesional. Exclusivo de Salón.", viewAll: "Ver Todo",
+  tagline: "Biotecnologia Capilar Global", titleStart: "La Ciencia de", titleEnd: "la Belleza.", subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.", ctaDiagnosis: "Asistencia En Vivo 24/7", ctaShop: "Ver Colección", viewAll: "Ver Todo",
   promos: {
       ticker: "NOTICIA: Nuevo Programa de Socios • Compra 5 y Recibe 1 Gratis en The First Shampoo • Únete a la Revolución", comingUp: "Siguiente",
       items: [
@@ -323,7 +323,7 @@ const ptTranslation = {
       servicesList: ["Alinhamento Térmico", "Hair Botox", "Coloração", "Cortes", "Extensões", "Tratamentos", "Vendas a Varejo"]
   },
   common: { 
-    discover: "Descubra Mais", collection: "Coleção", maNews: "NOTÍCIAS MA", featured: "Coleção em Destaque", special: "Oferta Especial", learnMore: "Saiba Mais", innovation: "Innovation e Ciência", luxury: "Exclusivo e Luxuoso", privacy: "Política de Privacidade", terms: "Termos de Serviço", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", theInnovation: "A Inovação", theLuxury: "O Luxo", readMore: "Ler Mais", howToUse: "Aplicação Técnica", benefits: "Principais Benefícios", mainAssets: "Tecnologia Principal", intensity: "Intensidade do Tratamiento", functions: "Principais Funções", 
+    discover: "Descubra Mais", collection: "Coleção", maNews: "NOTÍCIAS MA", featured: "Coleção em Destaque", special: "Oferta Especial", learnMore: "Saiba Mais", innovation: "Innovation e Ciência", luxury: "Exclusivo e Luxuoso", privacy: "Política de Privacidade", terms: "Termos de Serviço", representatives: "Representantes", social: "Social", unitedStates: "Estados Unidos", readMore: "Ler Mais", howToUse: "Aplicação Técnica", benefits: "Principais Benefícios", mainAssets: "Tecnologia Principal", intensity: "Intensidade do Tratamiento", functions: "Principais Funções", 
     backTo: "Voltar para", buyForSalon: "Comprar para Salão", resultsTitle: "Resultados que inspiran", techManual: "Manual Técnico", techManualDesc: "Preencha os detalhes abaixo para receber o manual técnico por e-mail.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Hidratação", nutrition: "Nutrition", reconstruction: "Reconstrução", buyNow: "Comprar Agora", homeCare: "Manutenção Home Care"
   },
@@ -338,7 +338,7 @@ const ptTranslation = {
       { title: "Seus Direitos", content: "Você tem o direito de acessar, corrigir ou excluir suas informações pessoais a qualquer momento, entrando em contato com nossa equipe de suporte." }
     ]
   },
-  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profesional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Coleção", collectionTitle: "Coleções Exclusivas", collectionSub: "Grau Profissional. Exclusivo para Salões.", viewAll: "Ver Tudo",
+  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profesional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Coleção", viewAll: "Ver Tudo",
   promos: {
       ticker: "NOTÍCIA: Novo Programa de Parceiros • Compre 5 Leve 1 Grátis no The First Shampoo • Junte-se à Revolução", comingUp: "Próximo",
       items: [
@@ -469,7 +469,7 @@ const itTranslation = {
       servicesList: ["Allineamento Termico", "Hair Botox", "Colorazione", "Tagli", "Extension", "Trattamenti", "Vendite al Dettaglio"]
   },
   common: { 
-    discover: "Scopri di Più", collection: "Colezione", maNews: "MA NEWS", featured: "Collezione in Primo Piano", special: "Offerta Especial", learnMore: "Ulteriori Informazioni", innovation: "Innovazione e Scienza", luxury: "Esclusivo e Lussuoso", privacy: "Privacy Policy", terms: "Termini di Servizio", representatives: "Rappresentanti", social: "Social", unitedStates: "Stati Uniti", theInnovation: "L'Innovazione", theLuxury: "Il Lusso", readMore: "Leggi di Più", howToUse: "Applicazione Tecnica", benefits: "Vantaggi Chiave", mainAssets: "Tecnologia Principale", intensity: "Intensità del Trattamento", functions: "Funzioni Primarie", 
+    discover: "Scopri di Più", collection: "Colezione", maNews: "MA NEWS", featured: "Collezione in Primo Piano", special: "Offerta Especial", learnMore: "Ulteriori Informazioni", innovation: "Innovazione e Scienza", luxury: "Esclusivo e Lussuoso", privacy: "Privacy Policy", terms: "Termini di Servizio", representatives: "Rappresentanti", social: "Social", unitedStates: "Stati Uniti", readMore: "Leggi di Più", howToUse: "Applicazione Tecnica", benefits: "Vantaggi Chiave", mainAssets: "Tecnologia Principale", intensity: "Intensità del Trattamento", functions: "Funzioni Primarie", 
     backTo: "Torna a", buyForSalon: "Acquista per il Salone", resultsTitle: "Risultati che ispirano", techManual: "Manuale Tecnico", techManualDesc: "Compila i dettagli per ricevere il manuale tecnico via email.", aiAssistant: "Assistente IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Idratazione", nutrition: "Nutrizione", reconstruction: "Ricostruzione", buyNow: "Acquista Ora", homeCare: "Mantenimento Home Care"
   },
@@ -484,7 +484,7 @@ const itTranslation = {
       { title: "I Tuoi Diritti", content: "Hai il diritto di accedere, correggere o eliminare le tue informazioni personali a qualsiasi momento contattando il nostro team di supporto." }
     ]
   },
-  tagline: "Biotecnologia Capillare Globale", titleStart: "La Scienza della", titleEnd: "Bellezza.", subtitle: "MA Fashion LLC presenta il futuro della cura capillare professionale. Scopri Sweet e S Professional.", ctaDiagnosis: "Assistenza Live 24/7", ctaShop: "Vedi Collezione", collectionTitle: "Collezioni Esclusive", collectionSub: "Grado Professionale. Esclusiva per Saloni.", viewAll: "Vedi Tutto",
+  tagline: "Biotecnologia Capillare Globale", titleStart: "La Scienza della", titleEnd: "Bellezza.", subtitle: "MA Fashion LLC presenta il futuro della cura capillare professionale. Scopri Sweet e S Professional.", ctaDiagnosis: "Assistenza Live 24/7", ctaShop: "Vedi Collezione", viewAll: "Vedi Tutto",
   promos: {
       ticker: "NOVITÀ: Nuovo Programma Partner • Prendi 5 e ricevi 1 gratis su The First Shampoo • Unisciti alla Rivoluzione", comingUp: "In Arrivo",
       items: [
@@ -615,7 +615,7 @@ const frTranslation = {
       servicesList: ["Alignement Thermique", "Botox Capillaire", "Coloration", "Coupes", "Extensions", "Traitements", "Vente au Détail"]
   },
   common: { 
-    discover: "Découvrir Plus", collection: "Collection", maNews: "MA NEWS", featured: "Collection Vedette", special: "Offre Spéciale", learnMore: "En Savoir Plus", innovation: "Innovation & Science", luxury: "Exclusif & Luxueux", privacy: "Politique de Confidentialité", terms: "Conditions d'Utilisation", representatives: "Représentants", social: "Social", unitedStates: "États-Unis", theInnovation: "L'Innovation", theLuxury: "Le Luxe", readMore: "Lire la Suite", howToUse: "Application Technique", benefits: "Avantages Clés", mainAssets: "Technologie Principale", intensity: "Intensité du Traitement", functions: "Fonctions Principales", 
+    discover: "Découvrir Plus", collection: "Collection", maNews: "MA NEWS", featured: "Collection Vedette", special: "Offre Spéciale", learnMore: "En Savoir Plus", innovation: "Innovation & Science", luxury: "Exclusif & Luxueux", privacy: "Politique de Confidentialité", terms: "Conditions d'Utilisation", representatives: "Représentants", social: "Social", unitedStates: "États-Unis", readMore: "Lire la Suite", howToUse: "Application Technique", benefits: "Avantages Clés", mainAssets: "Technologie Principale", intensity: "Intensité du Traitement", functions: "Fonctions Principales", 
     backTo: "Retour à", buyForSalon: "Acheter pour le Salon", resultsTitle: "Des résultats qui inspirent", techManual: "Manuel Technique", techManualDesc: "Remplissez les détails ci-dessous pour recevoir le manuel technique par e-mail.", aiAssistant: "Assistant IA", phoneNum: "+1 (407) 218-1294", address: "Orlando, FL, USA", 
     hydration: "Hydratation", nutrition: "Nutrition", reconstruction: "Reconstruction", buyNow: "Acheter Maintenant", homeCare: "Entretien Home Care"
   },
@@ -630,7 +630,7 @@ const frTranslation = {
       { title: "Vos Droits", content: "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles à tout moment en contactant notre équipe d'assistance." }
     ]
   },
-  tagline: "Biotechnologie Capillaire Mondiale", titleStart: "La Science de", titleEnd: "la Beauté.", subtitle: "MA Fashion LLC présente le futur des soins capillaires professionnels. Découvrez Sweet Professional et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir la Collection", collectionTitle: "Collections Exclusives", collectionSub: "Qualité Professionnelle. Exclusivité Salon.", viewAll: "Voir Tout", 
+  tagline: "Biotechnologie Capillaire Mondiale", titleStart: "La Science de", titleEnd: "la Beauté.", subtitle: "MA Fashion LLC présente le futur des soins capillaires professionnels. Découvrez Sweet Professional et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir la Collection", viewAll: "Voir Tout", 
   promos: {
       ticker: "FLASH : Nouveau Programme de Partenariat Disponible • Achetez 5 recevez 1 gratuit sur The First Shampoo • Rejoignez la Révolution", comingUp: "À Suivre",
       items: [
@@ -1141,146 +1141,47 @@ const PromotionsSection = ({ t, handleNav }: any) => {
     );
 };
 
-const HomeSection = ({ t, handleNav }: any) => {
-    const [rotate, setRotate] = useState({ x: 0, y: 0 });
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        const card = e.currentTarget; const box = card.getBoundingClientRect();
-        const x = e.clientX - box.left; const y = e.clientY - box.top;
-        const centerX = box.width / 2; const centerY = box.height / 2;
-        setRotate({ x: ((y - centerY) / centerY) * -10, y: ((x - centerX) / centerX) * 10 });
-    };
+const HomeSection = ({ t, handleNav, lang = 'es' }: any) => {
     return (
         <>
             <PromotionsSection t={t} handleNav={handleNav} />
             <HeroSection t={t} handleNav={handleNav} />
-            <section className="py-32 bg-zinc-950 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+            
+            {/* Marketplace Feature Banner */}
+            <section className="py-20 bg-zinc-950 relative overflow-hidden border-t border-zinc-900">
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-20">
-                        <div>
-                            <span className="text-amber-500 text-xs font-bold tracking-[0.2em] uppercase block mb-4">{t.common.collection}</span>
-                            <h2 className="font-serif text-5xl md:text-6xl text-white tracking-tighter">{t.collectionTitle}</h2>
-                        </div>
-                        <div className="text-right mt-6 md:mt-0">
-                            <p className="text-zinc-500 text-sm tracking-widest uppercase mb-4">{t.collectionSub}</p>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
-                        {/* S Professional Card - Floating Editorial Style */}
-                        <div className="relative group cursor-pointer overflow-hidden rounded-sm border border-white/5 shadow-2xl" onClick={() => handleNav('sprofessional')}>
-                            <div className="relative aspect-[4/5] md:aspect-square overflow-hidden">
-                                <OptimizedImage 
-                                    src="https://i.ibb.co/4w5HQC66/Gemini-Generated-Image-lv0f50lv0f50lv0f.png" 
-                                    alt="S Professional"
-                                    width={700}
-                                    quality={85}
-                                    fit="cover"
-                                    className="w-full h-full object-cover object-[center_15%] scale-105 transition-transform duration-1000 group-hover:scale-115" 
-                                />
-                                {/* Sophisticated Gradient Overlay - Focused on bottom for legibility */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-500"></div>
-                            </div>
-
-                            {/* Strategic Typography Placement - Bottom Left Corner */}
-                            <div className="absolute bottom-0 left-0 w-full p-10 z-30">
-                                <div className="overflow-hidden mb-2">
-                                    <p className="text-amber-500 text-[10px] tracking-[0.6em] uppercase font-bold transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                                        {t.common.collection} 01
-                                    </p>
-                                </div>
-                                <h3 className="text-5xl md:text-6xl font-serif text-white leading-none italic mb-6 tracking-tighter">
-                                    {t.nav.s}
-                                </h3>
-                                <div className="flex items-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100 translate-y-4 group-hover:translate-y-0">
-                                    <span className="text-white/60 text-[10px] tracking-[0.3em] uppercase font-light">
-                                        {t.common.theLuxury}
-                                    </span>
-                                    <div className="h-px flex-1 bg-white/20"></div>
-                                    <div className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:border-amber-500 group-hover:bg-amber-500 transition-all duration-500">
-                                        <ArrowRight className="w-4 h-4 text-white" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Floating Badge - Top Right */}
-                            <div className="absolute top-8 right-8 z-30">
-                                <div className="backdrop-blur-md bg-white/5 border border-white/10 px-4 py-2 rounded-full">
-                                    <span className="text-[9px] text-white tracking-[0.2em] uppercase font-medium">Exclusive</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Sweet Professional Card - Floating Editorial Style */}
-                        <div className="relative group cursor-pointer overflow-hidden rounded-sm border border-white/5 shadow-2xl" onClick={() => handleNav('sweet')}>
-                            <div className="relative aspect-[4/5] md:aspect-square overflow-hidden">
-                                <OptimizedImage 
-                                    src="https://i.ibb.co/dJ1wrB5C/Gemini-Generated-Image-5womcu5womcu5wom.png" 
-                                    alt="Sweet Professional"
-                                    width={700}
-                                    quality={85}
-                                    fit="cover"
-                                    className="w-full h-full object-cover object-[center_15%] scale-105 transition-transform duration-1000 group-hover:scale-115" 
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-500"></div>
-                            </div>
-
-                            {/* Strategic Typography Placement - Bottom Left Corner */}
-                            <div className="absolute bottom-0 left-0 w-full p-10 z-30">
-                                <div className="overflow-hidden mb-2">
-                                    <p className="text-zinc-400 text-[10px] tracking-[0.6em] uppercase font-bold transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                                        {t.common.collection} 02
-                                    </p>
-                                </div>
-                                <h3 className="text-5xl md:text-6xl font-serif text-white leading-none italic mb-6 tracking-tighter">
-                                    {t.nav.sweet}
-                                </h3>
-                                <div className="flex items-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100 translate-y-4 group-hover:translate-y-0">
-                                    <span className="text-white/60 text-[10px] tracking-[0.3em] uppercase font-light">
-                                        {t.common.theInnovation}
-                                    </span>
-                                    <div className="h-px flex-1 bg-white/20"></div>
-                                    <div className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:border-white group-hover:bg-white transition-all duration-500">
-                                        <ArrowRight className="w-4 h-4 text-black" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Floating Badge - Top Right */}
-                            <div className="absolute top-8 right-8 z-30">
-                                <div className="backdrop-blur-md bg-white/5 border border-white/10 px-4 py-2 rounded-full">
-                                    <span className="text-[9px] text-white tracking-[0.2em] uppercase font-medium">New Arrival</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Marketplace Feature Banner */}
-                    <div className="mt-20 p-8 sm:p-12 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 rounded-2xl border border-amber-500/30 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+                    <div className="p-8 sm:p-12 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 rounded-2xl border border-amber-500/30 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
                         <div className="space-y-3 max-w-2xl text-center lg:text-left z-10">
                             <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded text-[10px] uppercase font-mono tracking-widest text-amber-400 font-bold">
                                 <span>MA FASHION · DIGITAL MARKETPLACE</span>
                             </div>
                             <h3 className="text-3xl sm:text-4xl font-serif text-white tracking-tight">
-                                {t.marketplaceBannerTitle || 'Catálogo Oficial & Sistema de Presupuestos'}
+                                {lang === 'en' ? 'Official Catalog & Salon Quote System' :
+                                 lang === 'pt' ? 'Catálogo Oficial e Sistema de Cotações' :
+                                 'Catálogo Oficial & Sistema de Presupuestos'}
                             </h3>
                             <p className="text-zinc-400 text-sm font-light leading-relaxed">
-                                {t.marketplaceBannerDesc || 'Explore todas las líneas de S Professional, Sweet Professional y Home Care con códigos de producto, presentaciones completas y generación inmediata de presupuesto por WhatsApp.'}
+                                {lang === 'en' 
+                                  ? 'Explore all S Professional, Sweet Professional, and Home Care lines with product codes, complete volumes, and instant WhatsApp quote generation.' 
+                                  : lang === 'pt'
+                                  ? 'Explore todas as linhas da S Professional, Sweet Professional e Home Care com códigos, apresentações completas e cotação direta pelo WhatsApp.'
+                                  : 'Explore todas las líneas de S Professional, Sweet Professional y Home Care con códigos de producto, presentaciones completas y generación inmediata de presupuesto por WhatsApp.'}
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-4 shrink-0 z-10 w-full sm:w-auto">
                             <button
                                 onClick={() => handleNav('catalog')}
-                                className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider text-xs rounded-lg shadow-xl flex items-center justify-center gap-2 transition-all"
+                                className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider text-xs rounded-lg shadow-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
                             >
                                 <ShoppingBag size={16} />
-                                <span>Ver Catálogo & Precios</span>
+                                <span>{lang === 'en' ? 'View Catalog & Prices' : lang === 'pt' ? 'Ver Catálogo e Preços' : 'Ver Catálogo & Precios'}</span>
                             </button>
                             <button
                                 onClick={() => handleNav('quote')}
-                                className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 font-bold uppercase tracking-wider text-xs rounded-lg flex items-center justify-center gap-2 transition-all"
+                                className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 font-bold uppercase tracking-wider text-xs rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer"
                             >
                                 <FileText size={16} className="text-amber-400" />
-                                <span>Revisar Presupuesto</span>
+                                <span>{lang === 'en' ? 'Review Quote' : lang === 'pt' ? 'Revisar Cotação' : 'Revisar Presupuesto'}</span>
                             </button>
                         </div>
                     </div>
@@ -1828,14 +1729,14 @@ const App = () => {
         }
 
         switch (activeTab) {
-            case 'home': return <HomeSection t={t} handleNav={handleNavigation} />;
+            case 'home': return <HomeSection t={t} handleNav={handleNavigation} lang={lang} />;
             case 'sweet': return <SweetSection t={t} handleNav={handleNavigation} />;
             case 'sprofessional': return <SProfessionalSection t={t} handleNav={handleNavigation} />;
             case 'education': return <EducationSection t={t} />;
             case 'about': return <AboutSection t={t} />;
             case 'partner': return <PartnerAccessSection t={t} lang={lang} />;
             case 'privacy': return <PrivacySection t={t} />;
-            default: return <HomeSection t={t} handleNav={handleNavigation} />;
+            default: return <HomeSection t={t} handleNav={handleNavigation} lang={lang} />;
         }
     };
 
