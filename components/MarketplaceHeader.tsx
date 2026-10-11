@@ -261,17 +261,32 @@ export const MarketplaceHeader: React.FC<MarketplaceHeaderProps> = ({
               </AnimatePresence>
             </div>
 
-            {/* Presupuesto (Quote) Quick Button */}
+            {/* Presupuesto (Quote) Quick Button - Visible on both mobile and desktop */}
             <button
               onClick={onOpenQuote}
-              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all border ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all border ${
                 activeTab === 'quote'
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm'
                   : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border-zinc-700/80 hover:text-white'
               }`}
+              title={isEs ? 'Revisar Presupuesto' : 'Review Quote'}
             >
-              <FileText size={14} className="text-amber-400" />
-              <span>{isEs ? 'Presupuesto' : 'Quote'}</span>
+              <FileText size={14} className="text-amber-400 shrink-0" />
+              <span className="hidden xs:inline sm:inline">{isEs ? 'Presupuesto' : 'Quote'}</span>
+            </button>
+
+            {/* Catálogo Direct Button for Mobile/Tablet */}
+            <button
+              onClick={() => handleNav('catalog')}
+              className={`xl:hidden flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all border ${
+                activeTab === 'catalog'
+                  ? 'bg-amber-500 text-black border-amber-400 font-bold shadow-md'
+                  : 'bg-amber-500/10 text-amber-400 border-amber-500/30 hover:bg-amber-500/20'
+              }`}
+              title={isEs ? 'Ver Catálogo Oficial' : 'View Official Catalog'}
+            >
+              <ShoppingBag size={14} className="shrink-0" />
+              <span>{isEs ? 'Catálogo' : 'Catalog'}</span>
             </button>
 
             {/* Cart Icon with Dynamic Counter (Amazon-style clear badge) */}
@@ -327,6 +342,82 @@ export const MarketplaceHeader: React.FC<MarketplaceHeaderProps> = ({
               </button>
             )}
           </form>
+
+          {/* Mobile Horizontal Quick Navigation Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 pb-0.5">
+            <button
+              onClick={() => handleNav('catalog')}
+              className={`shrink-0 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'catalog'
+                  ? 'bg-amber-500 text-black shadow-md font-bold'
+                  : 'bg-zinc-900 text-amber-400 border border-amber-500/30 hover:bg-zinc-800'
+              }`}
+            >
+              <ShoppingBag size={12} className="shrink-0" />
+              <span>{isEs ? 'Catálogo Oficial' : 'Official Catalog'}</span>
+            </button>
+
+            <button
+              onClick={onOpenQuote}
+              className={`shrink-0 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'quote'
+                  ? 'bg-amber-500 text-black shadow-md font-bold'
+                  : 'bg-zinc-900 text-zinc-300 border border-zinc-700 hover:border-amber-400'
+              }`}
+            >
+              <FileText size={12} className="text-amber-400 shrink-0" />
+              <span>{isEs ? 'Presupuesto' : 'Quote'}</span>
+              {cartCount > 0 && (
+                <span className="bg-amber-500 text-black text-[9px] font-mono px-1.5 rounded-full font-bold ml-0.5">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => handleNav('home')}
+              className={`shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'home'
+                  ? 'bg-zinc-800 text-white border border-zinc-600'
+                  : 'bg-zinc-900/80 text-zinc-400 hover:text-white'
+              }`}
+            >
+              <span>{t.nav.home}</span>
+            </button>
+
+            <button
+              onClick={() => handleNav('sprofessional')}
+              className={`shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab.startsWith('sp')
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50'
+                  : 'bg-zinc-900/80 text-zinc-400 hover:text-white'
+              }`}
+            >
+              <span>S Professional</span>
+            </button>
+
+            <button
+              onClick={() => handleNav('sweet')}
+              className={`shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'sweet'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50'
+                  : 'bg-zinc-900/80 text-zinc-400 hover:text-white'
+              }`}
+            >
+              <span>Sweet Professional</span>
+            </button>
+
+            <button
+              onClick={() => handleNav('partner')}
+              className={`shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'partner'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50'
+                  : 'bg-zinc-900/80 text-zinc-400 hover:text-white'
+              }`}
+            >
+              <span>{t.nav.partner}</span>
+            </button>
+          </div>
         </div>
       </div>
 

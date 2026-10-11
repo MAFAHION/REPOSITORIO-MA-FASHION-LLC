@@ -35,7 +35,7 @@ const enTranslation = {
       { title: "Your Rights", content: "You have the right to access, correct, or delete your personal information at any time by contacting our support team." }
     ]
   },
-  tagline: "Global Hair Biotechnology", titleStart: "The Science of", titleEnd: "Beauty.", subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.", ctaDiagnosis: "24/7 Live Assistance", ctaShop: "View Collection", viewAll: "View All", 
+  tagline: "Global Hair Biotechnology", titleStart: "The Science of", titleEnd: "Beauty.", subtitle: "MA Fashion LLC presents the future of professional hair care. Discover Sweet Professional and S Professional.", ctaDiagnosis: "24/7 Live Assistance", ctaShop: "View Official Catalog", ctaQuote: "Build Salon Quote", viewAll: "View All", 
   promos: {
       ticker: "BREAKING: New Partner Program Available • Buy 5 Get 1 Free on The First Shampoo • Join the Revolution", comingUp: "Coming Up",
       items: [
@@ -186,7 +186,7 @@ const esTranslation = {
       { title: "Sus Derechos", content: "Usted tiene derecho a acceder, corregir o eliminar su información personal en cualquier momento poniéndose en contacto con nuestro equipo de soporte." }
     ]
   },
-  tagline: "Biotecnologia Capilar Global", titleStart: "La Ciencia de", titleEnd: "la Belleza.", subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.", ctaDiagnosis: "Asistencia En Vivo 24/7", ctaShop: "Ver Colección", viewAll: "Ver Todo",
+  tagline: "Biotecnologia Capilar Global", titleStart: "La Ciencia de", titleEnd: "la Belleza.", subtitle: "MA Fashion LLC presenta el futuro del cuidado profesional. Descubre Sweet Professional y S Professional.", ctaDiagnosis: "Asistencia En Vivo 24/7", ctaShop: "Ver Catálogo Oficial", ctaQuote: "Cotizar Presupuesto", viewAll: "Ver Todo",
   promos: {
       ticker: "NOTICIA: Nuevo Programa de Socios • Compra 5 y Recibe 1 Gratis en The First Shampoo • Únete a la Revolución", comingUp: "Siguiente",
       items: [
@@ -338,7 +338,7 @@ const ptTranslation = {
       { title: "Seus Direitos", content: "Você tem o direito de acessar, corrigir ou excluir suas informações pessoais a qualquer momento, entrando em contato com nossa equipe de suporte." }
     ]
   },
-  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profesional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Coleção", viewAll: "Ver Tudo",
+  tagline: "Biotecnologia Capilar Global", titleStart: "A Ciência da", titleEnd: "Beleza.", subtitle: "A MA Fashion LLC apresenta o futuro do cuidado capilar profesional. Descubra Sweet e S Professional.", ctaDiagnosis: "Assistência ao Vivo 24/7", ctaShop: "Ver Catálogo Oficial", ctaQuote: "Criar Cotação", viewAll: "Ver Tudo",
   promos: {
       ticker: "NOTÍCIA: Novo Programa de Parceiros • Compre 5 Leve 1 Grátis no The First Shampoo • Junte-se à Revolução", comingUp: "Próximo",
       items: [
@@ -484,7 +484,7 @@ const itTranslation = {
       { title: "I Tuoi Diritti", content: "Hai il diritto di accedere, correggere o eliminare le tue informazioni personali a qualsiasi momento contattando il nostro team di supporto." }
     ]
   },
-  tagline: "Biotecnologia Capillare Globale", titleStart: "La Scienza della", titleEnd: "Bellezza.", subtitle: "MA Fashion LLC presenta il futuro della cura capillare professionale. Scopri Sweet e S Professional.", ctaDiagnosis: "Assistenza Live 24/7", ctaShop: "Vedi Collezione", viewAll: "Vedi Tutto",
+  tagline: "Biotecnologia Capillare Globale", titleStart: "La Scienza della", titleEnd: "Bellezza.", subtitle: "MA Fashion LLC presenta il futuro della cura capillare professionale. Scopri Sweet e S Professional.", ctaDiagnosis: "Assistenza Live 24/7", ctaShop: "Vedi Catalogo Ufficiale", ctaQuote: "Richiedi Preventivo", viewAll: "Vedi Tutto",
   promos: {
       ticker: "NOVITÀ: Nuovo Programma Partner • Prendi 5 e ricevi 1 gratis su The First Shampoo • Unisciti alla Rivoluzione", comingUp: "In Arrivo",
       items: [
@@ -630,7 +630,7 @@ const frTranslation = {
       { title: "Vos Droits", content: "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles à tout moment en contactant notre équipe d'assistance." }
     ]
   },
-  tagline: "Biotechnologie Capillaire Mondiale", titleStart: "La Science de", titleEnd: "la Beauté.", subtitle: "MA Fashion LLC présente le futur des soins capillaires professionnels. Découvrez Sweet Professional et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir la Collection", viewAll: "Voir Tout", 
+  tagline: "Biotechnologie Capillaire Mondiale", titleStart: "La Science de", titleEnd: "la Beauté.", subtitle: "MA Fashion LLC présente le futur des soins capillaires professionnels. Découvrez Sweet Professional et S Professional.", ctaDiagnosis: "Assistance en Direct 24/7", ctaShop: "Voir le Catalogue Officiel", ctaQuote: "Demander un Devis", viewAll: "Voir Tout", 
   promos: {
       ticker: "FLASH : Nouveau Programme de Partenariat Disponible • Achetez 5 recevez 1 gratuit sur The First Shampoo • Rejoignez la Révolution", comingUp: "À Suivre",
       items: [
@@ -1104,29 +1104,93 @@ const TreatmentDetail = ({ id, t, handleNav, lang, onAddToCart, onOpenCart }: an
     );
 };
 
-const HeroSection = ({ t, handleNav }: any) => {
+const HeroSection = ({ t, handleNav, lang = 'es' }: any) => {
   const tickerContent = t.promos.items.map((item: any) => `${item.title}: ${item.desc}`).join("  ✦  ").toUpperCase();
+  const isEs = lang === 'es';
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1620331313174-d73105a3f333?q=75&w=1280&auto=format&fit=crop" loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover opacity-40 scale-105 animate-spin-reverse-slow duration-[100s]" /><div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" /><div className="absolute inset-0 bg-noise opacity-50 mix-blend-overlay"></div></div>
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center"><div className="inline-flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full mb-8 animate-fade-in-up backdrop-blur-md"><Sparkles size={14} className="text-amber-400 animate-pulse" /><span className="text-amber-300 text-xs font-bold tracking-[0.2em] uppercase">{t.tagline}</span></div><h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-medium text-white mb-8 leading-tight animate-fade-in-up delay-100 tracking-tighter"><span className="block opacity-90">{t.titleStart}</span><span className="text-gold italic relative inline-block">{t.titleEnd}<span className="absolute -bottom-4 left-0 w-full h-1 bg-amber-500/50 rounded-full blur-sm"></span></span></h1><p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up delay-200">{t.subtitle}</p><div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300">
-          <button onClick={() => handleNav('catalog')} className="group relative px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-widest uppercase text-xs transition-all rounded-sm overflow-hidden flex items-center gap-2 shadow-2xl">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1620331313174-d73105a3f333?q=75&w=1280&auto=format&fit=crop" 
+          loading="eager" 
+          fetchPriority="high" 
+          decoding="async" 
+          className="w-full h-full object-cover opacity-40 scale-105 animate-spin-reverse-slow duration-[100s]" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
+        <div className="absolute inset-0 bg-noise opacity-50 mix-blend-overlay"></div>
+      </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <div className="inline-flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full mb-8 animate-fade-in-up backdrop-blur-md">
+          <Sparkles size={14} className="text-amber-400 animate-pulse" />
+          <span className="text-amber-300 text-xs font-bold tracking-[0.2em] uppercase">{t.tagline}</span>
+        </div>
+        <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-medium text-white mb-8 leading-tight animate-fade-in-up delay-100 tracking-tighter">
+          <span className="block opacity-90">{t.titleStart}</span>
+          <span className="text-gold italic relative inline-block">
+            {t.titleEnd}
+            <span className="absolute -bottom-4 left-0 w-full h-1 bg-amber-500/50 rounded-full blur-sm"></span>
+          </span>
+        </h1>
+        <p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up delay-200">
+          {t.subtitle}
+        </p>
+        
+        {/* Main CTAs: Catalog, Quote, and Partner */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300 max-w-xl mx-auto">
+          <button 
+            onClick={() => handleNav('catalog')} 
+            className="group relative w-full sm:w-auto px-8 sm:px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-widest uppercase text-xs transition-all rounded-sm overflow-hidden flex items-center justify-center gap-2 shadow-2xl cursor-pointer"
+          >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <ShoppingBag size={16} />
-            <span className="relative">{t.ctaShop}</span>
+            <span className="relative">{t.ctaShop || (isEs ? 'Ver Catálogo Oficial' : 'View Catalog')}</span>
             <ArrowRight size={16} />
           </button>
-          <button onClick={() => handleNav('partner')} className="px-8 py-4 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 font-bold tracking-widest uppercase text-xs transition-all rounded-sm">
+          
+          <button 
+            onClick={() => handleNav('quote')} 
+            className="w-full sm:w-auto px-6 sm:px-8 py-4 bg-zinc-900/90 hover:bg-zinc-800 text-amber-300 border border-amber-500/40 font-bold tracking-widest uppercase text-xs transition-all rounded-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+          >
+            <FileText size={16} className="text-amber-400" />
+            <span>{t.ctaQuote || (isEs ? 'Cotizar Presupuesto' : 'Salon Quote')}</span>
+          </button>
+
+          <button 
+            onClick={() => handleNav('partner')} 
+            className="w-full sm:w-auto px-6 sm:px-8 py-4 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 font-bold tracking-widest uppercase text-xs transition-all rounded-sm flex items-center justify-center cursor-pointer"
+          >
             <span>{t.nav.partner}</span>
           </button>
-        </div></div>
-      <div className="absolute bottom-10 left-0 w-full overflow-hidden py-4 border-t border-white/5 bg-black/50 backdrop-blur-sm"><div className="flex animate-marquee whitespace-nowrap gap-12 text-zinc-500 text-xs font-bold tracking-[0.3em] uppercase"><span>{tickerContent}</span><span>✦</span><span>{tickerContent}</span></div></div>
+        </div>
+      </div>
+      <div className="absolute bottom-10 left-0 w-full overflow-hidden py-4 border-t border-white/5 bg-black/50 backdrop-blur-sm">
+        <div className="flex animate-marquee whitespace-nowrap gap-12 text-zinc-500 text-xs font-bold tracking-[0.3em] uppercase">
+          <span>{tickerContent}</span>
+          <span>✦</span>
+          <span>{tickerContent}</span>
+        </div>
+      </div>
     </section>
   );
 };
 
-const PromotionsSection = ({ t, handleNav }: any) => {
-    const slides = [ { id: 1, title: t.promos.items[0].title, desc: t.promos.items[0].desc, cta: t.promos.items[0].cta, image: "https://i.ibb.co/d0MmCQ2q/Gemini-Generated-Image-116iz116iz116iz1.png", position: "object-[center_25%]", action: () => handleNav('partner') }, { id: 2, title: t.promos.items[1].title, desc: t.promos.items[1].desc, cta: t.promos.items[1].cta, image: "https://i.ibb.co/mV6ttdbp/photo-5127480036008507208-y.jpg", position: "object-[center_20%]", action: () => handleNav('sp-mycrown') }, { id: 3, title: t.promos.items[2].title, desc: t.promos.items[2].desc, cta: t.promos.items[2].cta, image: "https://i.ibb.co/zh2n4KB5/IMG-20251209-123203-654.jpg", position: "object-[center_20%]", action: () => handleNav('education') } ];
+const PromotionsSection = ({ t, handleNav, lang = 'es' }: any) => {
+    const isEs = lang === 'es';
+    const slides = [ 
+        { 
+            id: 0, 
+            title: isEs ? "Catálogo Oficial & Cotizador para Salones" : "Official Catalog & Salon Quote System", 
+            desc: isEs ? "Explore todas las presentaciones oficiales de S Professional y Sweet Professional con precios mayoristas y cotización directa por WhatsApp." : "Explore full product presentations of S Professional & Sweet Professional with wholesale pricing and direct WhatsApp quotes.", 
+            cta: isEs ? "Explorar Catálogo Oficial" : "Explore Official Catalog", 
+            image: "https://i.ibb.co/Q7z3zz8B/Nutrology-Catalogo.jpg", 
+            position: "object-[center_35%]", 
+            action: () => handleNav('catalog') 
+        },
+        { id: 1, title: t.promos.items[0].title, desc: t.promos.items[0].desc, cta: t.promos.items[0].cta, image: "https://i.ibb.co/d0MmCQ2q/Gemini-Generated-Image-116iz116iz116iz1.png", position: "object-[center_25%]", action: () => handleNav('partner') }, 
+        { id: 2, title: t.promos.items[1].title, desc: t.promos.items[1].desc, cta: t.promos.items[1].cta, image: "https://i.ibb.co/mV6ttdbp/photo-5127480036008507208-y.jpg", position: "object-[center_20%]", action: () => handleNav('sp-mycrown') }, 
+        { id: 3, title: t.promos.items[2].title, desc: t.promos.items[2].desc, cta: t.promos.items[2].cta, image: "https://i.ibb.co/zh2n4KB5/IMG-20251209-123203-654.jpg", position: "object-[center_20%]", action: () => handleNav('education') } 
+    ];
     const [currentSlide, setCurrentSlide] = useState(0);
     const DURATION = 8000;
     const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -1136,19 +1200,217 @@ const PromotionsSection = ({ t, handleNav }: any) => {
     return (
         <section className="bg-black pt-28 md:pt-32 pb-0 border-b border-zinc-900 relative">
             <style>{`@keyframes countdown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 125.6; } } @keyframes slideProgress { from { width: 0%; } to { width: 100%; } }`}</style>
-            <div className="w-full h-[600px] relative overflow-hidden group">{slides.map((slide, index) => (<div key={slide.id} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}><div className="absolute inset-0 overflow-hidden"><img src={getOptimizedImageUrl(slide.image, { width: 1400, quality: 82, format: 'webp' })} alt={slide.title} loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} decoding="async" onError={(e) => { e.currentTarget.src = slide.image; }} className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${slide.position} ${index === currentSlide ? 'scale-110' : 'scale-100'}`} /><div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" /></div><div className="absolute inset-0 flex items-center"><div className="max-w-7xl mx-auto px-6 w-full"><div className="max-w-xl space-y-6"><div className="inline-block px-3 py-1 bg-amber-500 text-black text-xs font-bold tracking-widest uppercase mb-2 animate-fade-in">{t.common.maNews}</div><h2 className="text-5xl md:text-6xl font-serif text-white leading-tight animate-fade-in-up tracking-tighter">{slide.title}</h2><p className="text-zinc-300 text-lg leading-relaxed animate-fade-in-up delay-100">{slide.desc}</p><button onClick={slide.action} className="mt-8 px-8 py-3 border-b border-amber-500 text-amber-500 hover:text-amber-400 font-bold tracking-widest uppercase text-sm transition-all flex items-center gap-2 animate-fade-in-up delay-200">{slide.cta} <ArrowRight size={16} /></button></div></div></div></div>))}<div className="absolute bottom-0 left-0 w-full z-20"><div className="max-w-7xl mx-auto px-6 mb-8 flex justify-end items-end gap-8"><div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10"><div className="relative w-10 h-10 flex items-center justify-center"><svg className="w-full h-full -rotate-90 transform"><circle cx="20" cy="20" r="16" className="stroke-white/10 fill-none" strokeWidth="2" /><circle key={currentSlide} cx="20" cy="20" r="16" className="stroke-amber-500 fill-none" strokeWidth="2" strokeDasharray="100.5" strokeDashoffset="0" style={{ animation: `countdown ${DURATION}ms linear forwards` }} /></svg><div className="absolute text-white animate-pulse"><Clock size={12} /></div></div><div className="flex flex-col"><span className="text-[9px] text-zinc-400 uppercase tracking-widest font-bold">{t.promos.comingUp}</span><span className="text-xs text-white font-serif italic truncate max-w-[120px] md:max-w-[200px]">{slides[nextSlideIndex].title}</span></div></div><div className="flex gap-2"><button onClick={prevSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronLeft size={20} /></button><button onClick={nextSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronRight size={20} /></button></div></div><div className="flex w-full h-1 bg-black">{slides.map((_, idx) => (<div key={idx} className="flex-1 bg-zinc-900/50 relative overflow-hidden border-r border-black/50">{idx === currentSlide && (<div className="absolute inset-0 bg-amber-500 shadow-[0_0_15px_#f59e0b]" style={{ animation: `slideProgress ${DURATION}ms linear forwards` }} />)}{idx < currentSlide && <div className="absolute inset-0 bg-amber-500/30" />}</div>))}</div></div></div>
+            <div className="w-full h-[600px] relative overflow-hidden group">
+                {slides.map((slide, index) => (
+                    <div key={slide.id} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
+                        <div className="absolute inset-0 overflow-hidden">
+                            <img 
+                                src={getOptimizedImageUrl(slide.image, { width: 1400, quality: 82, format: 'webp' })} 
+                                alt={slide.title} 
+                                loading={index === 0 ? 'eager' : 'lazy'} 
+                                fetchPriority={index === 0 ? 'high' : 'auto'} 
+                                decoding="async" 
+                                onError={(e) => { e.currentTarget.src = slide.image; }} 
+                                className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${slide.position} ${index === currentSlide ? 'scale-110' : 'scale-100'}`} 
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
+                        </div>
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="max-w-7xl mx-auto px-6 w-full">
+                                <div className="max-w-xl space-y-6">
+                                    <div className="inline-block px-3 py-1 bg-amber-500 text-black text-xs font-bold tracking-widest uppercase mb-2 animate-fade-in">
+                                        {t.common.maNews}
+                                    </div>
+                                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-white leading-tight animate-fade-in-up tracking-tighter">
+                                        {slide.title}
+                                    </h2>
+                                    <p className="text-zinc-300 text-base sm:text-lg leading-relaxed animate-fade-in-up delay-100">
+                                        {slide.desc}
+                                    </p>
+                                    <button 
+                                        onClick={slide.action} 
+                                        className="mt-6 px-8 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-widest uppercase text-xs rounded-sm transition-all flex items-center gap-2 animate-fade-in-up delay-200 cursor-pointer shadow-xl"
+                                    >
+                                        <span>{slide.cta}</span>
+                                        <ArrowRight size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                <div className="absolute bottom-0 left-0 w-full z-20">
+                    <div className="max-w-7xl mx-auto px-6 mb-8 flex justify-end items-end gap-8">
+                        <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10">
+                            <div className="relative w-10 h-10 flex items-center justify-center">
+                                <svg className="w-full h-full -rotate-90 transform">
+                                    <circle cx="20" cy="20" r="16" className="stroke-white/10 fill-none" strokeWidth="2" />
+                                    <circle key={currentSlide} cx="20" cy="20" r="16" className="stroke-amber-500 fill-none" strokeWidth="2" strokeDasharray="100.5" strokeDashoffset="0" style={{ animation: `countdown ${DURATION}ms linear forwards` }} />
+                                </svg>
+                                <div className="absolute text-white animate-pulse"><Clock size={12} /></div>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[9px] text-zinc-400 uppercase tracking-widest font-bold">{t.promos.comingUp}</span>
+                                <span className="text-xs text-white font-serif italic truncate max-w-[120px] md:max-w-[200px]">{slides[nextSlideIndex].title}</span>
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={prevSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronLeft size={20} /></button>
+                            <button onClick={nextSlide} className="p-3 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-white/10 rounded-full text-white transition-all"><ChevronRight size={20} /></button>
+                        </div>
+                    </div>
+                    <div className="flex w-full h-1 bg-black">
+                        {slides.map((_, idx) => (
+                            <div key={idx} className="flex-1 bg-zinc-900/50 relative overflow-hidden border-r border-black/50">
+                                {idx === currentSlide && (
+                                    <div className="absolute inset-0 bg-amber-500 shadow-[0_0_15px_#f59e0b]" style={{ animation: `slideProgress ${DURATION}ms linear forwards` }} />
+                                )}
+                                {idx < currentSlide && <div className="absolute inset-0 bg-amber-500/30" />}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };
 
 const HomeSection = ({ t, handleNav, lang = 'es' }: any) => {
+    const isEs = lang === 'es';
     return (
         <>
-            <PromotionsSection t={t} handleNav={handleNav} />
-            <HeroSection t={t} handleNav={handleNav} />
+            <PromotionsSection t={t} handleNav={handleNav} lang={lang} />
+            <HeroSection t={t} handleNav={handleNav} lang={lang} />
             
+            {/* Quick Catalog Categories & Direct Access Grid */}
+            <section className="py-16 bg-black border-t border-zinc-900/80">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
+                        <div>
+                            <span className="text-amber-400 text-xs font-bold uppercase tracking-[0.25em] block mb-1">
+                                {isEs ? 'Explorador Oficial de Productos' : 'Official Product Explorer'}
+                            </span>
+                            <h2 className="text-2xl sm:text-3xl font-serif text-white">
+                                {isEs ? 'Catálogo & Solicitud de Presupuesto' : 'Catalog & Salon Quotation'}
+                            </h2>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => handleNav('catalog')}
+                                className="px-4 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                            >
+                                <ShoppingBag size={14} />
+                                <span>{isEs ? 'Ver Todo el Catálogo' : 'View Full Catalog'}</span>
+                                <ArrowRight size={14} />
+                            </button>
+                            <button
+                                onClick={() => handleNav('quote')}
+                                className="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                            >
+                                <FileText size={14} className="text-amber-400" />
+                                <span>{isEs ? 'Presupuesto' : 'Quote'}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div
+                            onClick={() => handleNav('catalog')}
+                            className="p-6 bg-gradient-to-b from-zinc-900 to-zinc-950 rounded-xl border border-zinc-800 hover:border-amber-500/50 transition-all cursor-pointer group shadow-xl flex flex-col justify-between"
+                        >
+                            <div>
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20">
+                                        S Professional
+                                    </span>
+                                    <ArrowRight size={14} className="text-zinc-600 group-hover:text-amber-400 transition-colors" />
+                                </div>
+                                <h3 className="text-lg font-serif text-white group-hover:text-amber-400 transition-colors mb-2">
+                                    {isEs ? 'Terapia Capilar Avanzada' : 'Advanced Hair Therapy'}
+                                </h3>
+                                <p className="text-zinc-400 text-xs font-light leading-relaxed mb-4">
+                                    Nutrology, Hidratherapy O3, Pro Fusion Enzimático, Brushing+ y My Crown.
+                                </p>
+                            </div>
+                            <span className="text-amber-400 text-xs font-semibold uppercase tracking-wider flex items-center gap-1">
+                                {isEs ? 'Explorar Productos' : 'Browse Products'} →
+                            </span>
+                        </div>
+
+                        <div
+                            onClick={() => handleNav('catalog')}
+                            className="p-6 bg-gradient-to-b from-zinc-900 to-zinc-950 rounded-xl border border-zinc-800 hover:border-amber-500/50 transition-all cursor-pointer group shadow-xl flex flex-col justify-between"
+                        >
+                            <div>
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20">
+                                        Sweet Professional
+                                    </span>
+                                    <ArrowRight size={14} className="text-zinc-600 group-hover:text-amber-400 transition-colors" />
+                                </div>
+                                <h3 className="text-lg font-serif text-white group-hover:text-amber-400 transition-colors mb-2">
+                                    {isEs ? 'Alisado & Reconstrucción' : 'Straightening & Recovery'}
+                                </h3>
+                                <p className="text-zinc-400 text-xs font-light leading-relaxed mb-4">
+                                    The First Shampoo (5 patentes mundiales), Cronology y S.O.S Emergencia.
+                                </p>
+                            </div>
+                            <span className="text-amber-400 text-xs font-semibold uppercase tracking-wider flex items-center gap-1">
+                                {isEs ? 'Explorar Productos' : 'Browse Products'} →
+                            </span>
+                        </div>
+
+                        <div
+                            onClick={() => handleNav('catalog')}
+                            className="p-6 bg-gradient-to-b from-zinc-900 to-zinc-950 rounded-xl border border-zinc-800 hover:border-amber-500/50 transition-all cursor-pointer group shadow-xl flex flex-col justify-between"
+                        >
+                            <div>
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20">
+                                        Línea Home Care
+                                    </span>
+                                    <ArrowRight size={14} className="text-zinc-600 group-hover:text-amber-400 transition-colors" />
+                                </div>
+                                <h3 className="text-lg font-serif text-white group-hover:text-amber-400 transition-colors mb-2">
+                                    {isEs ? 'Mantenimiento en Casa' : 'Home Care Maintenance'}
+                                </h3>
+                                <p className="text-zinc-400 text-xs font-light leading-relaxed mb-4">
+                                    Líneas para clientas de salón que mantienen el brillo, la nutrición y el alisado.
+                                </p>
+                            </div>
+                            <span className="text-amber-400 text-xs font-semibold uppercase tracking-wider flex items-center gap-1">
+                                {isEs ? 'Explorar Productos' : 'Browse Products'} →
+                            </span>
+                        </div>
+
+                        <div
+                            onClick={() => handleNav('quote')}
+                            className="p-6 bg-gradient-to-b from-amber-950/30 to-zinc-950 rounded-xl border border-amber-500/40 hover:border-amber-400 transition-all cursor-pointer group shadow-xl flex flex-col justify-between"
+                        >
+                            <div>
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-[10px] font-mono uppercase bg-amber-500 text-black px-2 py-0.5 rounded font-bold">
+                                        Cotizador Salón
+                                    </span>
+                                    <FileText size={16} className="text-amber-400" />
+                                </div>
+                                <h3 className="text-lg font-serif text-white group-hover:text-amber-300 transition-colors mb-2">
+                                    {isEs ? 'Armar mi Presupuesto' : 'Build Salon Quote'}
+                                </h3>
+                                <p className="text-zinc-400 text-xs font-light leading-relaxed mb-4">
+                                    Calcule sus unidades, complete los datos de su salón y reciba atención prioritaria por WhatsApp.
+                                </p>
+                            </div>
+                            <span className="text-amber-400 text-xs font-semibold uppercase tracking-wider flex items-center gap-1">
+                                {isEs ? 'Revisar Presupuesto' : 'Review Quote'} →
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Marketplace Feature Banner */}
-            <section className="py-20 bg-zinc-950 relative overflow-hidden border-t border-zinc-900">
+            <section className="py-16 bg-zinc-950 relative overflow-hidden border-t border-zinc-900">
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="p-8 sm:p-12 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 rounded-2xl border border-amber-500/30 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
                         <div className="space-y-3 max-w-2xl text-center lg:text-left z-10">
@@ -1615,8 +1877,29 @@ const Footer = ({ t, handleNav, lang }: any) => {
     );
 };
 
+const getInitialTab = (): string => {
+    if (typeof window !== 'undefined') {
+        const hash = window.location.hash.replace('#', '').toLowerCase();
+        if (hash === 'catalog' || hash === 'catalogo') return 'catalog';
+        if (hash === 'quote' || hash === 'presupuesto' || hash === 'cotizacion') return 'quote';
+        if (hash === 'sweet' || hash === 'sweet-professional') return 'sweet';
+        if (hash === 'sprofessional' || hash === 's-professional') return 'sprofessional';
+        if (hash === 'education' || hash === 'academia') return 'education';
+        if (hash === 'about' || hash === 'nosotros') return 'about';
+        if (hash === 'partner' || hash === 'socios') return 'partner';
+        if (hash === 'privacy' || hash === 'privacidad') return 'privacy';
+        if (hash.startsWith('sp-') || hash.startsWith('sw-')) return hash;
+
+        const params = new URLSearchParams(window.location.search);
+        const tab = params.get('tab')?.toLowerCase();
+        if (tab === 'catalog' || tab === 'catalogo') return 'catalog';
+        if (tab === 'quote' || tab === 'presupuesto') return 'quote';
+    }
+    return 'home';
+};
+
 const App = () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState<string>(getInitialTab);
     const [lang, setLang] = useState<Language>('es'); 
     const [showWhatsApp, setShowWhatsApp] = useState(false);
 
@@ -1633,6 +1916,36 @@ const App = () => {
     useEffect(() => {
         saveCartToStorage(cart);
     }, [cart]);
+
+    // Listen for hash change for deep-linking across browsers & mobile
+    useEffect(() => {
+        const handleHashChange = () => {
+            const hash = window.location.hash.replace('#', '').toLowerCase();
+            if (!hash || hash === 'home' || hash === 'inicio') {
+                setActiveTab('home');
+            } else if (hash === 'catalog' || hash === 'catalogo') {
+                setActiveTab('catalog');
+            } else if (hash === 'quote' || hash === 'presupuesto') {
+                setActiveTab('quote');
+            } else if (hash === 'sweet') {
+                setActiveTab('sweet');
+            } else if (hash === 'sprofessional') {
+                setActiveTab('sprofessional');
+            } else if (hash === 'partner') {
+                setActiveTab('partner');
+            } else if (hash === 'about') {
+                setActiveTab('about');
+            } else if (hash === 'education') {
+                setActiveTab('education');
+            } else if (hash === 'privacy') {
+                setActiveTab('privacy');
+            } else if (hash.startsWith('sp-') || hash.startsWith('sw-')) {
+                setActiveTab(hash);
+            }
+        };
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
 
     const handleAddToCart = (product: ProductItem, quantity: number = 1) => {
         setCart((prevCart) => {
@@ -1674,6 +1987,11 @@ const App = () => {
 
     const handleNavigation = (tab: string) => { 
         setActiveTab(tab); 
+        if (typeof window !== 'undefined') {
+            if (window.location.hash !== `#${tab}`) {
+                window.history.pushState(null, '', `#${tab}`);
+            }
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
     };
 
@@ -1741,7 +2059,7 @@ const App = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-zinc-100 selection:bg-amber-500/30 font-sans flex flex-col w-full">
+        <div className="min-h-screen bg-black text-zinc-100 selection:bg-amber-500/30 font-sans flex flex-col w-full relative">
             <MarketplaceHeader
                 activeTab={activeTab}
                 setActiveTab={handleNavigation}
@@ -1754,8 +2072,79 @@ const App = () => {
                 setSearchQuery={setSearchQuery}
                 t={t}
             />
-            <main className="flex-grow w-full">{renderContent()}</main>
+            <main className="flex-grow w-full pb-16 md:pb-0">{renderContent()}</main>
             <Footer t={t} handleNav={handleNavigation} lang={lang} />
+
+            {/* Persistent Mobile Bottom Navigation Bar (Docked on phones & tablets) */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/90 py-1.5 px-3 flex items-center justify-around shadow-[0_-8px_20px_rgba(0,0,0,0.8)]">
+                <button
+                    onClick={() => handleNavigation('home')}
+                    className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg transition-colors cursor-pointer ${
+                        activeTab === 'home' ? 'text-amber-400 font-bold' : 'text-zinc-400 hover:text-zinc-200'
+                    }`}
+                >
+                    <span className="text-base leading-none mb-0.5">🏠</span>
+                    <span className="text-[10px] uppercase tracking-wider">{lang === 'es' ? 'Inicio' : 'Home'}</span>
+                </button>
+
+                <button
+                    onClick={() => handleNavigation('catalog')}
+                    className={`flex flex-col items-center justify-center py-1 px-3 rounded-lg relative transition-all cursor-pointer ${
+                        activeTab === 'catalog'
+                            ? 'text-amber-400 font-bold bg-amber-500/15 border border-amber-500/40 shadow-sm'
+                            : 'text-zinc-200 hover:text-amber-400'
+                    }`}
+                >
+                    <ShoppingBag size={18} className={activeTab === 'catalog' ? 'text-amber-400' : 'text-amber-400/90'} />
+                    <span className="text-[10px] uppercase tracking-wider font-semibold">{lang === 'es' ? 'Catálogo' : 'Catalog'}</span>
+                    <span className="absolute -top-1 right-0 text-[8px] bg-amber-500 text-black px-1 rounded-full font-mono font-bold">
+                        PRO
+                    </span>
+                </button>
+
+                <button
+                    onClick={() => handleNavigation('quote')}
+                    className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-lg relative transition-all cursor-pointer ${
+                        activeTab === 'quote'
+                            ? 'text-amber-400 font-bold bg-amber-500/15 border border-amber-500/40 shadow-sm'
+                            : 'text-zinc-300 hover:text-amber-400'
+                    }`}
+                >
+                    <FileText size={18} className="text-amber-400" />
+                    <span className="text-[10px] uppercase tracking-wider font-semibold">{lang === 'es' ? 'Presupuesto' : 'Quote'}</span>
+                    {cartCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[9px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center shadow">
+                            {cartCount}
+                        </span>
+                    )}
+                </button>
+
+                <button
+                    onClick={() => setIsCartOpen(true)}
+                    className="flex flex-col items-center justify-center py-1 px-2 rounded-lg relative text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+                >
+                    <div className="relative">
+                        <ShoppingBag size={18} />
+                        {cartCount > 0 && (
+                            <span className="absolute -top-1.5 -right-2 bg-amber-500 text-black text-[9px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center shadow">
+                                {cartCount}
+                            </span>
+                        )}
+                    </div>
+                    <span className="text-[10px] uppercase tracking-wider">{lang === 'es' ? 'Carrito' : 'Cart'}</span>
+                </button>
+
+                <a
+                    href="https://wa.me/14072181294"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center justify-center py-1 px-2 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+                    title="WhatsApp Asesor"
+                >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-5 h-5 drop-shadow" alt="WhatsApp" />
+                    <span className="text-[10px] uppercase tracking-wider">{lang === 'es' ? 'Asesor' : 'Chat'}</span>
+                </a>
+            </div>
 
             {/* Cart Drawer Slide-Over */}
             <CartDrawer
@@ -1786,7 +2175,7 @@ const App = () => {
             />
 
             {/* Floating WhatsApp Quick Contact Button */}
-            <div className={`fixed bottom-8 right-6 z-30 transition-all duration-500 transform ${showWhatsApp ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}>
+            <div className={`fixed bottom-20 md:bottom-8 right-4 md:right-6 z-30 transition-all duration-500 transform ${showWhatsApp ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}>
                 <a
                     href={`https://wa.me/14072181294`}
                     target="_blank"
